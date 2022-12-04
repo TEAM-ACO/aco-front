@@ -16,7 +16,6 @@ body {
   margin-right: auto;
   margin-left: auto;
   -webkit-font-smoothing: antialiased;
-  user-select: none;
   overflow-x: hidden;
 }
 

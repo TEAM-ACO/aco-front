@@ -1,0 +1,8 @@
+.offcanvas__sticky {
+  position: sticky;
+  top: 72px;
+}
+
+.big {
+  color: red;
+}

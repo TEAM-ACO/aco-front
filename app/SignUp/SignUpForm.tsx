@@ -1,18 +1,64 @@
+"use client"
+import React, { useCallback, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import React from 'react'
+import useInput from '@hooks/useInput'
 
-const facebook = {
-    bg: {
+const buttonStyle = {
+    facebook: {
         backgroundColor: "#3b5998",
     } as React.CSSProperties,
-}
-const twitter = {
-    bg: {
+    twitter: {
         backgroundColor: "#55acee",
     } as React.CSSProperties,
 }
 
 const SignUp = () => {
+    const router = useRouter();
+
+    const [email, onChangeEmail] = useInput('');
+    const [nickname, onChangeNickname] = useInput('');
+    const [name, onChangeName] = useInput('');
+
+    const [password, setPassword] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
+
+    const [nicknameError, setNicknameError] = useState(false);
+    const [mismatchError, setMismatchError] = useState(false);
+    const [signUpError, setSignUpError] = useState('')
+    const [signUpSuccess, setSignUpSuccess] = useState(false)
+
+    const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+        setMismatchError(e.target.value !== passwordCheck)
+        // 함수 기준 외부 변수만 deps에 넣을 것.
+    }, [passwordCheck]);
+
+    const onChangePasswordCheck = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setPasswordCheck(e.target.value);
+        setMismatchError(e.target.value !== password)
+    }, [password]);
+
+    const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!nickname) {
+            return setNicknameError(true);
+        }
+        if (password !== passwordCheck || !password || !passwordCheck) {
+            return setMismatchError(true);
+        }
+        if (!mismatchError && nickname) {
+            console.log('=====회원가입 되는지 체크====');
+            setMismatchError(false);
+            setNicknameError(false);
+            setSignUpError('');
+            setSignUpSuccess(false);
+            // 뒤로가기 했을 때 SignUp페이지가 나오지 않으려면 replace
+            router.replace('/');
+        }
+        console.log(email, name, nickname, password);
+    }, [email, password, passwordCheck]);
+
     return (
         <>
             <section className="h-screen">
@@ -26,39 +72,64 @@ const SignUp = () => {
                             />
                         </div>
                         <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
-                            <form>
-                                {/* <!-- Email input --> */}
+                            <form onSubmit={onSubmit}>
+                                {/* <!-- Email --> */}
+                                <div className="mb-6">
+                                    <input
+                                        type="email"
+                                        className="form-input block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                        placeholder="이메일을 입력해주세요."
+                                        value={email || ''}
+                                        onChange={onChangeEmail}
+                                    />
+                                </div>
+                                {/* <!-- Name --> */}
                                 <div className="mb-6">
                                     <input
                                         type="text"
-                                        className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                        placeholder="Email address"
+                                        className="form-input block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                        placeholder="이름을 입력해주세요."
+                                        value={name || ''}
+                                        onChange={onChangeName}
                                     />
                                 </div>
-
-                                {/* <!-- Password input --> */}
+                                {/* <!-- Nickname --> */}
+                                <div className="mb-6">
+                                    <input
+                                        type="text"
+                                        className="form-input block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                        placeholder="닉네임을 입력해주세요."
+                                        value={nickname || ''}
+                                        onChange={onChangeNickname}
+                                    />
+                                    {nicknameError && <p>닉네임을 입력해주세요.</p>}
+                                </div>
+                                {/* <!-- Password --> */}
                                 <div className="mb-6">
                                     <input
                                         type="password"
-                                        className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                        placeholder="Password"
+                                        className="form-input block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                        placeholder="비밀번호를 입력해주세요."
+                                        value={password || ''}
+                                        onChange={onChangePassword}
                                     />
                                 </div>
-
+                                {/* <!-- Password 재확인 --> */}
+                                <div className="mb-6">
+                                    <input
+                                        type="password"
+                                        className="form-input block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                        placeholder="비밀번호 확인."
+                                        value={passwordCheck || ''}
+                                        onChange={onChangePasswordCheck}
+                                    />
+                                    {mismatchError && <p>비밀번호가 일치하지 않습니다.</p>}
+                                </div>
                                 <div className="flex justify-between items-center mb-6">
-                                    <div className="form-group form-check">
-                                        <input
-                                            type="checkbox"
-                                            className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                            id="exampleCheck3"
-                                        />
-                                        <label className="form-check-label inline-block text-gray-800" htmlFor="exampleCheck2"
-                                        >Remember me</label>
-                                    </div>
                                     <Link
-                                        href="/"
+                                        href="/LogIn"
                                         className="text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 duration-200 transition ease-in-out"
-                                    >Forgot password?</Link>
+                                    >이미 아이디가 있습니다.</Link>
                                 </div>
 
                                 {/* <!-- Submit button --> */}
@@ -79,7 +150,7 @@ const SignUp = () => {
 
                                 <Link
                                     className="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center mb-3"
-                                    style={facebook.bg}
+                                    style={buttonStyle.facebook}
                                     href="/"
                                     role="button"
                                     data-mdb-ripple="true"
@@ -99,7 +170,7 @@ const SignUp = () => {
                                 </Link>
                                 <Link
                                     className="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center"
-                                    style={twitter.bg}
+                                    style={buttonStyle.twitter}
                                     href="/"
                                     role="button"
                                     data-mdb-ripple="true"

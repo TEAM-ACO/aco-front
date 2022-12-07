@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react'
 
 function OffCanvas() {
@@ -6,10 +7,9 @@ function OffCanvas() {
             <nav className="flex flex-col bg-purple-900 w-64 h-screen px-4 tex-gray-900 border border-purple-900">
                 <div className="flex flex-wrap mt-8">
                     <div className="w-1/2">
-                        <img
-                            src="https://randomuser.me/api/portraits/men/10.jpg"
-                            className="mx-auto w-20 h-20 rounded-full"
-                        />
+                        <div className="inline-flex overflow-hidden relative justify-center items-center mx-auto w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600">
+                            <span className="font-medium text-gray-600 dark:text-gray-300">JL</span>
+                        </div>
                     </div>
                     <div className="w-1/2">
                         <span className="font-semibold text-white">User Name</span>

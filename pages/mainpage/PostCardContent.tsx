@@ -2,7 +2,11 @@ import React from 'react'
 
 const PostCardContent = () => {
     return (
-        <div>PostCard</div>
+        <div>
+            <p>
+                PostCardContent
+            </p>
+        </div>
     )
 }
 

@@ -1,16 +1,21 @@
 import '../styles/globals.css'
-import { AppProps } from 'next/app';
+import type { AppProps } from 'next/app'
+import { Provider } from 'react-redux';
+import store from '../store/config';
+import Header from '@app/header'
 
-import wrapper from "../store/config";
-import Head from 'next/head';
-
-const ACO = ({ Component, pageProps }: AppProps) => {
+function MyApp({ Component, pageProps }: AppProps) {
     return (
-        <>
-            <Head>Project ACO</Head>
-            <Component {...pageProps} />
-        </>
-    );
-};
+        <div className="App">
+            <Provider store={store}>
+                <div className="sticky top-0 z-50">
+                    <Header />
+                </div>
+                <Component {...pageProps} />
+            </Provider>
 
-export default wrapper.withRedux(ACO);
+        </div>
+    );
+}
+
+export default MyApp;

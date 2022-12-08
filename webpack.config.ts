@@ -18,7 +18,7 @@ const config: Configuration = {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
       '@hooks': path.resolve(__dirname, 'hooks'),
-      '@components': path.resolve(__dirname, 'components'),
+      '@store': path.resolve(__dirname, 'store'),
       '@layouts': path.resolve(__dirname, 'layouts'),
       '@app': path.resolve(__dirname, 'app'),
       '@pages': path.resolve(__dirname, 'pages'),

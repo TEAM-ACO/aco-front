@@ -1,5 +1,13 @@
 "use client"
 import Link from 'next/link'
+import React, { useCallback, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useRouter } from 'next/navigation'
+import useInput from '@hooks/useInput'
+
+import { login } from '@slices/userSlice'
+import { RootState } from '@store/config'
+
 
 const facebook = {
     bg: {
@@ -12,7 +20,31 @@ const twitter = {
     } as React.CSSProperties,
 }
 
-const LoginForm = () => {
+const LogIn = () => {
+    const dispatch = useDispatch();
+    const router = useRouter();
+    const loginRequest = useSelector((state: RootState) => state.user.value);
+
+    const [email, onChangeEmail] = useInput('');
+    const [password, onChangePassword] = useInput('');
+
+    const [logInError, setLogInError] = useState<boolean>(false);
+    const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log(email, password)
+        if (!email) {
+            return setLogInError(true);
+        }
+        if (!password) {
+            return setLogInError(true);
+        }
+        setLogInError(false);
+        dispatch(login({ email, password }));
+        // 뒤로가기 눌러도 페이지 고정
+        router.replace('/mainpage');
+    },
+        [email, password],
+    );
     return (
         <>
             <section className="h-screen">
@@ -26,13 +58,14 @@ const LoginForm = () => {
                             />
                         </div>
                         <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
-                            <form>
+                            <form onSubmit={onSubmit}>
                                 {/* <!-- Email input --> */}
                                 <div className="mb-6">
                                     <input
                                         type="email"
                                         className="form-input block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                         placeholder="이메일을 입력해주세요"
+                                        value={email} onChange={onChangeEmail}
                                     />
                                 </div>
 
@@ -42,9 +75,10 @@ const LoginForm = () => {
                                         type="password"
                                         className="form-input block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                         placeholder="비밀번호를 입력해주세요"
+                                        value={password} onChange={onChangePassword}
                                     />
                                 </div>
-
+                                {logInError && <p>이메일 혹은 비밀번호가 일치하지 않습니다.</p>}
                                 <div className="flex justify-between items-center mb-6">
                                     <div className="form-group form-check">
                                         <input
@@ -126,4 +160,4 @@ const LoginForm = () => {
     )
 }
 
-export default LoginForm
+export default LogIn

@@ -1,7 +1,20 @@
-import Link from 'next/link';
-import React from 'react'
+import { useRouter } from 'next/navigation';
+import React, { useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+
+import { logout } from '@slices/userSlice'
+import { RootState } from '@store/config';
 
 function OffCanvas() {
+    const dispatch = useDispatch();
+    const router = useRouter();
+
+    const logoutRequestAction = useSelector((state: RootState) => state.user.value);
+    const onLogOut = useCallback(() => {
+        dispatch(logout())
+        router.replace('/');
+    }, [])
+
     return (
         <div>
             <nav className="flex flex-col bg-purple-900 w-64 h-screen px-4 tex-gray-900 border border-purple-900">
@@ -13,8 +26,9 @@ function OffCanvas() {
                     </div>
                     <div className="w-1/2">
                         <span className="font-semibold text-white">User Name</span>
-                        <button className="bg-green-500 text-white px-4 py-2 rounded-md border border-blue-500 hover:bg-white hover:text-green-500">
-                            내정보
+                        <button className="bg-green-500 text-white px-4 py-2 rounded-md border border-blue-500 hover:bg-white hover:text-green-500"
+                            onClick={onLogOut}>
+                            로그아웃
                         </button>
                     </div>
                 </div>

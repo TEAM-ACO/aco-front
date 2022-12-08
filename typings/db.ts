@@ -1,3 +1,3 @@
-export interface IUser {
+export interface IUsers {
   id: number;
 }

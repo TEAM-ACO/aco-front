@@ -19,7 +19,7 @@ const config: Configuration = {
     alias: {
       '@hooks': path.resolve(__dirname, 'hooks'),
       '@store': path.resolve(__dirname, 'store'),
-      '@layouts': path.resolve(__dirname, 'layouts'),
+      '@features': path.resolve(__dirname, 'features'),
       '@app': path.resolve(__dirname, 'app'),
       '@pages': path.resolve(__dirname, 'pages'),
       '@utils': path.resolve(__dirname, 'utils'),

@@ -1,5 +1,4 @@
-import Header from './header'
-import Footer from './footer'
+import { Flowbite, DarkThemeToggle } from 'flowbite-react'
 
 export default function RootLayout({ children }: {
   children: React.ReactNode

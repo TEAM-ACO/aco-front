@@ -27,6 +27,7 @@
     "axios": "^1.2.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.2",
+    "dayjs": "^1.11.7",
     "eslint-config-prettier": "^8.5.0",
     "flowbite": "^1.5.4",
     "flowbite-react": "^0.3.6",

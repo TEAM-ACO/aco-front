@@ -1,13 +1,17 @@
+import { IComments, IPost } from '@features/postSlice';
 import { useAppSelector } from '@store/config';
+import dayjs from 'dayjs';
 import React from 'react'
-import Comments from './Comments';
+import CommentForm from './CommentForm';
+import CommentList from './CommentList';
 import PostCardContent from './PostCardContent';
 
-function PostCard({ post }) {
+function PostCard({ post }: any) {
     const { isLoading } = useAppSelector((state) => state.post);
+
     return (
         <>
-            <section className="px-6">
+            <section className="px-6 py-4">
                 <div className="rounded overflow-hidden shadow-lg">
                     <img className='object-cover' src={post.articleImage} alt='img' />
                     <div className="px-6 py-4">
@@ -21,7 +25,20 @@ function PostCard({ post }) {
                     </div>
                     {/* HASHTAG */}
                     <PostCardContent />
-                    <Comments />
+                    <CommentForm post={post} />
+                    <div>
+                        <ol className=" border-l border-gray-200 dark:border-gray-700">
+                            <div className='ml-6 py-2 text-xs'>
+                                {`${post.Comments.length}개의 댓글`}
+                            </div>
+                            {/* 만약 CommentList로 뺀게 불편하다면 말씀해주세요. */}
+                            {post.Comments.map((post: any) => {
+                                return (
+                                    <CommentList key={post.User.nickname} comment={post} />
+                                )
+                            })}
+                        </ol>
+                    </div>
                 </div>
             </section>
         </>

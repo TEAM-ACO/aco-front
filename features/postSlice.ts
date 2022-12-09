@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import dummy from '../dummy';
 
 export interface IPost {
+  mid: number;
   writer: string;
   title: string;
   content: string;
@@ -15,29 +16,50 @@ export interface IPost {
   }[];
 }
 
+export interface IComments {
+  Comments: {
+    User: {
+      nickname: string;
+    };
+    content: string;
+  }[];
+}
+
 export interface IPostState {
   mainPosts: IPost[];
-  totalQuantity: number;
-  totalValue: number;
+  postAdded: boolean;
   isLoading: boolean;
 }
 
+// Image를 mainPosts 밖으로 빼서 따로 받아야 할까?
 export const initialState = {
   mainPosts: dummy,
-  totalQuantity: 0,
-  totalValue: 0,
+  postAdded: false,
   isLoading: true,
 } as IPostState;
+
+const dummyPost = {
+  mid: 7,
+  title: '아임 더미',
+  content: 'ADD POST 누르면 이게 나와야 한다.',
+  writer: 'Naive',
+  articleImage: '',
+  Comments: [],
+};
 
 const postSlice = createSlice({
   name: 'post',
   initialState,
   reducers: {
+    addPosts: (state, action) => {
+      state.mainPosts = [dummyPost, ...state.mainPosts];
+      state.postAdded = true;
+    },
     loadPosts: (state, action) => {
       state.mainPosts.forEach((post) => {});
     },
   },
 });
 
-export const { loadPosts } = postSlice.actions;
+export const { addPosts, loadPosts } = postSlice.actions;
 export default postSlice.reducer;

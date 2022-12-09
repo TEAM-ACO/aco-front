@@ -1,14 +1,27 @@
-import React from 'react'
+import { useAppSelector } from '@store/config';
+import React, { useCallback, useState, useEffect } from 'react'
 
-function Comments() {
+function Comments({ post }: any) {
+    const id = useAppSelector((state) => state.user.value.email)
+    const [commentText, setCommentText] = useState('');
+
+    const onSubmitComment = useCallback((e: React.ChangeEvent<HTMLFormElement>) => {
+        console.log(post.mid, commentText);
+        e.preventDefault();
+    }, [commentText]);
+
+    const onChangeCommentText = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setCommentText(e.target.value);
+    }, []);
+
     return (
-        <div className='px-6'>
+        <form className='px-6' onSubmit={onSubmitComment}>
             <div className="relative">
                 <input
                     type="search"
-                    id="search"
+                    value={commentText} onChange={onChangeCommentText}
                     className="block w-full p-3 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Search"
+                    placeholder="댓글을 입력해주세요"
                     required />
                 <button
                     type="submit"
@@ -16,7 +29,7 @@ function Comments() {
                     댓글쓰기
                 </button>
             </div>
-        </div>
+        </form>
     )
 }
 

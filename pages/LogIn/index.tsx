@@ -1,12 +1,11 @@
 "use client"
 import Link from 'next/link'
 import React, { useCallback, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import useInput from '@hooks/useInput'
 
 import { login } from 'features/userSlice'
-import { RootState } from '@store/config'
+import { useAppDispatch, useAppSelector } from '@store/config'
 
 
 const facebook = {
@@ -21,9 +20,9 @@ const twitter = {
 }
 
 const LogIn = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const router = useRouter();
-    const loginRequest = useSelector((state: RootState) => state.user.value);
+    const loginRequest = useAppSelector((state) => state.user.value);
 
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');

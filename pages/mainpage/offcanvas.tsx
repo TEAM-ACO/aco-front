@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import React, { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 
-import { logout } from '@slices/userSlice'
+import { logout } from 'features/userSlice'
 import { RootState } from '@store/config';
 
 function OffCanvas() {

@@ -3,8 +3,8 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { HYDRATE, createWrapper } from 'next-redux-wrapper';
 import { createLogger } from 'redux-logger';
 
-import userReducer from '../slices/userSlice';
-import postReducer from '../slices/postSlice';
+import userReducer from '../features/userSlice';
+import postReducer from '../features/postSlice';
 
 export interface ReducerStates {}
 
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 // store는 state와 reducer를 포함한다고 볼 것.
 const store = configureStore({
   reducer: rootReducer,
-  //   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   devTools: process.env.NODE_ENV !== 'production',
   //   preloadedState: initialState,
   enhancers: (defaultEnhancers) => [...defaultEnhancers],

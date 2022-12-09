@@ -1,27 +1,29 @@
+import { useAppSelector } from '@store/config';
 import React from 'react'
-import { useSelector } from 'react-redux';
+import Comments from './Comments';
+import PostCardContent from './PostCardContent';
 
-function PostCard() {
+function PostCard({ post }) {
+    const { isLoading } = useAppSelector((state) => state.post);
     return (
         <>
-            <form action="" className="px-6">
+            <section className="px-6">
                 <div className="rounded overflow-hidden shadow-lg">
-                    {/* <Image className="w-full" src="/img/card-top.jpg" alt="Sunset in the mountains" width={600} height={400} /> */}
+                    <img className='object-cover' src={post.articleImage} alt='img' />
                     <div className="px-6 py-4">
-                        <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
+                        {post.writer}
+                        {/* title */}
+                        <div className="font-bold text-xl mb-2">{post.title}</div>
+                        {/* 본문 */}
                         <p className="text-gray-700 text-base">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
+                            {post.content}
                         </p>
                     </div>
-                    <div className="px-6 pt-4 pb-2">
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
-                    </div>
-                    <div>
-                    </div>
+                    {/* HASHTAG */}
+                    <PostCardContent />
+                    <Comments />
                 </div>
-            </form>
+            </section>
         </>
     )
 }

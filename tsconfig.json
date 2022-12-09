@@ -13,7 +13,7 @@
     "paths": {
       // 절대경로 처럼 불러오기
       "@hooks/*": ["hooks/*"],
-      "@slices/*": ["slices/*"],
+      "@features/*": ["features/*"],
       "@store/*": ["store/*"],
       "@layouts/*": ["layouts/*"],
       "@app/*": ["app/*"],

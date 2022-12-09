@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import useInput from '@hooks/useInput'
 
-import { login } from '@slices/userSlice'
+import { login } from 'features/userSlice'
 import { RootState } from '@store/config'
 
 

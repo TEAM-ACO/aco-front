@@ -1,5 +1,13 @@
 
 # aco-front
 
-### 12/3
-React, Typescript, Next.js, Tailwindcss 세팅 완료
+### Stack
+React, Redux-toolkit, Typescript, Next.js, Tailwindcss, PostCSS
+
+
+
+# Install JavaScript Packages
+npm install
+
+# Run Frontend Server
+npm run dev

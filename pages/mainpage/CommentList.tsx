@@ -1,4 +1,5 @@
 import React from 'react'
+import { Avatar } from 'flowbite-react'
 import dayjs from 'dayjs';
 
 function CommentList({ comment }: any) {
@@ -6,10 +7,13 @@ function CommentList({ comment }: any) {
     return (
         <li className="ml-6 flex items-center justify-between">
             <div className='flex items-center'>
-                <span className="flex justify-center items-center mr-2 w-6 h-6 bg-blue-200 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-                    {/* 이 자리에 Avatar 넣기 */}
+                <Avatar
+                    img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                    rounded={true}
+                />
+                {/* <span className="flex justify-center items-center mr-2 w-6 h-6 bg-blue-200 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
                     <circle className="flex justify-center items-center rounded-full shadow-lg" />
-                </span>
+                </span> */}
                 <div className='mr-5 w-10'>
                     <span className="text-sm font-medium text-gray-900 dark:text-white">{comment.User.nickname}</span>
                 </div>

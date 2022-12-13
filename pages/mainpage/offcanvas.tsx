@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { logout } from 'features/userSlice'
 import { RootState } from '@store/config';
+import Link from 'next/link';
 
 function OffCanvas() {
     const dispatch = useDispatch();
@@ -44,9 +45,9 @@ function OffCanvas() {
                                     ></path>
                                 </svg>
                             </span>
-                            <a href="#">
-                                <span className="ml-2">Dashboard</span>
-                            </a>
+                            <Link href="/mypage">
+                                <span className="ml-2">마이페이지(임시)</span>
+                            </Link>
                         </li>
                         <li className="mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
                             <span>
@@ -68,10 +69,9 @@ function OffCanvas() {
                                     />
                                 </svg>
                             </span>
-                            <a href="#">
-
-                                <span className="ml-2">Customers</span>
-                            </a>
+                            <Link href="/admin">
+                                <span className="ml-2">Admin임시</span>
+                            </Link>
                         </li>
                         <li className="mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
                             <span>
@@ -85,7 +85,7 @@ function OffCanvas() {
                             </span>
                             <a href="#">
 
-                                <span className="ml-2">Milestones</span>
+                                <span className="ml-2">내가 취득한 업적</span>
                             </a>
                         </li>
                         <li className="mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">

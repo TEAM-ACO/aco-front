@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import { Navbar } from "flowbite-react";
+import { Navbar, DarkThemeToggle, Flowbite } from "flowbite-react";
 
 const header = () => {
     return (

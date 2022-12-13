@@ -3,16 +3,13 @@ import PostCard from './PostCard';
 import OffCanvas from './offcanvas'
 import SpeedDial from './SpeedDial'
 import { useAppDispatch, useAppSelector } from '@store/config';
-import { loadPosts, IPost } from '@features/postSlice';
+import { IPost } from '@features/postSlice';
 import PostForm from './PostForm';
 import Channel from './Channel';
 
 function mainpage() {
-    const { mainPosts } = useAppSelector((state) => state.post);
+    const { mainPosts, postAdded } = useAppSelector((state) => state.post);
     const dispatch = useAppDispatch();
-    // useEffect(() => {
-    //     dispatch(loadPosts());
-    // }, [mainPosts]);
     return (
         <div>
             <div className="flex flex-row justify-between">
@@ -23,7 +20,7 @@ function mainpage() {
                     <PostForm />
                     {mainPosts.map((post: IPost) => {
                         return (
-                            <PostCard key={post.writer} post={post} />
+                            <PostCard key={post.mid} post={post} />
                         )
                     })}
                 </div>

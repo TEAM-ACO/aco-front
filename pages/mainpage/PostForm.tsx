@@ -2,12 +2,13 @@ import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { useAppSelector, useAppDispatch } from '@store/config'
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { addPosts } from '@features/postSlice';
+import { TextInput } from 'flowbite-react';
 
 function PostForm() {
     const dispatch = useAppDispatch();
     const { postAdded } = useAppSelector((state) => state.post);
     const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const [text, setText] = useState('')
+    const [text, setText] = useState<string>('')
 
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();
@@ -19,7 +20,7 @@ function PostForm() {
         }
     }, [postAdded]);
 
-    const onSubmit = useCallback((e: any) => {
+    const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
         if (!text || !text.trim()) {
             return alert('게시글을 작성하세요.');
         }
@@ -36,16 +37,22 @@ function PostForm() {
         <div>
             {/* 글 쓰면 새로고침 되는 문제 어떻게 고치지? */}
             <form className="px-6" encType="multipart/form-data" onSubmit={onSubmit}>
-                <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600">
                     <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
                         <ReactTextareaAutosize
                             value={text}
                             onChange={onChangeText}
-                            id="textarea"
-                            className="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                            rows={4}
+                            className="w-full h-28 resize-none px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
                             placeholder="내용을 입력해주세요"
                             required />
                     </div>
+                    <TextInput
+                        id="small"
+                        type="text"
+                        sizing="sm"
+                        placeholder="태그를 입력해주세요"
+                    />
                     <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
                         <button
                             type="submit"

@@ -13,7 +13,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                 </div>
                 <Component {...pageProps} />
             </Provider>
-
         </div>
     );
 }

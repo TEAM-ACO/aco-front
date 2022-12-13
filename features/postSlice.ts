@@ -28,14 +28,21 @@ export interface IComments {
 export interface IPostState {
   mainPosts: IPost[];
   postAdded: boolean;
-  isLoading: boolean;
 }
 
 // Image를 mainPosts 밖으로 빼서 따로 받아야 할까?
 export const initialState = {
-  mainPosts: dummy,
+  mainPosts: dummy, // 데이터 들어오면 배열로 바꿈
+  // loadPostsLoading: false,
+  // loadPostsDone: false,
+  // loadPostsError: null,
+  // addPostLoading: false,
+  // addPostDone: false,
+  // addPostError: null,
+  // updatePostLoading: false,
+  // updatePostDone: false,
+  // updatePostError: null,
   postAdded: false,
-  isLoading: true,
 } as IPostState;
 
 const dummyPost = {
@@ -48,7 +55,7 @@ const dummyPost = {
 };
 
 const postSlice = createSlice({
-  name: 'post',
+  name: 'article',
   initialState,
   reducers: {
     addPosts: (state, action) => {
@@ -59,6 +66,38 @@ const postSlice = createSlice({
       state.mainPosts.forEach((post) => {});
     },
   },
+  extraReducers: (builder) => builder,
+  // // loadPosts
+  // .addCase(loadPosts.pending, (state) => {
+  //   state.loadPostsLoading = true;
+  //   state.loadPostsDone = false;
+  //   state.loadPostsError = null;
+  // })
+  // .addCase(loadPosts.fulfilled, (state, action) => {
+  //   state.loadPostsLoading = false;
+  //   state.loadPostsDone = true;
+  //   state.mainPosts = _concat(state.mainPosts, action.payload);
+  // })
+  // .addCase(loadPosts.rejected, (state, action) => {
+  //   state.loadPostsLoading = false;
+  //   state.loadPostsError = action.error.message;
+  // })
+  //  // addPost
+  //  .addCase(addPost.pending, (state) => {
+  //   state.addPostLoading = true;
+  //   state.addPostDone = false;
+  //   state.addPostError = null;
+  // })
+  // .addCase(addPost.fulfilled, (state, action) => {
+  //   state.addPostLoading = false;
+  //   state.addPostDone = true;
+  //   state.mainPosts.unshift(action.payload);
+  //   state.articleimage = []; // 이미지 처리 어떻게 할건지 의논
+  // })
+  // .addCase(addPost.rejected, (state, action) => {
+  //   state.addPostLoading = false;
+  //   state.addPostError = action.error.message;
+  // })
 });
 
 export const { addPosts, loadPosts } = postSlice.actions;

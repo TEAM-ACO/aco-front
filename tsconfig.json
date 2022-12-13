@@ -15,7 +15,7 @@
       "@hooks/*": ["hooks/*"],
       "@features/*": ["features/*"],
       "@store/*": ["store/*"],
-      "@layouts/*": ["layouts/*"],
+      "@actions/*": ["actions/*"],
       "@app/*": ["app/*"],
       "@pages/*": ["pages/*"],
       "@utils/*": ["utils/*"],

@@ -20,6 +20,7 @@ const config: Configuration = {
       '@hooks': path.resolve(__dirname, 'hooks'),
       '@store': path.resolve(__dirname, 'store'),
       '@features': path.resolve(__dirname, 'features'),
+      '@actions': path.resolve(__dirname, 'actions'),
       '@app': path.resolve(__dirname, 'app'),
       '@pages': path.resolve(__dirname, 'pages'),
       '@utils': path.resolve(__dirname, 'utils'),

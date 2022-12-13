@@ -1,6 +1,6 @@
 import RootLayout from '@app/RootLayout'
 import Head from 'next/head'
-import Checked from './checked'
+import FirstMain from './checked'
 
 function Home() {
     return (
@@ -10,7 +10,7 @@ function Home() {
             </Head>
             <RootLayout>
                 <div>
-                    <Checked />
+                    <FirstMain />
                 </div>
             </RootLayout>
         </>

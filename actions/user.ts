@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Reducer } from 'redux';
-import backendURL from '../url';
+import backendURL from '../config/url';
 
 axios.defaults.baseURL = backendURL;
 // 프론트 - 백 쿠키공유
@@ -10,21 +10,22 @@ axios.defaults.withCredentials = true;
 export type LogInRequestData = { email: string; password: string };
 export type LogInErrorData = any; // 에러 메세지 어떻게 보낼건지에 따라 바꿈
 
-export const login = createAsyncThunk('member/login', async (data, { rejectWithValue }) => {
+export const login = createAsyncThunk<LogInRequestData>('member/login', async (data, { rejectWithValue }) => {
+  console.log('=============>', data);
   try {
-    const response = await axios.post('/member/login', data);
+    const response = await axios.post('/api/login', data);
     return response.data;
   } catch (error: LogInErrorData) {
+    console.error(error);
     return rejectWithValue(error.response.data);
   }
 });
 
 export const logout = createAsyncThunk('member/logout', async () => {
-  const response = await axios.post('/member/logout');
-  return response.data;
+  try {
+    const response = await axios.post('/api/logout');
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
 });
-
-export default {
-  login,
-  logout,
-};

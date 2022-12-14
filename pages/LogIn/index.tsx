@@ -3,9 +3,8 @@ import Link from 'next/link'
 import React, { useCallback, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import useInput from '@hooks/useInput'
-
-import { login } from 'features/userSlice'
 import { useAppDispatch, useAppSelector } from '@store/config'
+import { login } from '@actions/user'
 
 
 const facebook = {
@@ -22,7 +21,7 @@ const twitter = {
 const LogIn = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const loginRequest = useAppSelector((state) => state.user.value);
+    const { loginLoading, loginError, loginDone } = useAppSelector((state) => state.user);
 
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
@@ -40,7 +39,13 @@ const LogIn = () => {
         setLogInError(false);
         dispatch(login({ email, password }));
         // 뒤로가기 눌러도 페이지 고정
+
         router.replace('/mainpage');
+
+        // if (loginError) {
+        //     // alert 넣을 것
+        //     alert('틀')
+        // }
     },
         [email, password],
     );

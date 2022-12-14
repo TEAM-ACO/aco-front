@@ -9,32 +9,38 @@ import Dropdown from './Dropdown';
 import PostCardContent from './PostCardContent';
 
 function PostCard({ post }: any) {
-    const { isLoading } = useAppSelector((state) => state.post);
+    const { } = useAppSelector((state) => state.post);
 
     return (
         <>
             <section className="px-6 py-4">
                 <div className="rounded overflow-hidden shadow-lg pb-7">
+                    {/* 캐러셀 임시 */}
                     <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
-                        <Carousel slide={false}>
+                        <Carousel className='px-6 py-4 carousel-class' slide={false}>
                             <img
-                                src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
+                                className='object-contain h-56 sm:h-64 xl:h-80 2xl:h-96'
+                                src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
                                 alt="..."
                             />
                             <img
-                                src="https://flowbite.com/docs/images/carousel/carousel-2.svg"
+                                className='object-contain h-56 sm:h-64 xl:h-80 2xl:h-96'
+                                src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
                                 alt="..."
                             />
                             <img
-                                src="https://flowbite.com/docs/images/carousel/carousel-3.svg"
+                                className='object-contain h-56 sm:h-64 xl:h-80 2xl:h-96'
+                                src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
                                 alt="..."
                             />
                             <img
-                                src="https://flowbite.com/docs/images/carousel/carousel-4.svg"
+                                className='object-contain h-56 sm:h-64 xl:h-80 2xl:h-96'
+                                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
                                 alt="..."
                             />
                             <img
-                                src="https://flowbite.com/docs/images/carousel/carousel-5.svg"
+                                className='object-contain h-56 sm:h-64 xl:h-80 2xl:h-96'
+                                src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
                                 alt="..."
                             />
                         </Carousel>

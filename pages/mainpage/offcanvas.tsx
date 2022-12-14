@@ -1,16 +1,15 @@
 import { useRouter } from 'next/navigation';
 import React, { useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux';
 
-import { logout } from 'features/userSlice'
-import { RootState } from '@store/config';
 import Link from 'next/link';
+import { logout } from '@actions/user';
+import { useAppDispatch, useAppSelector } from '@store/config';
 
 function OffCanvas() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const router = useRouter();
 
-    const logoutRequestAction = useSelector((state: RootState) => state.user.value);
+    const logoutRequestAction = useAppSelector((state) => state.user.value);
     const onLogOut = useCallback(() => {
         dispatch(logout())
         router.replace('/');

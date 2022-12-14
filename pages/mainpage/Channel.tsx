@@ -1,4 +1,5 @@
 import { Avatar } from 'flowbite-react'
+import Link from 'next/link'
 import React from 'react'
 
 function Channel() {
@@ -9,13 +10,13 @@ function Channel() {
                 <div className="relative w-full">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                            <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path>
                         </svg>
                     </div>
                     <input type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required />
                 </div>
                 <button type="submit" className="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     <span className="sr-only">Search</span>
                 </button>
             </form>
@@ -26,7 +27,7 @@ function Channel() {
                             <span className="bg-orange-100 text-orange-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-orange-200 dark:text-orange-900">Today's Tip</span>
                             <button type="button" className="ml-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-900 rounded-lg focus:ring-2 focus:ring-blue-400 p-1 hover:bg-blue-200 inline-flex h-6 w-6 dark:bg-blue-900 dark:text-blue-400 dark:hover:bg-blue-800" data-collapse-toggle="dropdown-cta" aria-label="Close">
                                 <span className="sr-only">Close</span>
-                                <svg aria-hidden="true" className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                <svg aria-hidden="true" className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
                             </button>
                         </div>
                         <p className="mb-3 text-sm text-blue-900 dark:text-blue-400">
@@ -39,7 +40,7 @@ function Channel() {
                     <div className="p-5 mb-4 bg-gray-50 rounded-lg border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
                         <ol className="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
                             <li>
-                                <a href="#" className="block items-center p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <Link href="#" className="block items-center p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <Avatar
                                         img="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
                                         rounded={true}
@@ -47,10 +48,10 @@ function Channel() {
                                     <div className="ml-3 text-gray-600 dark:text-gray-400">
                                         <div className="text-base font-normal">이름적기</div>
                                     </div>
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="block items-center p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <Link href="#" className="block items-center p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <Avatar
                                         img="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
                                         rounded={true}
@@ -58,7 +59,7 @@ function Channel() {
                                     <div className="ml-3 text-gray-600 dark:text-gray-400">
                                         <div className="text-base font-normal">이름적기</div>
                                     </div>
-                                </a>
+                                </Link>
                             </li>
                         </ol>
                     </div>

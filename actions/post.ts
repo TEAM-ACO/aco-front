@@ -21,10 +21,10 @@ export const addPost = createAsyncThunk('post/article', async (data, thunkAPI) =
 });
 
 export const loadPost = createAsyncThunk('post/article', async (data, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`/article/${data.aid}`);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  });
+  try {
+    const response = await axios.get(`/article/${data.aid}`);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});

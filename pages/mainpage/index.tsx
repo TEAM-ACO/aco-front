@@ -1,34 +1,37 @@
 import React, { useEffect } from 'react'
-import PostCard from './PostCard';
-import OffCanvas from './offcanvas'
-import SpeedDial from './SpeedDial'
 import { useAppDispatch, useAppSelector } from '@store/config';
+
+import PostCard from './PostCard';
 import { IPost } from '@features/postSlice';
 import PostForm from './PostForm';
-import Channel from './Channel';
+import Mainpage from './mainpage';
+import { useRouter } from 'next/router';
+import Chat from './Chat';
 
 function mainpage() {
     const { mainPosts, postAdded } = useAppSelector((state) => state.post);
     const dispatch = useAppDispatch();
+    const { asPath } = useRouter();
+
     return (
         <div>
-            <div className="flex flex-row justify-between">
-                <div className="w-64 offcanvas__sticky">
-                    <OffCanvas />
-                </div>
+            <Mainpage>
                 <div className="w-8/12">
-                    <PostForm />
-                    {mainPosts.map((post: IPost) => {
-                        return (
-                            <PostCard key={post.mid} post={post} />
-                        )
-                    })}
+                    {asPath === '/mainpage' ?
+                        <>
+                            <PostForm />
+                            {mainPosts.map((post: IPost) => {
+                                return (
+                                    <PostCard key={post.mid} post={post} />
+                                )
+                            })}
+                        </>
+                        :
+                        <Chat />
+                    }
                 </div>
-                <div className="w-80">
-                    <Channel />
-                </div>
-            </div>
-            <SpeedDial />
+            </Mainpage>
+
         </div>
     )
 }

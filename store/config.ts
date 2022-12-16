@@ -11,7 +11,7 @@ export interface ReducerStates {}
 const logger = createLogger();
 
 const rootReducer = combineReducers({
-  user: userReducer,
+  user: userReducer.reducer,
   post: postReducer,
 });
 

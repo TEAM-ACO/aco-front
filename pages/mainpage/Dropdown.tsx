@@ -137,7 +137,7 @@ const Dropdown = () => {
                                             <select
                                                 id="gender"
                                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                                <option selected disabled>신고사유를 선택해주세요</option>
+                                                <option value={''} disabled>신고사유를 선택해주세요</option>
                                                 <option value="01">부적절한 콘텐츠입니다.</option>
                                                 <option value="02">넣을거 없나</option>
                                                 <option value="03">진실을 오도하고 있습니다.</option>

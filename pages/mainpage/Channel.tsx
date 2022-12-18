@@ -20,7 +20,7 @@ function Channel() {
                     <span className="sr-only">Search</span>
                 </button>
             </form>
-            <aside className="w-64" aria-label="Sidebar">
+            <aside className="w-64 mt-4" aria-label="Sidebar">
                 <div className="overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800">
                     <div id="dropdown-cta" className="p-4 mt-6 bg-blue-50 rounded-lg dark:bg-blue-900" role="alert">
                         <div className="flex items-center mb-3">

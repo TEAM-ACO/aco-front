@@ -9,15 +9,19 @@ function mainLayout({ children }: {
     return (
         <div>
             <div className="flex flex-row justify-between">
-                <div className="w-64">
-                    <OffCanvas />
+                <div className="w-64 mr-6 relative">
+                    <div className='sticky top-14'>
+                        <OffCanvas />
+                    </div>
                 </div>
                 {children}
-                <div className="w-80">
-                    <Channel />
+                <div className="w-80 relative">
+                    <div className='sticky top-14'>
+                        <Channel />
+                    </div>
                 </div>
             </div>
-            <SpeedDial />
+            {/* <SpeedDial /> */}
         </div>
     )
 }

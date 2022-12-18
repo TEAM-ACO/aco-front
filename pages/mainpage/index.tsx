@@ -16,7 +16,7 @@ function mainpage() {
     return (
         <div>
             <Mainpage>
-                <div className="w-8/12">
+                <div className="w-8/12 ml-auto mr-auto">
                     {asPath === '/mainpage' ?
                         <>
                             <PostForm />

@@ -1,7 +1,7 @@
 import { IComments, IPost } from '@features/postSlice';
 import { useAppSelector } from '@store/config';
-import dayjs from 'dayjs';
-import { Avatar, Carousel } from 'flowbite-react';
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { Avatar, Button, Carousel } from 'flowbite-react';
 import React, { useState, useCallback } from 'react'
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
@@ -66,14 +66,18 @@ function PostCard({ post }: any) {
                             </div>
                             <Dropdown />
                         </div>
-                        <div>
+                        {/* <div>
                             <p className="font-bold text-xl mb-2">{post.title}</p>
-                        </div>
+                        </div> */}
                         <div>
                             <p className="text-gray-700 text-base">
                                 {post.content}
                             </p>
                         </div>
+                    </div>
+                    <div className="px-6 py-4">
+                        <FaRegHeart className='text-red-600'></FaRegHeart>
+                        <FaHeart className='text-red-600'></FaHeart>
                     </div>
                     {/* HASHTAG */}
                     <PostCardContent />

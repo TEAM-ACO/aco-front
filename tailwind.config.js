@@ -23,6 +23,11 @@ module.exports = {
           900: '#1e3a8a',
         },
       },
+      height: {
+        screen95: '95vh',
+        screen94: '94vh',
+        screen90: '90vh',
+      },
     },
     screens: {
       sm: '640px',

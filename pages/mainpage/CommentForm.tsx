@@ -2,12 +2,17 @@ import { useAppSelector } from '@store/config';
 import React, { useCallback, useState, useEffect } from 'react'
 
 function Comments({ post }: any) {
-    const id = useAppSelector((state) => state.user.value.email)
+    const memberId = useAppSelector((state) => state.user) // me에 들어있는거로 받으면 될 듯
     const [commentText, setCommentText] = useState('');
 
     const onSubmitComment = useCallback((e: React.ChangeEvent<HTMLFormElement>) => {
+        // Channel을 다른 링크로 보내야 에러가 안나는 것 같다. (시도 안해봤음)
+        if (commentText == '') {
+            return alert('댓글을 입력해주세요')
+        }
         console.log(post.mid, commentText);
         e.preventDefault();
+        setCommentText('')
     }, [commentText]);
 
     const onChangeCommentText = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

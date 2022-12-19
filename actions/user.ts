@@ -10,7 +10,9 @@ axios.defaults.withCredentials = true;
 export type LogInRequestData = { email: string; password: string };
 export type LogInErrorData = any; // 에러 메세지 어떻게 보낼건지에 따라 바꿈
 
+// createSlice의 name이 member입니다.
 export const loadMyInfo = createAsyncThunk('member/loadMyInfo', async () => {
+  // Api - SpringBoot의 Controller와 맞추시면 됩니다.
   const response = await axios.get('/user');
   return response.data;
 });

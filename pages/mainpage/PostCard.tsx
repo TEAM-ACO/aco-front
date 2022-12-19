@@ -10,6 +10,11 @@ import PostCardContent from './PostCardContent';
 
 function PostCard({ post }: any) {
     const { } = useAppSelector((state) => state.post);
+    const [favorite, setFavorite] = useState<boolean>(false);
+
+    const onFavoriteToggle = useCallback(() => {
+        setFavorite((prev) => !prev)
+    }, [])
 
     return (
         <>
@@ -76,8 +81,8 @@ function PostCard({ post }: any) {
                         </div>
                     </div>
                     <div className="px-6 py-4">
-                        <FaRegHeart className='text-red-600'></FaRegHeart>
-                        <FaHeart className='text-red-600'></FaHeart>
+                        {favorite ? <FaHeart onClick={onFavoriteToggle} className='text-red-600 cursor-pointer'></FaHeart>
+                            : <FaRegHeart onClick={onFavoriteToggle} className='text-gray-400 cursor-pointer'></FaRegHeart>}
                     </div>
                     {/* HASHTAG */}
                     <PostCardContent />

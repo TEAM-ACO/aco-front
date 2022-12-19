@@ -26,14 +26,14 @@ function OffCanvas() {
     }, [])
 
     return (
-        <div className='relative'>
+        <div className='absolute slg:relative z-10'>
             {/* <div className="md:hidden text-center">
                 <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation">
                     미디어쿼리 적용할 버튼
                 </button>
             </div> */}
             <div>
-                <nav className="flex flex-col h-screen94 z-40 overflow-y-auto bg-purple-900 w-64 px-4 tex-gray-900 border border-purple-900">
+                <nav className="flex flex-col h-screen94 w-64 z-40 px-4 overflow-y-auto bg-purple-900 tex-gray-900 border border-purple-900">
                     {/* <button
                         type="button"
                         data-drawer-dismiss="drawer-navigation"
@@ -43,22 +43,24 @@ function OffCanvas() {
                         <span className="sr-only">Close menu</span>
                     </button> */}
                     <div className="flex flex-wrap mt-8">
-                        <div className="w-1/2">
+                        <div className="ml-4 w-1/4">
                             <div className="inline-flex overflow-hidden relative justify-center items-center mx-auto w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600">
                                 <span className="font-medium text-gray-600 dark:text-gray-300">JL</span>
                             </div>
                         </div>
-                        <div className="w-1/2">
+                        <div className="ml-6 w-2/4">
                             <span className="font-semibold text-white">User Name</span>
-                            <button className="bg-green-500 text-white px-4 py-2 rounded-md border border-blue-500 hover:bg-white hover:text-green-500"
-                                onClick={onLogOut}>
-                                로그아웃
+                            <button className="mt-2 bg-green-500 text-white px-4 py-2 rounded-md border border-blue-500 hover:bg-white hover:text-green-500"
+                            >
+                                <Link href='/mypage'>
+                                    마이페이지
+                                </Link>
                             </button>
                         </div>
                     </div>
-                    <div className="mt-10 mb-4">
+                    <div className="mt-8 mb-4">
                         <ul className="ml-4">
-                            <li className="mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
+                            <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
                                 <span>
                                     <svg className="fill-current h-5 w-5 " viewBox="0 0 24 24">
                                         <path
@@ -72,7 +74,7 @@ function OffCanvas() {
                                     <span className="ml-2">마이페이지(임시)</span>
                                 </Link>
                             </li>
-                            <li className="mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
+                            <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
                                 <span>
                                     <svg
                                         className="fill-current h-5 w-5 "
@@ -92,11 +94,11 @@ function OffCanvas() {
                                         />
                                     </svg>
                                 </span>
-                                <Link href="/admin">
-                                    <span className="ml-2">Admin임시</span>
+                                <Link href="#">
+                                    <span className="ml-2">내가 쓴 게시글</span>
                                 </Link>
                             </li>
-                            <li className="mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
+                            <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
                                 <span>
                                     <svg className="fill-current h-5 w-5 " viewBox="0 0 24 24">
                                         <path
@@ -106,12 +108,11 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <a href="#">
-
-                                    <span className="ml-2">내가 취득한 업적</span>
-                                </a>
+                                <Link href="#">
+                                    <span className="ml-2">내가 좋아요한 게시글</span>
+                                </Link>
                             </li>
-                            <li className="mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
+                            <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
                                 <span>
                                     <svg className="fill-current h-5 w-5" viewBox="0 0 24 24">
                                         <path
@@ -121,11 +122,11 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <a href="#">
-                                    <span className="ml-2">Team</span>
-                                </a>
+                                <Link href="/admin">
+                                    <span className="ml-2">Admin임시</span>
+                                </Link>
                             </li>
-                            <li className="mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
+                            <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
                                 <span>
                                     <svg className="fill-current h-5 w-5 " viewBox="0 0 24 24">
                                         <path
@@ -139,7 +140,7 @@ function OffCanvas() {
                                     <span className="ml-2">Tasks</span>
                                 </a>
                             </li>
-                            <li className="mb-2 px-4 py-4 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
+                            <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
                                 <span>
                                     <svg
                                         className="fill-current h-5 w-5 "
@@ -161,9 +162,9 @@ function OffCanvas() {
                                         />
                                     </svg>
                                 </span>
-                                <a href="#">
-                                    <span className="ml-2">Settings</span>
-                                </a>
+                                <button onClick={onLogOut}>
+                                    <span className="ml-2">로그아웃</span>
+                                </button>
                             </li>
                         </ul>
                     </div>

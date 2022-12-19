@@ -24,7 +24,7 @@ export interface IUserState {
   logoutError: any;
 }
 
-// api연결되면 data안에 넣어 한곳에서 받을 수 있도록한다.
+// api연결되면 data안에 넣어 한곳에서 받을 수 있도록합니다.
 const initialState = {
   me: null, // 내 정보
   userInfo: null, // 유저 정보
@@ -50,6 +50,7 @@ const userSlice = createSlice({
   name: 'member',
   initialState,
   reducers: {},
+  // 동기는 reducers에 비동기는 extraReducers에 작성합니다.
   extraReducers: (builder) =>
     builder
       // 로그인 유지하려면 서버사이드 렌더링을 해결해야 됨.

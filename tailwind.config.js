@@ -28,6 +28,10 @@ module.exports = {
         screen94: '94vh',
         screen90: '90vh',
       },
+      zIndex: {
+        1000: '1000',
+        9999: '9999',
+      },
     },
     screens: {
       sm: '640px',
@@ -35,6 +39,9 @@ module.exports = {
 
       md: '768px',
       // => @media (min-width: 768px) { ... }
+
+      slg: '890px',
+      // => @media (min-width: 890px) { ... }
 
       lg: '1024px',
       // => @media (min-width: 1024px) { ... }

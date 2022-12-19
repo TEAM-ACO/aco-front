@@ -6,26 +6,30 @@ import { TextInput } from 'flowbite-react';
 
 function PostForm() {
     const dispatch = useAppDispatch();
-    const { postAdded } = useAppSelector((state) => state.post);
+    const { addPostDone, addPostError } = useAppSelector((state) => state.post);
+
+    useEffect(() => {
+        if (addPostDone) {
+            setText('');
+        }
+    }, [addPostDone]);
+
     const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
+
     const [text, setText] = useState<string>('')
+    const [tagText, setTagText] = useState<string>('')
+
 
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();
     }, [imageInput.current])
 
-    useEffect(() => {
-        if (postAdded) {
-            setText('');
-        }
-    }, [postAdded]);
-
     const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (!text || !text.trim()) {
             return alert('게시글을 작성하세요.');
         }
-        console.log(text)
-        e.preventDefault();
+        // console.log(text)
         dispatch(addPosts(text));
     }, [text])
 
@@ -33,30 +37,45 @@ function PostForm() {
         setText(e.target.value);
     }, []);
 
+    const onChangeTagText = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setTagText(e.target.value);
+    }, [])
+
+    const onHashtag = useCallback((e: any) => {
+        console.log(tagText)
+        e.preventDefault();
+        setTagText('');
+    }, [tagText])
+
+    // 그냥 물어보기
     return (
         <div>
             {/* 글 쓰면 새로고침 되는 문제 어떻게 고치지? */}
             <form className="px-6" encType="multipart/form-data" onSubmit={onSubmit}>
-                <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600">
+                <div className="shadow-lg pb-2 w-full mb-4 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600">
                     <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
                         <ReactTextareaAutosize
                             value={text}
                             onChange={onChangeText}
-                            rows={4}
-                            className="w-full h-28 resize-none px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                            minRows={3}
+                            className="w-full resize-none px-3 py-3 text-sm text-gray-900 bg-white border-1 border-gray-300 rounded-lg dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
                             placeholder="내용을 입력해주세요"
-                            required />
+                        />
                     </div>
                     <TextInput
+                        className='px-4'
                         id="small"
                         type="text"
                         sizing="sm"
                         placeholder="태그를 입력해주세요"
+                        onChange={onChangeTagText}
+                        value={tagText}
                     />
+                    <button onKeyDown={onHashtag} ></button>
                     <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
                         <button
                             type="submit"
-                            className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+                            className="ml-2 inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
                         >
                             글쓰기
                         </button>

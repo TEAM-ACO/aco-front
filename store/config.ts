@@ -5,6 +5,7 @@ import { createLogger } from 'redux-logger';
 
 import userReducer from '../features/userSlice';
 import postReducer from '../features/postSlice';
+import signupReducer from '../features/signupSlice'
 
 export interface ReducerStates {}
 
@@ -13,6 +14,7 @@ const logger = createLogger();
 const rootReducer = combineReducers({
   user: userReducer.reducer,
   post: postReducer,
+  signup: signupReducer.reducer
 });
 
 // const initialState = {};

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useLayoutEffect, useEffect } from 'react'
 import Channel from './Channel';
 import OffCanvas from './offcanvas';
 import SpeedDial from './SpeedDial';
@@ -7,25 +7,26 @@ function mainLayout({ children }: {
     children: React.ReactNode
 }) {
     const [speedDial, setSpeedDial] = useState<boolean>(true);
-    const [offcanvasToggle, setOffcanvasToggle] = useState<boolean>(false);
-    const [channelToggle, setChannelToggle] = useState<boolean>(false);
+    const [offcanvasToggle, setOffcanvasToggle] = useState<boolean>(true);
+    const [channelToggle, setChannelToggle] = useState<boolean>(true);
 
     const onToggleSpeedDial = useCallback(() => {
         setSpeedDial((prev) => !prev)
     }, [])
 
     const onOffcanvasToggle = useCallback(() => {
-        setOffcanvasToggle((prev) => !prev)
-        if (offcanvasToggle == false) {
+        if (offcanvasToggle == true) {
             setChannelToggle(false)
+            console.log('dd')
         }
+        setOffcanvasToggle((prev) => !prev)
     }, [])
 
     const onChannelToggle = useCallback(() => {
-        setChannelToggle((prev) => !prev)
-        if (channelToggle == false) {
+        if (channelToggle == true) {
             setOffcanvasToggle(false)
         }
+        setChannelToggle((prev) => !prev)
     }, [])
 
     // slg넘어가면 true
@@ -36,13 +37,13 @@ function mainLayout({ children }: {
         };
     }, []);
 
-    const handleResize = () => {
+    const handleResize = useCallback(() => {
         if (window.innerWidth > 890) {
             setOffcanvasToggle(true)
             setChannelToggle(true)
             return
         }
-    };
+    }, []);
 
     return (
         <div>
@@ -52,7 +53,7 @@ function mainLayout({ children }: {
                         <OffCanvas />
                     </div>
                 </div>
-                <div className='order-3 slg:order-2'>
+                <div className='w-full order-3 slg:order-2'>
                     {children}
                 </div>
                 <div className="slg:w-80 w-0 relative order-2 slg:order-3">

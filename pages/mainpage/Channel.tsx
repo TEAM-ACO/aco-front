@@ -4,9 +4,9 @@ import React from 'react'
 
 function Channel() {
     return (
-        <div className="pr-6 z-50 absolute slg:relative">
-            <div className='py-3 pr-4 slg:pr-0 bg-white'>
-                <form className="flex items-center">
+        <div className="z-50 absolute slg:relative">
+            <div className='py-3 slg:pr-4 bg-white'>
+                <form className="flex items-center px-3 slg:px-0">
                     <label htmlFor="simple-search" className="sr-only">Search</label>
                     <div className="relative w-full">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

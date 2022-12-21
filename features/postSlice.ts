@@ -5,35 +5,42 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { likePost, loadPosts, reportPost } from '@actions/post';
 
-export interface IPost {
+export interface IArticle {
+  articleId: number;
+  articleContext: string;
+  member: IMember;
+  tags: string[];
+  visitors: number;
+  recomends: number;
+  reported: number;
+  replys: IReply[];
+  articleImages: string[];
+}
+
+export interface IMember {
   memberId: number;
-  writer: string;
-  title: string;
-  content: string;
-  articleImage: string;
-  Comments: {
-    User: {
-      nickname: string;
-    };
-    content: string;
-  }[];
+  email: string;
+  nickname: string;
 }
 
-export interface IComments {
-  Comments: {
-    User: {
-      nickname: string;
-    };
-    content: string;
-  }[];
+export interface IReply {
+  replyId: number;
+  replyContext: string[];
+  hide: number;
+  member: IMember;
 }
 
-export interface IPostState {
-  mainPosts: IPost[];
+export interface IArticleState {
+  mainPosts: IArticle[];
+  hasMorePosts: boolean;
   postAdded: boolean;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
   loadPostsError: any | null;
+  // requestedPageNumber: number;
+  // requestedPageSize: number;
+  // responsedPageNumber: number;
+  // totalPageSize: number;
   addPostLoading: boolean;
   addPostDone: boolean;
   addPostError: any | null;
@@ -49,11 +56,16 @@ export interface IPostState {
 }
 
 // Image를 mainPosts 밖으로 빼서 따로 받아야 할까?
-export const initialState: IPostState = {
+export const initialState: IArticleState = {
   mainPosts: [], // 데이터 들어오면 배열로 바꿈
+  hasMorePosts: true, // 다음 posts 여부
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
+  // requestedPageNumber: 0,
+  // requestedPageSize: 1,
+  // responsedPageNumber: 0,
+  // totalPageSize: 0,
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
@@ -69,42 +81,26 @@ export const initialState: IPostState = {
   postAdded: false,
 };
 
-// const dummyPost = {
-//   mid: 7,
-//   title: '아임 더미',
-//   content: 'ADD POST 누르면 이게 나와야 한다.',
-//   writer: 'Naive',
-//   articleImage: '',
-//   Comments: [],
-// };
-
 const postSlice = createSlice({
   name: 'article',
   initialState,
-  reducers: {
-    // extraReducer로 넘길 것
-    // addPosts: (state, action) => {
-    //   state.mainPosts = [dummyPost, ...state.mainPosts];
-    //   state.postAdded = true;
-    // },
-    // loadPosts: (state, action) => {
-    //   state.mainPosts.forEach((post) => {});
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) =>
     builder
       // loadPosts
-      .addCase(loadPosts.pending, (state: IPostState) => {
+      .addCase(loadPosts.pending, (state: IArticleState) => {
         state.loadPostsLoading = true;
         state.loadPostsDone = false;
         state.loadPostsError = null;
       })
-      .addCase(loadPosts.fulfilled, (state: IPostState, action: PayloadAction<IPost, any>) => {
+      .addCase(loadPosts.fulfilled, (state: IArticleState, action: PayloadAction<IArticle>) => {
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
+        // typescript 어떻게 해야?
+        // state.hasMorePosts = action.payload.length === 10;
       })
-      .addCase(loadPosts.rejected, (state: IPostState, action) => {
+      .addCase(loadPosts.rejected, (state: IArticleState, action) => {
         state.loadPostsLoading = false;
         state.loadPostsError = action.error.message;
       })
@@ -125,20 +121,6 @@ const postSlice = createSlice({
       //   state.addPostError = action.error.message;
       // }),
       // likePost
-      .addCase(reportPost.pending, (state) => {
-        state.reportPostLoading = true;
-        state.reportPostDone = false;
-        state.reportPostError = null;
-      })
-      .addCase(reportPost.fulfilled, (state, action) => {
-        state.reportPostLoading = false;
-        state.reportPostDone = true;
-        state.mainPosts = _concat(state.mainPosts, action.payload);
-      })
-      .addCase(reportPost.rejected, (state, action) => {
-        state.reportPostLoading = false;
-        state.reportPostError = action.error.message;
-      })
       .addCase(likePost.pending, (state) => {
         state.likePostLoading = true;
         state.likePostDone = false;

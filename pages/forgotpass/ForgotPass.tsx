@@ -1,10 +1,35 @@
+import React, { useState, useCallback } from 'react'
+import { useAppDispatch } from '@store/config'
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/navigation'
+import useInput from '@hooks/useInput';
+import { findPassword } from '@actions/user';
 
 const ForgotPassword = () => {
+    const dispatch = useAppDispatch();
+    const router = useRouter();
+
+    const [findpassEmail, onChangeFindpassEmail] = useInput('');
+    // 입력한 id와 email이 유저정보와 일치한다면
+    const [emailFind, setEmailFind] = useState('')
+    const [findError, setFindError] = useState(false)
+
+    const onFindError = useCallback(() => {
+        setFindError((prev) => !prev)
+    }, [])
+
+    const onSubmit = useCallback((e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+        console.log(findpassEmail)
+        // dispatch(findPassword({ findpassEmail }));
+        // 뒤로가기 눌러도 페이지 고정
+
+        // router.replace('/LogIn');
+    }, [findpassEmail]);
+
     return (
         <main id="content" role="main" className="flex justify-center items-center w-full h-screen90 max-w-slg mx-auto">
-            <div className="w-5/12">
+            <div className="w-8/12 md:w-6/12 slg:w-5/12">
                 <div className="mt-7 bg-white  rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700">
                     <div className="p-4 sm:p-7">
                         <div className="text-center">
@@ -17,27 +42,54 @@ const ForgotPassword = () => {
                             </p>
                         </div>
                         <div className="mt-5">
-                            <form>
-                                <div className="grid gap-y-4">
-                                    <div>
-                                        {/* <label for="email" className="block text-sm font-bold ml-1 mb-2 dark:text-white">Email address</label> */}
-                                        <div className="relative">
-                                            <input
-                                                type="email"
-                                                id="email"
-                                                name="email"
-                                                className="form-input py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm" required aria-describedby="email-error" />
-                                        </div>
-                                        <p className="hidden text-xs text-red-600 mt-2" id="email-error">
+                            <div className="grid gap-y-4">
+                                <div>
+                                    <div className="relative">
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            className="form-input py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                                            placeholder='이메일을 입력해주세요.'
+                                            required aria-describedby="email-error"
+                                            value={findpassEmail} onChange={onChangeFindpassEmail}
+                                        />
+                                    </div>
+                                    <div className={findError ? '' : 'hidden'}>
+                                        <p className="text-xs text-red-600 mt-2" id="email-error">
                                             올바르지 않은 접근입니다.
                                         </p>
                                     </div>
-                                    <button
-                                        type="submit"
-                                        className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
-                                        비밀번호 찾기</button>
                                 </div>
-                            </form>
+                                <button
+                                    onClick={onSubmit}
+                                    type="button"
+                                    className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
+                                    이메일 발송
+                                </button>
+                                <div>
+                                    <div className="relative">
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            className="form-input py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                                            placeholder='발송된 인증번호를 입력해주세요.'
+                                            required aria-describedby="email-error"
+                                            value={findpassEmail} onChange={onChangeFindpassEmail}
+                                        />
+                                    </div>
+                                    <p className="hidden text-xs text-red-600 mt-2" id="email-error">
+                                        인증번호가 올바르지 않습니다.
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={onSubmit}
+                                    type="button"
+                                    className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
+                                    비밀번호 찾기
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

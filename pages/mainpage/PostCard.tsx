@@ -1,4 +1,4 @@
-import { IComments, IPost } from '@features/postSlice';
+import { IArticle, IReply } from '@features/postSlice';
 import { useAppSelector } from '@store/config';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Avatar, Button, Carousel } from 'flowbite-react';
@@ -7,9 +7,10 @@ import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import Dropdown from './Dropdown';
 import PostCardContent from './PostCardContent';
+import PostImage from './PostImage';
 
-function PostCard({ post }: any) {
-    const { } = useAppSelector((state) => state.post);
+function PostCard({ post }) {
+    const { loadPostsDone } = useAppSelector((state) => state.post);
     const [favorite, setFavorite] = useState<boolean>(false);
 
     const onFavoriteToggle = useCallback(() => {
@@ -23,7 +24,13 @@ function PostCard({ post }: any) {
                     {/* 캐러셀 임시 */}
                     <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
                         <Carousel className='px-6 py-4 carousel-class' slide={false}>
-                            <img
+                            {post.articleImages.map((articleImages) => {
+                                return (
+                                    <PostImage key={articleImages} articleImages={articleImages} />
+                                )
+                            })}
+                            {/* 실제 이미지로 캐러셀 테스트 해보고 싶을 경우 주석 풀어주세요 */}
+                            {/* <img
                                 className='object-contain h-56 sm:h-64 xl:h-80 2xl:h-96'
                                 src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
                                 alt="..."
@@ -47,12 +54,12 @@ function PostCard({ post }: any) {
                                 className='object-contain h-56 sm:h-64 xl:h-80 2xl:h-96'
                                 src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
                                 alt="..."
-                            />
+                            /> */}
                         </Carousel>
                     </div>
-                    <div className="px-6 py-4">
+                    {/* <div className="px-6 py-4">
                         <img className='object-cover' src={post.articleImage} alt='img' />
-                    </div>
+                    </div> */}
                     <div className="px-6 py-4">
                         {/* 게시글 Dropdown */}
                         <div className='flex justify-between mb-3'>
@@ -65,18 +72,15 @@ function PostCard({ post }: any) {
                                         rounded={true}
                                     />
                                     <p className='ml-2'>
-                                        {post.writer}
+                                        {post.member.nickname}
                                     </p>
                                 </button>
                             </div>
                             <Dropdown />
                         </div>
-                        {/* <div>
-                            <p className="font-bold text-xl mb-2">{post.title}</p>
-                        </div> */}
                         <div>
                             <p className="text-gray-700 text-base">
-                                {post.content}
+                                {post.articleContext}
                             </p>
                         </div>
                     </div>
@@ -85,19 +89,25 @@ function PostCard({ post }: any) {
                             : <FaRegHeart onClick={onFavoriteToggle} className='text-gray-400 cursor-pointer'></FaRegHeart>}
                     </div>
                     {/* HASHTAG */}
-                    <PostCardContent />
+                    <div className="px-6 pt-4 pb-2">
+                        {post.tags.map((tags) => {
+                            return (
+                                <PostCardContent key={tags} tags={tags} />
+                            )
+                        })}
+                    </div>
                     {/* Comment Input */}
                     <CommentForm post={post} />
                     <div>
                         <div className=" border-l border-gray-200 dark:border-gray-700">
                             <div className='ml-6 py-2 mt-3 text-xs text-cyan-800'>
-                                {`${post.Comments.length}개의 댓글`}
+                                {`${post.replys.length}개의 댓글`}
                             </div>
                             <div className='mt-2'>
                                 {/* 만약 CommentList로 뺀게 불편하다면 말씀해주세요. */}
-                                {post.Comments.map((post: any) => {
+                                {post.replys.map((post: IReply) => {
                                     return (
-                                        <CommentList key={post.User.nickname} comment={post} />
+                                        <CommentList key={post.member.nickname} comment={post} />
                                     )
                                 })}
                             </div>

@@ -42,10 +42,10 @@ function CommentList({ comment }: any) {
                         </div>
                     </button>
                     <div className='mr-5 w-10'>
-                        <button className="text-sm font-medium text-gray-900 dark:text-white">{comment.User.nickname}</button>
+                        <button className="text-sm font-medium text-gray-900 dark:text-white">{comment.member.nickname}</button>
                     </div>
                     <div className="text-sm break-words font-normal text-gray-500 lex dark:text-gray-300">
-                        {comment.content}
+                        {comment.replyContext}
                     </div>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-white rounded-lg border border-gray-200 sm:flex dark:bg-gray-700 dark:border-gray-600">

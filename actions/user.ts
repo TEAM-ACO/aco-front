@@ -26,16 +26,19 @@ export const loadUser = createAsyncThunk('member/loadUser', async (data, { rejec
   }
 });
 
-export const login = createAsyncThunk<LogInRequestData>('member/login', async (data, { rejectWithValue }) => {
-  console.log('=============>', data);
-  try {
-    const response = await axios.post('/api/login', data);
-    return response.data;
-  } catch (error: LogInErrorData) {
-    console.error(error);
-    return rejectWithValue(error.response.data);
-  }
-});
+export const login = createAsyncThunk<LogInRequestData, LogInRequestData>(
+  'member/login',
+  async (data, { rejectWithValue }) => {
+    console.log('=============>', data);
+    try {
+      const response = await axios.post('/api/login', data);
+      return response.data;
+    } catch (error: LogInErrorData) {
+      console.error(error);
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 
 export const logout = createAsyncThunk('member/logout', async () => {
   try {

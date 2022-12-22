@@ -12,7 +12,7 @@ const header = () => {
                 <img
                     src="https://flowbite.com/docs/images/logo.svg"
                     className="mr-3 h-6 sm:h-9"
-                    alt="Flowbite Logo"
+                    alt="Logo"
                 />
                 <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
                     Project ACO
@@ -21,7 +21,7 @@ const header = () => {
             <Navbar.Toggle />
             <Navbar.Collapse>
                 <Navbar.Link
-                    href="/navbars"
+                    href="/"
                     active={true}
                 >
                     Home

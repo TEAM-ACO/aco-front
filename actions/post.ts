@@ -10,6 +10,9 @@ axios.defaults.withCredentials = true;
 export type addPostRequestData = { content: string };
 export type addPostErrorData = any; // 에러 메세지 어떻게 보낼건지에 따라 바꿈
 
+export type loadPostRequestData = { content: string };
+export type loadPostErrorData = any;
+
 // export const addPost = createAsyncThunk('post/article', async (data, thunkAPI) => {
 //   try {
 //     const response = await axios.post('/article', data);
@@ -20,11 +23,12 @@ export type addPostErrorData = any; // 에러 메세지 어떻게 보낼건지�
 //   }
 // });
 
-export const loadPosts = createAsyncThunk('post/loadPosts', async (data, { rejectWithValue }) => {
+export const loadPosts = createAsyncThunk<any, any>('post/loadPosts', async (data, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`/article/${data}`);
+    const response = await axios.post(`api/article/list`, data);
+    console.log(response.data);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     return rejectWithValue(error.response.data);
   }
 });

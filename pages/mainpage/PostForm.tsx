@@ -24,7 +24,7 @@ function PostForm() {
         imageInput.current.click();
     }, [imageInput.current])
 
-    const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = useCallback((e: any) => {
         e.preventDefault();
         if (!text || !text.trim()) {
             return alert('게시글을 작성하세요.');
@@ -49,7 +49,7 @@ function PostForm() {
 
     // 그냥 물어보기
     return (
-        <div>
+        <div className='w-full'>
             {/* 글 쓰면 새로고침 되는 문제 어떻게 고치지? */}
             <form className="px-6" encType="multipart/form-data" onSubmit={onSubmit}>
                 <div className="shadow-lg pb-2 w-full mb-4 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600">

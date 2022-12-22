@@ -4,10 +4,9 @@ import _find from 'lodash/concat';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { likePost, loadPosts, reportPost } from '@actions/post';
-import dummy from '../dummy';
 
 export interface IPost {
-  mid: number;
+  memberId: number;
   writer: string;
   title: string;
   content: string;
@@ -50,8 +49,8 @@ export interface IPostState {
 }
 
 // Image를 mainPosts 밖으로 빼서 따로 받아야 할까?
-export const initialState = {
-  mainPosts: dummy, // 데이터 들어오면 배열로 바꿈
+export const initialState: IPostState = {
+  mainPosts: [], // 데이터 들어오면 배열로 바꿈
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
@@ -68,44 +67,44 @@ export const initialState = {
   likePostDone: false,
   likePostError: null,
   postAdded: false,
-} as IPostState;
-
-const dummyPost = {
-  mid: 7,
-  title: '아임 더미',
-  content: 'ADD POST 누르면 이게 나와야 한다.',
-  writer: 'Naive',
-  articleImage: '',
-  Comments: [],
 };
+
+// const dummyPost = {
+//   mid: 7,
+//   title: '아임 더미',
+//   content: 'ADD POST 누르면 이게 나와야 한다.',
+//   writer: 'Naive',
+//   articleImage: '',
+//   Comments: [],
+// };
 
 const postSlice = createSlice({
   name: 'article',
   initialState,
   reducers: {
     // extraReducer로 넘길 것
-    addPosts: (state, action) => {
-      state.mainPosts = [dummyPost, ...state.mainPosts];
-      state.postAdded = true;
-    },
-    loadPosts: (state, action) => {
-      state.mainPosts.forEach((post) => {});
-    },
+    // addPosts: (state, action) => {
+    //   state.mainPosts = [dummyPost, ...state.mainPosts];
+    //   state.postAdded = true;
+    // },
+    // loadPosts: (state, action) => {
+    //   state.mainPosts.forEach((post) => {});
+    // },
   },
   extraReducers: (builder) =>
     builder
       // loadPosts
-      .addCase(loadPosts.pending, (state) => {
+      .addCase(loadPosts.pending, (state: IPostState) => {
         state.loadPostsLoading = true;
         state.loadPostsDone = false;
         state.loadPostsError = null;
       })
-      .addCase(loadPosts.fulfilled, (state, action) => {
+      .addCase(loadPosts.fulfilled, (state: IPostState, action: PayloadAction<IPost, any>) => {
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
       })
-      .addCase(loadPosts.rejected, (state, action) => {
+      .addCase(loadPosts.rejected, (state: IPostState, action) => {
         state.loadPostsLoading = false;
         state.loadPostsError = action.error.message;
       })
@@ -146,7 +145,7 @@ const postSlice = createSlice({
         state.likePostError = null;
       })
       .addCase(likePost.fulfilled, (state, action) => {
-        const post = _find(state.mainPosts, { id: action.payload.articleId });
+        // const post = _find(state.mainPosts, { id: action.payload.articleId });
         state.likePostLoading = false;
         state.likePostDone = true;
         // post.Likers.push({ id: action.payload.memberId });

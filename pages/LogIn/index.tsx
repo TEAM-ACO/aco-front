@@ -6,7 +6,6 @@ import useInput from '@hooks/useInput'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import { login } from '@actions/user'
 
-
 const facebook = {
     bg: {
         backgroundColor: "#3b5998",
@@ -19,8 +18,10 @@ const twitter = {
 }
 
 const LogIn = () => {
+    // Redux의 state를 변화 시킬 수 있습니다 (action이 발생)
     const dispatch = useAppDispatch();
     const router = useRouter();
+    // Redux의 reducer를 가져옵니다.
     const { loginLoading, loginError, loginDone } = useAppSelector((state) => state.user);
 
     const [email, onChangeEmail] = useInput('');

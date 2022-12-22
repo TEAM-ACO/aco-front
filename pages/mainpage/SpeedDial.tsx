@@ -8,7 +8,7 @@ function SpeedDial() {
     }, [])
 
     return (
-        <div data-dial-init className="fixed right-6 bottom-6 group">
+        <div data-dial-init className="fixed left-6 bottom-6 group">
             <div className={speedDial ? 'hidden' : 'flex'}>
                 <div id="speed-dial-menu-default" className="flex flex-col items-center mb-4 space-y-2">
                     <button
@@ -77,7 +77,7 @@ function SpeedDial() {
                 aria-controls="speed-dial-menu-default"
                 aria-expanded="false"
                 onClick={onToggleSpeedDial}
-                className="flex justify-center items-center w-14 h-14 text-white bg-blue-700 rounded-full hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">
+                className="flex justify-center items-center w-[52px] h-[52px] text-white bg-blue-700 rounded-full hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">
                 <svg
                     aria-hidden="true"
                     className="w-8 h-8 transition-transform group-hover:rotate-45"

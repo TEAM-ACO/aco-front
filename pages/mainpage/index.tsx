@@ -16,22 +16,15 @@ function mainpage() {
     return (
         <div>
             <Mainpage>
-                <div className="w-8/12">
-                    {asPath === '/mainpage' ?
-                        <>
-                            <PostForm />
-                            {mainPosts.map((post: IPost) => {
-                                return (
-                                    <PostCard key={post.mid} post={post} />
-                                )
-                            })}
-                        </>
-                        :
-                        <Chat />
-                    }
+                <div className="ml-auto mr-auto">
+                    <PostForm />
+                    {mainPosts.map((post: IPost) => {
+                        return (
+                            <PostCard key={post.mid} post={post} />
+                        )
+                    })}
                 </div>
             </Mainpage>
-
         </div>
     )
 }

@@ -34,15 +34,17 @@ function CommentList({ comment }: any) {
                 <div className='flex items-center'>
                     {/* 누르면 프로필로 가게 할 것 */}
                     <button className='pr-2'>
-                        <Avatar
-                            img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                            rounded={true}
-                        />
+                        <div className='w-10'>
+                            <Avatar
+                                img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                rounded={true}
+                            />
+                        </div>
                     </button>
                     <div className='mr-5 w-10'>
                         <button className="text-sm font-medium text-gray-900 dark:text-white">{comment.User.nickname}</button>
                     </div>
-                    <div className="text-sm font-normal text-gray-500 lex dark:text-gray-300">
+                    <div className="text-sm break-words font-normal text-gray-500 lex dark:text-gray-300">
                         {comment.content}
                     </div>
                 </div>
@@ -119,7 +121,7 @@ function CommentList({ comment }: any) {
                                 <select
                                     id="gender"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option selected disabled>신고사유를 선택해주세요</option>
+                                    <option value={''} disabled>신고사유를 선택해주세요</option>
                                     <option value="01">부적절한 콘텐츠입니다.</option>
                                     <option value="02">넣을거 없나</option>
                                     <option value="03">진실을 오도하고 있습니다.</option>

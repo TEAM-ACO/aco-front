@@ -170,8 +170,8 @@ button {
   font-weight: 600;
 }
 
-/* // PostCard Carousel 색상 변경
-// 맨 첫번째 CSS가 인식이 안돼서 두 번 썼습니다. */
+/* PostCard Carousel 색상 변경
+맨 첫번째 CSS가 인식이 안돼서 두 번 썼습니다. */
 .carousel-class > div:nth-child(3) > button > span > svg {
   color: black;
 }

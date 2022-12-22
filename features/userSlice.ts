@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { loadMyInfo, loadUser, login, logout } from '@actions/user';
+import { findPassword, loadMyInfo, loadUser, login, logout } from '@actions/user';
 
 export interface IUser {
   email: string;
@@ -22,6 +22,9 @@ export interface IUserState {
   logoutLoading: boolean;
   logoutDone: boolean;
   logoutError: any;
+  findpasswordLoading: boolean; // 비밀번호 찾기
+  findpasswordDone: boolean;
+  findpasswordError: any | null;
 }
 
 // api연결되면 data안에 넣어 한곳에서 받을 수 있도록합니다.
@@ -44,6 +47,10 @@ const initialState = {
   logoutLoading: false, // 로그아웃
   logoutDone: false,
   logoutError: null,
+
+  findpasswordLoading: false, // 비밀번호 찾기
+  findpasswordDone: false,
+  findpasswordError: null,
 } as IUserState;
 
 const userSlice = createSlice({
@@ -114,6 +121,21 @@ const userSlice = createSlice({
       .addCase(logout.rejected, (state, action) => {
         state.logoutLoading = false;
         state.logoutError = action.payload;
+      })
+      // FindPassword
+      .addCase(findPassword.pending, (state) => {
+        state.findpasswordLoading = true;
+        state.findpasswordDone = false;
+        state.findpasswordError = null;
+      })
+      .addCase(findPassword.fulfilled, (state, action) => {
+        state.findpasswordLoading = false;
+        state.me = action.payload;
+        state.findpasswordDone = true;
+      })
+      .addCase(findPassword.rejected, (state, action) => {
+        state.findpasswordLoading = false;
+        state.findpasswordError = action.payload;
       }),
 });
 

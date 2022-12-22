@@ -22,8 +22,8 @@ const LogIn = () => {
     // Redux의 reducer를 가져옵니다.
     const { loginLoading, loginError, loginDone } = useAppSelector((state) => state.user);
 
-    const [email, onChangeEmail] = useInput<string>('');
-    const [password, onChangePassword] = useInput<string>('');
+    const [email, onChangeEmail] = useInput('');
+    const [password, onChangePassword] = useInput('');
 
     const [logInError, setLogInError] = useState<boolean>(false);
     const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {

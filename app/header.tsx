@@ -5,6 +5,7 @@ import { Navbar, DarkThemeToggle, Flowbite } from "flowbite-react";
 const header = () => {
     return (
         <Navbar
+            className='mr-0 md:mr-10'
             fluid={true}
             rounded={false}
         >

@@ -13,8 +13,8 @@ const Chat = () => {
     }, [chat]);
 
     return (
-        <section className="px-6 py-4 h-full">
-            <div className='flex flex-col justify-between bg-gray-50 h-5/6'>
+        <section className="px-6 py-4 h-full w-full">
+            <div className='flex flex-col justify-between bg-gray-50 h-screen90'>
                 <div className="h-full px-6 py-4 flex flex-col justify-end">
                     <div className='py-2 flex justify-start items-center'>
                         <Avatar

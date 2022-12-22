@@ -6,25 +6,24 @@ import useInput from '@hooks/useInput'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import { login } from '@actions/user'
 
-
-const facebook = {
-    bg: {
+const BGcolor = {
+    google: {
         backgroundColor: "#3b5998",
     } as React.CSSProperties,
-}
-const twitter = {
-    bg: {
+    twitter: {
         backgroundColor: "#55acee",
     } as React.CSSProperties,
 }
 
 const LogIn = () => {
+    // Redux의 state를 변화 시킬 수 있습니다 (action이 발생)
     const dispatch = useAppDispatch();
     const router = useRouter();
+    // Redux의 reducer를 가져옵니다.
     const { loginLoading, loginError, loginDone } = useAppSelector((state) => state.user);
 
-    const [email, onChangeEmail] = useInput('');
-    const [password, onChangePassword] = useInput('');
+    const [email, onChangeEmail] = useInput<string>('');
+    const [password, onChangePassword] = useInput<string>('');
 
     const [logInError, setLogInError] = useState<boolean>(false);
     const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
@@ -117,27 +116,23 @@ const LogIn = () => {
 
                                 <Link
                                     className="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center mb-3"
-                                    style={facebook.bg}
-                                    href="/"
+                                    style={BGcolor.google}
+                                    href="#"
                                     role="button"
                                     data-mdb-ripple="true"
                                     data-mdb-ripple-color="light"
                                 >
-                                    {/* <!-- Facebook --> */}
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 320 512"
-                                        className="w-3.5 h-3.5 mr-2"
-                                    >
-                                        {/* <!--! Font Awesome Pro 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --> */}
+                                    {/* <!-- Google --> */}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-3.5 h-3.5 mr-2">
+                                        {/* <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --> */}
                                         <path
                                             fill="currentColor"
-                                            d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
-                                        /></svg>Continue with Facebook
+                                            d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" />
+                                    </svg>Continue with Google
                                 </Link>
                                 <Link
                                     className="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center"
-                                    style={twitter.bg}
+                                    style={BGcolor.twitter}
                                     href="/"
                                     role="button"
                                     data-mdb-ripple="true"

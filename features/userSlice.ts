@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { login, logout } from '@actions/user';
+import { loadMyInfo, loadUser, login, logout } from '@actions/user';
 
 export interface IUser {
   email: string;
@@ -9,6 +9,13 @@ export interface IUser {
 export interface IUserState {
   me: any; // reponse받으면 me 입력
   value: IUser;
+  userInfo: any | null; // 유저 정보
+  loadMyInfoLoading: boolean; // 로그인 정보 조회
+  loadMyInfoDone: boolean;
+  loadMyInfoError: any | null;
+  loadUserLoading: boolean; // 유저 정보 조회
+  loadUserDone: boolean;
+  loadUserError: any | null;
   loginLoading: boolean;
   loginDone: boolean;
   loginError: any | null;
@@ -17,36 +24,67 @@ export interface IUserState {
   logoutError: any;
 }
 
-// api연결되면 data안에 넣어 한곳에서 받을 수 있도록한다.
+// api연결되면 data안에 넣어 한곳에서 받을 수 있도록합니다.
 const initialState = {
   me: null, // 내 정보
-  loginLoading: false, // 로그인 시도중
+  userInfo: null, // 유저 정보
+
+  loadMyInfoLoading: false, // 로그인 정보 조회
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
+
+  loadUserLoading: false, // 유저 정보 조회
+  loadUserDone: false,
+  loadUserError: null,
+
+  loginLoading: false, // 로그인
   loginDone: false,
   loginError: null,
-  logoutLoading: false, // 로그아웃 시도중
+
+  logoutLoading: false, // 로그아웃
   logoutDone: false,
   logoutError: null,
-  // 더미 데이터용
-  value: {
-    email: '',
-    password: '',
-  } as IUser,
 } as IUserState;
 
 const userSlice = createSlice({
   name: 'member',
   initialState,
-  reducers: {
-    // 더미데이터용
-    // login: (state: IUserState, action: PayloadAction<IUser>) => {
-    //   state.value = action.payload;
-    // },
-    // logout: (state: IUserState) => {
-    //   state.value = initialState.value;
-    // },
-  },
+  reducers: {},
+  // 동기는 reducers에 비동기는 extraReducers에 작성합니다.
   extraReducers: (builder) =>
     builder
+      // 로그인 유지하려면 서버사이드 렌더링을 해결해야 됨.
+      // loadMyInfo, loadUser는 나중에 쓸 것.
+      // loadMyInfo
+      .addCase(loadMyInfo.pending, (state) => {
+        state.loadMyInfoLoading = true;
+        state.loadMyInfoDone = false;
+        state.loadMyInfoError = null;
+      })
+      .addCase(loadMyInfo.fulfilled, (state, action) => {
+        state.loadMyInfoLoading = false;
+        state.loadMyInfoDone = true;
+        state.me = action.payload;
+      })
+      .addCase(loadMyInfo.rejected, (state, action) => {
+        state.loadMyInfoLoading = false;
+        state.loadMyInfoError = action.payload;
+      })
+      // loadUser
+      .addCase(loadUser.pending, (state) => {
+        state.loadUserLoading = true;
+        state.loadUserDone = false;
+        state.loadUserError = null;
+      })
+      .addCase(loadUser.fulfilled, (state, action) => {
+        state.loadUserLoading = false;
+        state.loadUserDone = true;
+        state.userInfo = action.payload;
+      })
+      .addCase(loadUser.rejected, (state, action) => {
+        state.loadUserLoading = false;
+        state.loadUserError = action.payload;
+      })
       // login
       .addCase(login.pending, (state: IUserState) => {
         state.loginLoading = true;

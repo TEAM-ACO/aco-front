@@ -1,7 +1,7 @@
 import { IComments, IPost } from '@features/postSlice';
 import { useAppSelector } from '@store/config';
-import dayjs from 'dayjs';
-import { Avatar, Carousel } from 'flowbite-react';
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { Avatar, Button, Carousel } from 'flowbite-react';
 import React, { useState, useCallback } from 'react'
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
@@ -10,6 +10,11 @@ import PostCardContent from './PostCardContent';
 
 function PostCard({ post }: any) {
     const { } = useAppSelector((state) => state.post);
+    const [favorite, setFavorite] = useState<boolean>(false);
+
+    const onFavoriteToggle = useCallback(() => {
+        setFavorite((prev) => !prev)
+    }, [])
 
     return (
         <>
@@ -66,14 +71,18 @@ function PostCard({ post }: any) {
                             </div>
                             <Dropdown />
                         </div>
-                        <div>
+                        {/* <div>
                             <p className="font-bold text-xl mb-2">{post.title}</p>
-                        </div>
+                        </div> */}
                         <div>
                             <p className="text-gray-700 text-base">
                                 {post.content}
                             </p>
                         </div>
+                    </div>
+                    <div className="px-6 py-4">
+                        {favorite ? <FaHeart onClick={onFavoriteToggle} className='text-red-600 cursor-pointer'></FaHeart>
+                            : <FaRegHeart onClick={onFavoriteToggle} className='text-gray-400 cursor-pointer'></FaRegHeart>}
                     </div>
                     {/* HASHTAG */}
                     <PostCardContent />

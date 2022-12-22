@@ -3,6 +3,8 @@ import React, { useCallback, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import useInput from '@hooks/useInput'
+import { useAppDispatch } from '@store/config'
+import { signup, emailAuthRequest, authnumVerifyRequest } from '@actions/signup'
 
 const BGcolor = {
     google: {
@@ -15,18 +17,38 @@ const BGcolor = {
 
 const SignUp = () => {
     const router = useRouter();
+    const dispatch = useAppDispatch();
 
     const [email, onChangeEmail] = useInput('');
     const [nickname, onChangeNickname] = useInput('');
     const [name, onChangeName] = useInput('');
+    const [emailauth, onEmailauth] = useInput('');
 
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
+    const [emailSwitcher, setEmailSwitcher] = useState(false);
+    const [authSwitcher, setAuthSwitcher] = useState(false); 
 
     const [nicknameError, setNicknameError] = useState(false);
     const [mismatchError, setMismatchError] = useState(false);
+    const [emailError, setEmailError] = useState(false)
     const [signUpError, setSignUpError] = useState('')
     const [signUpSuccess, setSignUpSuccess] = useState(false)
+
+    const emailAuthSend = useCallback(()=>{      
+        dispatch(emailAuthRequest({email})).then(res=>{
+            console.log(res.payload);
+            
+            res.payload==undefined?setEmailError(true):setEmailError(false)
+            res.payload? setEmailSwitcher(true):setEmailSwitcher(false)           
+        })
+    }, [email])
+
+    const authnumSend = useCallback(()=>{
+        dispatch(authnumVerifyRequest({email, authNum:emailauth as unknown as number})).then(res=>{
+            res.payload? setAuthSwitcher(true):setAuthSwitcher(false)
+        })
+    }, [email, emailauth])
 
     const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value);
@@ -53,10 +75,9 @@ const SignUp = () => {
             setNicknameError(false);
             setSignUpError('');
             setSignUpSuccess(false);
-            // 뒤로가기 했을 때 SignUp페이지가 나오지 않으려면 replace
             router.replace('/');
         }
-        console.log(email, name, nickname, password);
+        dispatch(signup({email, name, nickname, password}))
     }, [email, password, passwordCheck]);
 
     return (
@@ -74,14 +95,50 @@ const SignUp = () => {
                         <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
                             <form onSubmit={onSubmit}>
                                 {/* <!-- Email --> */}
-                                <div className="mb-6">
-                                    <input
-                                        type="email"
-                                        className="form-input block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                        placeholder="이메일을 입력해주세요."
-                                        value={email || ''}
-                                        onChange={onChangeEmail}
-                                    />
+                                <div className="mb-6 flex gap-2 flex-col">
+                                    <div className='flex gap-2'>
+                                        <input
+                                            type="email"
+                                            className="form-input block w-4/5 px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                            placeholder="이메일을 입력해주세요."
+                                            value={email || ''}
+                                            onChange={onChangeEmail}
+                                            disabled={emailSwitcher}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="inline-block px-2 py-1 bg-blue-600 text-white font-medium text-sm leading-snug rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-1/5"
+                                            data-mdb-ripple="true"
+                                            data-mdb-ripple-color="light"
+                                            onClick={emailAuthSend}
+                                            disabled={emailSwitcher}
+                                        >
+                                            인증메일 전송
+                                        </button>
+                                    </div>
+                                    {emailError && <p>존재하는 이메일입니다.</p>}
+                                    {emailSwitcher&&<div className='flex gap-2'>
+                                        <input 
+                                            type="text"
+                                            className="form-input block w-4/5 px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" 
+                                            placeholder="인증번호를 입력해주세요."
+                                            value={emailauth || ''}
+                                            onChange={onEmailauth}
+                                            disabled={authSwitcher}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="inline-block px-2 py-1 bg-blue-600 text-white font-medium text-sm leading-snug rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-1/5"
+                                            data-mdb-ripple="true"
+                                            data-mdb-ripple-color="light"
+                                            disabled={authSwitcher}
+                                            onClick={authnumSend}
+                                        >
+                                            인증
+                                        </button>
+                                    </div>}
+                                    {authSwitcher && <p>인증되었습니다.</p>}
+                                        
                                 </div>
                                 {/* <!-- Name --> */}
                                 <div className="mb-6">

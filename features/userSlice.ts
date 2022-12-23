@@ -8,7 +8,6 @@ export interface IUser {
 
 export interface IUserState {
   me: any; // reponse받으면 me 입력
-  value: IUser;
   userInfo: any | null; // 유저 정보
   loadMyInfoLoading: boolean; // 로그인 정보 조회
   loadMyInfoDone: boolean;

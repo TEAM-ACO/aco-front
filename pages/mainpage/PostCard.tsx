@@ -9,7 +9,12 @@ import Dropdown from './Dropdown';
 import PostCardContent from './PostCardContent';
 import PostImage from './PostImage';
 
-function PostCard({ post }) {
+type PostProps = {
+    post: IArticle
+}
+
+const PostCard = ({ post }: PostProps) => {
+    const id = useAppSelector((state) => state.user.me?.email);
     const { loadPostsDone } = useAppSelector((state) => state.post);
     const [favorite, setFavorite] = useState<boolean>(false);
 
@@ -57,9 +62,6 @@ function PostCard({ post }) {
                             /> */}
                         </Carousel>
                     </div>
-                    {/* <div className="px-6 py-4">
-                        <img className='object-cover' src={post.articleImage} alt='img' />
-                    </div> */}
                     <div className="px-6 py-4">
                         {/* 게시글 Dropdown */}
                         <div className='flex justify-between mb-3'>

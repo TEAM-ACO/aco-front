@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@store/config';
 import { useRouter } from 'next/navigation';
+import { signup } from '@actions/signup';
 
 const SignupSchema = Yup.object().shape({
     user_nickname: Yup.string()
@@ -15,33 +16,38 @@ const SignupSchema = Yup.object().shape({
         .required('비밀번호 확인을 입력해주세요.'),
 });
 
+type submitting = {
+    setSubmitting: any
+}
+
 const SignUpAddition = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { me } = useAppSelector((state) => state.user);
+    const { signupDone, signupError, signupLoading } = useAppSelector((state) => state.signup);
 
-    const [action, setAction] = useState(null);
+    const [action, setAction] = useState<any>(null);
 
     useEffect(() => {
         if (me && me.id) {
-            alert('로그인 한 사용자는 가입하실수 없습니다.')
+            alert('로그인 한 사용자는 접근하실수 없습니다.')
             router.push('/')
         }
     }, [me && me.id]);
 
-    // useEffect(() => {
-    //     if (action) {
-    //       if (signupDone) {
-    //         alert('회원가입에 성공하셨습니다.')
-    //         router.push('/');
-    //       }
-    //       if (signupError) {
-    //         alert(JSON.stringify(signupError, null, 4));
-    //       }
-    //       action.setSubmitting(false);
-    //       setAction(null);
-    //     }
-    //   }, [signupDone, signupError]);
+    useEffect(() => {
+        if (action) {
+            if (signupDone) {
+                alert('회원가입에 성공하셨습니다.')
+                router.push('/');
+            }
+            if (signupError) {
+                alert(JSON.stringify(signupError, null, 4));
+            }
+            action.setSubmitting(false);
+            setAction(null);
+        }
+    }, [signupDone, signupError]);
 
     return (
         <Formik
@@ -52,51 +58,54 @@ const SignUpAddition = () => {
             }}
             validationSchema={SignupSchema}
             onSubmit={(values, { setSubmitting, resetForm }) => {
-                dispatch(SignUp({
-                    nickname: values.user_nickname,
-                    password: values.user_password,
-                }));
+                // google용 signup 하나 더 만들기
+                // dispatch(signup({
+                //     nickname: values.user_nickname,
+                //     password: values.user_password,
+                // }));
                 setAction({ setSubmitting, resetForm });
             }}>
-            <main className="flex justify-center items-center w-full h-screen90 max-w-slg mx-auto">
-                <div className="w-8/12 md:w-6/12 slg:w-5/12">
-                    <div className="mt-7 bg-white  rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700">
-                        <div className="p-4 sm:p-7">
-                            <div className="text-center">
-                                <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">회원가입 추가정보 기입</h1>
-                            </div>
-                            <div className="mt-5">
-                                <div className="grid gap-y-4">
-                                    <input
-                                        type="text"
-                                        className="form-input py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
-                                        placeholder='닉네임을 입력해주세요.'
-                                        required
-                                    />
-                                    <input
-                                        type="password"
-                                        className="form-input py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
-                                        placeholder='비밀번호를 입력해주세요.'
-                                        required
-                                    />
-                                    <input
-                                        type="text"
-                                        className="form-input py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
-                                        placeholder='비밀번호를 다시 한 번 입력해주세요.'
-                                        required
-                                    />
-                                    <button
-                                        // loading={}
-                                        type="button"
-                                        className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
-                                        가입하기
-                                    </button>
+            <form>
+                <div className="flex justify-center items-center w-full h-screen90 max-w-slg mx-auto">
+                    <div className="w-8/12 md:w-6/12 slg:w-5/12">
+                        <div className="mt-7 bg-white  rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700">
+                            <div className="p-4 sm:p-7">
+                                <div className="text-center">
+                                    <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">회원가입 추가정보 기입</h1>
+                                </div>
+                                <div className="mt-5">
+                                    <div className="grid gap-y-4">
+                                        <input
+                                            type="text"
+                                            className="form-input py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                                            placeholder='닉네임을 입력해주세요.'
+                                            required
+                                        />
+                                        <input
+                                            type="password"
+                                            className="form-input py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                                            placeholder='비밀번호를 입력해주세요.'
+                                            required
+                                        />
+                                        <input
+                                            type="password"
+                                            className="form-input py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
+                                            placeholder='비밀번호를 다시 한 번 입력해주세요.'
+                                            required
+                                        />
+                                        <button
+                                            // loading={signupLoading}
+                                            type="submit"
+                                            className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
+                                            가입하기
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </main>
+            </form>
         </Formik>
     )
 }

@@ -1,17 +1,17 @@
 import userSlice from '@features/userSlice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { backendURL } from '../config/url';
 import { IArticle } from '@features/postSlice';
+import { TypeAxios } from '@typings/db';
 
 axios.defaults.baseURL = backendURL;
 // 프론트 - 백 쿠키공유
 axios.defaults.withCredentials = true;
-const headers = { 'Content-Type': 'application/json' };
+const AxiosType: TypeAxios = axios;
+// const headers = { 'Content-Type': 'application/json' };
 
 export type addPostRequestData = { content: string };
-
-export type loadPostRequestData = { content: string };
 
 export type errorMessage = { message: string };
 
@@ -25,23 +25,22 @@ export type errorMessage = { message: string };
 //   }
 // });
 
-export const loadPosts = createAsyncThunk<IArticle, IArticle>(
-  'article/loadPosts',
-  async (data, { rejectWithValue }) => {
-    const body = {
-      requestedPageNumber: 0,
-      requestedPageSize: 1,
-    };
-    try {
-      const response: AxiosRequestConfig<any> = await axios.post('/api/article/list', body);
-      console.log(response.data);
-      return response.data;
-    } catch (error: any) {
-      console.error(error);
-      return rejectWithValue(error.response.data);
+export const loadPosts = createAsyncThunk<IArticle>('article/loadPosts', async (data, { rejectWithValue }) => {
+  const body = {
+    requestedPageNumber: 0,
+    requestedPageSize: 1,
+  };
+  try {
+    const response = await AxiosType.post<IArticle, AxiosResponse<IArticle>>('/api/article/list', body);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    if (AxiosType.isAxiosError(error)) {
+      console.error((error as AxiosError).response?.data);
     }
-  },
-);
+    return rejectWithValue((error as AxiosError).response?.data);
+  }
+});
 
 // export const loadPosts = createAsyncThunk(
 //   'article/loadPosts',
@@ -63,12 +62,12 @@ export const loadPosts = createAsyncThunk<IArticle, IArticle>(
 // );
 
 // 신고
-export const reportPost = createAsyncThunk('article/reportPost', async (data, { rejectWithValue }) => {
+export const reportPost = createAsyncThunk<IArticle>('article/reportPost', async (data, { rejectWithValue }) => {
   try {
     const response = await axios.post(`/article/report`);
     return response.data;
   } catch (error) {
-    return rejectWithValue(error.response.data);
+    return rejectWithValue((error as AxiosError).response?.data);
   }
 });
 
@@ -77,6 +76,6 @@ export const likePost = createAsyncThunk('article/likePost', async (data, { reje
     const response = await axios.post(`/article/${data}/like`);
     return response.data;
   } catch (error) {
-    return rejectWithValue(error.response.data);
+    return rejectWithValue((error as AxiosError).response?.data);
   }
 });

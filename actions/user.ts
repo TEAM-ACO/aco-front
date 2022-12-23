@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Reducer } from 'redux';
 import backendURL from '../config/url';
 
@@ -21,8 +21,8 @@ export const loadUser = createAsyncThunk('member/loadUser', async (data, { rejec
   try {
     const response = await axios.get(`/member/${data}`);
     return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.response.data);
+  } catch (error) {
+    return rejectWithValue((error as AxiosError).response?.data);
   }
 });
 
@@ -33,9 +33,9 @@ export const findPassword = createAsyncThunk('member/findpassword', async (data,
     const response = await axios.post('/api/setting/findpassword', data);
     console.log('발송완료');
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     console.error(error);
-    return rejectWithValue(error.response.data);
+    return rejectWithValue((error as AxiosError).response?.data);
   }
 });
 

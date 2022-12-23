@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import useInput from '@hooks/useInput'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import { login } from '@actions/user'
+import { Spinner } from 'flowbite-react'
 
 const BGcolor = {
     google: {
@@ -20,7 +21,7 @@ const LogIn = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     // Redux의 reducer를 가져옵니다.
-    const { loginLoading, loginError, loginDone } = useAppSelector((state) => state.user);
+    const { loginLoading, loginError } = useAppSelector((state) => state.user);
 
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
@@ -105,7 +106,10 @@ const LogIn = () => {
                                     data-mdb-ripple="true"
                                     data-mdb-ripple-color="light"
                                 >
-                                    Log-in
+                                    {loginLoading ?
+                                        <Spinner aria-label="Default status example" /> :
+                                        'Log-in'
+                                    }
                                 </button>
 
                                 <div

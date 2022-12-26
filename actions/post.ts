@@ -15,6 +15,12 @@ export type loadPostRequestData = { content: string };
 
 export type errorMessage = { message: string };
 
+export type reportArticle = {
+  articlereporterId : number,
+  articleId : number,
+  articleReportContext : string | unknown
+}
+
 // export const addPost = createAsyncThunk('post/article', async (data, thunkAPI) => {
 //   try {
 //     const response = await axios.post('/article', data);
@@ -34,7 +40,6 @@ export const loadPosts = createAsyncThunk<IArticle, IArticle>(
     };
     try {
       const response: AxiosRequestConfig<any> = await axios.post('/api/article/list', body);
-      console.log(response.data);
       return response.data;
     } catch (error: any) {
       console.error(error);
@@ -63,11 +68,11 @@ export const loadPosts = createAsyncThunk<IArticle, IArticle>(
 // );
 
 // 신고
-export const reportPost = createAsyncThunk('article/reportPost', async (data, { rejectWithValue }) => {
+export const reportPost = createAsyncThunk<reportArticle, reportArticle>('article/reportPost', async (data, { rejectWithValue }) => {  
   try {
-    const response = await axios.post(`/article/report`);
+    const response = await axios.post(`/api/report/article`, {...data});
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     return rejectWithValue(error.response.data);
   }
 });
@@ -76,7 +81,7 @@ export const likePost = createAsyncThunk('article/likePost', async (data, { reje
   try {
     const response = await axios.post(`/article/${data}/like`);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     return rejectWithValue(error.response.data);
   }
 });

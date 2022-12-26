@@ -24,7 +24,7 @@ function PostCard({ post }) {
                     {/* 캐러셀 임시 */}
                     <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
                         <Carousel className='px-6 py-4 carousel-class' slide={false}>
-                            {post.articleImages.map((articleImages) => {
+                            {post.articleImagesNames.map((articleImages) => {
                                 return (
                                     <PostImage key={articleImages} articleImages={articleImages} />
                                 )
@@ -76,7 +76,7 @@ function PostCard({ post }) {
                                     </p>
                                 </button>
                             </div>
-                            <Dropdown />
+                            <Dropdown post={post}/>
                         </div>
                         <div>
                             <p className="text-gray-700 text-base">

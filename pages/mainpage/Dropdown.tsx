@@ -1,18 +1,22 @@
 import { Modal, Button } from 'flowbite-react';
 import { DropdownItem } from 'flowbite-react/lib/esm/components/Dropdown/DropdownItem';
-import React, { useCallback, useState } from 'react'
-
-const Dropdown = () => {
+import React, { useCallback, useState, useRef, DetailedHTMLProps, SelectHTMLAttributes } from 'react'
+import { reportArticle, reportPost } from '../../actions/post';
+import { useAppDispatch } from '@store/config'
+const Dropdown = ({ post }:any) => {
     const [postCardDropdown, setPostCardDropdown] = useState<boolean>(false);
     const [onReportModal, setOnReportModal] = useState<boolean>(false);
     const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
-
-
+    const [isReported, setIsReported] = useState<Boolean>(false)
+    const [wrongReportRequest, setWrongReportRequest] = useState<Boolean>(false)
+    const selectBox = useRef<DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>>()
+    const dispatch = useAppDispatch();
+    const reportTests : string[] = ["부적절한 콘텐츠입니다", "넣을거 없나", "진실을 오도하고 있습니다"]
     const onTogglePostCardDropdown = useCallback(() => {
         setPostCardDropdown((prev) => !prev)
     }, [])
 
-    const onReportModalOpen = useCallback(() => {
+    const onReportModalOpen = useCallback(() => {        
         setOnReportModal((prev) => !prev)
     }, [])
 
@@ -28,6 +32,29 @@ const Dropdown = () => {
     const onDeleteClose = useCallback(() => {
         setOnDeleteModal((prev) => !prev)
         setPostCardDropdown(false)
+    }, [])
+
+    const onReportModalSubmit = useCallback(()=>{
+        const data : reportArticle = {
+            articlereporterId : 1, //쿠키에서 가져오기,
+            articleId : post.articleId,
+            articleReportContext:reportTests[selectBox.current?.value as unknown as number]
+        } 
+        console.log(data);
+        dispatch(reportPost({...data})).then(res=>{
+            switch (res.payload) {
+                case 1:
+                    onReportModalClose()
+                    break;
+                case -1:
+                    setIsReported(true)
+                    setTimeout(onReportModalClose, 3000)
+                case 2:
+                    //예외모달필요
+                default:
+                    break;
+            }   
+        })
     }, [])
 
     return (
@@ -130,17 +157,16 @@ const Dropdown = () => {
                                     <div className="space-y-6">
                                         <div>
                                             <label
-                                                htmlFor="gender"
+                                                htmlFor="report"
                                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                 신고사유
                                             </label>
                                             <select
-                                                id="gender"
+                                                ref={selectBox as any}
+                                                id="report"
                                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                 <option value={''} disabled>신고사유를 선택해주세요</option>
-                                                <option value="01">부적절한 콘텐츠입니다.</option>
-                                                <option value="02">넣을거 없나</option>
-                                                <option value="03">진실을 오도하고 있습니다.</option>
+                                                {reportTests.map((v, i)=> <option value={i}>{v}</option>)}
                                             </select>
                                         </div>
                                         <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
@@ -149,7 +175,9 @@ const Dropdown = () => {
                                     </div>
                                 </Modal.Body>
                                 <Modal.Footer>
-                                    <Button>
+                                    <Button
+                                    onClick={onReportModalSubmit}
+                                    disabled={isReported==true}>
                                         신고하기
                                     </Button>
                                     <Button
@@ -158,6 +186,7 @@ const Dropdown = () => {
                                     >
                                         아니요
                                     </Button>
+                                    {isReported&&<span className='text-red-500'>이미 신고한 게시글입니다.<br></br> 잠시후 종료됩니다</span>}
                                 </Modal.Footer>
                             </Modal>
                         </div>

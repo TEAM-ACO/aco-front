@@ -100,15 +100,16 @@ function PostCard({ post }) {
                     <CommentForm post={post} />
                     <div>
                         <div className=" border-l border-gray-200 dark:border-gray-700">
-                            <div className='ml-6 py-2 mt-3 text-xs text-cyan-800'>
-                                {`${post.replys.length}개의 댓글`}
-                            </div>
+                            {/* <div className='ml-6 py-2 mt-3 text-xs text-cyan-800'>
+                                {`${post.replys.totalCount}개의 댓글`}
+                            </div> */}
                             <div className='mt-2'>
                                 {/* 만약 CommentList로 뺀게 불편하다면 말씀해주세요. */}
                                 {post.replys.map((post: IReply) => {
                                     return (
                                         <CommentList key={post.member.nickname} comment={post} />
-                                    )
+                                        )
+                                        {/* 총 댓글 개수는 여기서 뽑아야할것같아영 paging할때 총개수도 넘기도록 만들어놨어영*/}
                                 })}
                             </div>
                         </div>

@@ -3,6 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosRequestConfig } from 'axios';
 import { backendURL } from '../config/url';
 import { IArticle } from '@features/postSlice';
+import { IReply } from '../features/postSlice';
 
 axios.defaults.baseURL = backendURL;
 // 프론트 - 백 쿠키공유
@@ -36,17 +37,35 @@ export const loadPosts = createAsyncThunk<IArticle, IArticle>(
   async (data, { rejectWithValue }) => {
     const body = {
       requestedPageNumber: 0,
-      requestedPageSize: 1,
+      requestedPageSize: 5,
     };
     try {
-      const response: AxiosRequestConfig<any> = await axios.post('/api/article/list', body);
-      return response.data;
+      const response: AxiosRequestConfig<any> = await axios.post('/api/article/list', body)
+      let tmp = [...response.data]
+      let result = Promise.all(tmp.map(async(v:IArticle)=>{
+        await axios.post(`/api/article/reply/${v.articleId}`, {requestedPageNumber: 0, requestedPageSize: 5})
+        .then(res=>{v.replys = [...res.data]})
+        return v
+      }))
+      return result as any;
     } catch (error: any) {
       console.error(error);
       return rejectWithValue(error.response.data);
     }
   },
 );
+
+export const loadReplyList = createAsyncThunk<any, any>(
+  'article/loadReplyList',
+  async (data, {rejectWithValue})=>{
+    try {
+      const response: AxiosRequestConfig<any> = await axios.post(`/api/article/reply/${data.articleId}`, {requestedPageNumber: 0, requestedPageSize: 5})
+      return response.data
+    } catch (error:any) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
 
 // export const loadPosts = createAsyncThunk(
 //   'article/loadPosts',

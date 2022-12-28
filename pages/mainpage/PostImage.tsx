@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react'
 
-const PostImage = ({ articleImages }) => {
+type Images = {
+    articleImages: string
+}
+
+const PostImage = ({ articleImages }: Images) => {
     return (
         <div className='flex justify-center'>
             <img

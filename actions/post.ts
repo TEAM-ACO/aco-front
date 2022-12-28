@@ -1,18 +1,21 @@
 import userSlice from '@features/userSlice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { backendURL } from '../config/url';
 import { IArticle } from '@features/postSlice';
+
 import { IReply } from '../features/postSlice';
+
+import { TypeAxios } from '@typings/db';
+
 
 axios.defaults.baseURL = backendURL;
 // 프론트 - 백 쿠키공유
 axios.defaults.withCredentials = true;
-const headers = { 'Content-Type': 'application/json' };
+const AxiosType: TypeAxios = axios;
+// const headers = { 'Content-Type': 'application/json' };
 
 export type addPostRequestData = { content: string };
-
-export type loadPostRequestData = { content: string };
 
 export type errorMessage = { message: string };
 
@@ -31,6 +34,7 @@ export type reportArticle = {
 //     return thunkAPI.rejectWithValue(error.response.data);
 //   }
 // });
+
 
 export const loadPosts = createAsyncThunk<IArticle, IArticle>(
   'article/loadPosts',
@@ -52,8 +56,9 @@ export const loadPosts = createAsyncThunk<IArticle, IArticle>(
       console.error(error);
       return rejectWithValue(error.response.data);
     }
-  },
-);
+    return rejectWithValue((error as AxiosError).response?.data);
+  }
+});
 
 export const loadReplyList = createAsyncThunk<any, any>(
   'article/loadReplyList',
@@ -87,12 +92,16 @@ export const loadReplyList = createAsyncThunk<any, any>(
 // );
 
 // 신고
-export const reportPost = createAsyncThunk<reportArticle, reportArticle>('article/reportPost', async (data, { rejectWithValue }) => {  
+
+export const reportPost = createAsyncThunk<reportArticle, reportArticle>('article/reportPost', async (data, { rejectWithValue }) => {
+
   try {
     const response = await axios.post(`/api/report/article`, {...data});
     return response.data;
-  } catch (error:any) {
-    return rejectWithValue(error.response.data);
+
+  } catch (error) {
+    return rejectWithValue((error as AxiosError).response?.data);
+
   }
 });
 
@@ -100,7 +109,9 @@ export const likePost = createAsyncThunk('article/likePost', async (data, { reje
   try {
     const response = await axios.post(`/article/${data}/like`);
     return response.data;
-  } catch (error:any) {
-    return rejectWithValue(error.response.data);
+
+  } catch (error) {
+    return rejectWithValue((error as AxiosError).response?.data);
+
   }
 });

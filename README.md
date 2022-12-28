@@ -2,7 +2,7 @@
 # aco-front
 
 ### Stack
-React, Redux-toolkit, Typescript, Next.js, Tailwindcss, PostCSS
+React, Redux-toolkit,  Typescript, Next.js, websocket, Tailwindcss
 
 
 

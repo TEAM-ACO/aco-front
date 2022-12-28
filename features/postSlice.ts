@@ -28,6 +28,7 @@ export interface IReply {
   replyContext: string[];
   hide: number;
   member: IMember;
+  totalCount: number;
 }
 
 export interface IArticleState {

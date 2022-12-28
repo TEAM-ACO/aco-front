@@ -14,7 +14,11 @@ const logger = createLogger();
 const rootReducer = combineReducers({
   user: userReducer.reducer,
   post: postReducer.reducer,
+<<<<<<< HEAD
+  signup: signupReducer.reducer,
+=======
   signup: signupReducer.reducer
+>>>>>>> 927e32def2dd75d492ec57186ddfb44dd8884ac8
 });
 
 // const initialState = {};

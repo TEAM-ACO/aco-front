@@ -14,7 +14,7 @@ export interface IArticle {
   recomends: number;
   reported: number;
   replys: IReply[];
-  articleImages: string[];
+  articleImagesNames: string[];
 }
 
 export interface IMember {
@@ -36,23 +36,23 @@ export interface IArticleState {
   postAdded: boolean;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
-  loadPostsError: any | null;
+  loadPostsError: unknown | null;
   // requestedPageNumber: number;
   // requestedPageSize: number;
   // responsedPageNumber: number;
   // totalPageSize: number;
   addPostLoading: boolean;
   addPostDone: boolean;
-  addPostError: any | null;
+  addPostError: unknown | null;
   updatePostLoading: boolean;
   updatePostDone: boolean;
-  updatePostError: any | null;
+  updatePostError: unknown | null;
   reportPostLoading: boolean;
   reportPostDone: boolean;
-  reportPostError: any | null;
+  reportPostError: unknown | null;
   likePostLoading: boolean;
   likePostDone: boolean;
-  likePostError: any | null;
+  likePostError: unknown | null;
 }
 
 // Image를 mainPosts 밖으로 빼서 따로 받아야 할까?

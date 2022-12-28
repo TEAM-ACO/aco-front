@@ -47,25 +47,25 @@ function mainLayout({ children }: {
     return (
         <div>
             <div className="flex flex-row justify-between">
-                <div className="slg:w-64 w-0 relative">
-                    <div className={offcanvasToggle ? 'sticky top-14 z-10' : 'hidden'}>
+                <div className="md:w-64 w-0 relative">
+                    <div className='relative hidden md:block md:sticky md:top-14 md:z-10'>
                         <OffCanvas />
                     </div>
                 </div>
-                <div className='w-full order-3 slg:order-2'>
+                <div className='w-full order-3 md:order-2'>
                     {children}
                 </div>
-                <div className="slg:w-80 w-0 relative order-2 slg:order-3">
-                    <div className={channelToggle ? 'sticky top-14' : 'hidden'}>
+                <div className="slg:w-80 md:w-72 relative order-2 md:order-3">
+                    <div className={channelToggle ? 'sticky top-14 w-64' : 'hidden'}>
                         <Channel />
                     </div>
                 </div>
             </div>
-            <div className='slg:hidden'>
+            <div className='md:hidden'>
                 <div data-dial-init className="fixed right-6 bottom-6 group">
                     <div className={speedDial ? 'hidden' : 'flex'}>
                         <div id="speed-dial-menu-default" className="flex flex-col items-center mb-4 space-y-2">
-                            <button
+                            {/* <button
                                 onClick={onOffcanvasToggle}
                                 type="button"
                                 data-tooltip-target="tooltip-share"
@@ -87,11 +87,11 @@ function mainLayout({ children }: {
                                 className="inline-block absolute invisible z-10 py-2 px-3 w-auto text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                                 Share
                                 <div className="tooltip-arrow" data-popper-arrow></div>
-                            </div>
+                            </div> */}
                             <button
                                 onClick={onChannelToggle}
                                 type="button"
-                                data-tooltip-target="tooltip-print"
+                                data-tooltip-target="tooltip-chat"
                                 data-tooltip-placement="left"
                                 className="flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
                                 <svg
@@ -103,10 +103,10 @@ function mainLayout({ children }: {
                                     <path fillRule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z"
                                         clipRule="evenodd"></path>
                                 </svg>
-                                <span className="sr-only">Print</span>
+                                <span className="sr-only">Chat</span>
                             </button>
-                            <div id="tooltip-print" role="tooltip" className="inline-block absolute invisible z-10 py-2 px-3 w-auto text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                Print
+                            <div id="tooltip-chat" role="tooltip" className="inline-block absolute invisible z-10 py-2 px-3 w-auto text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                                Chat
                                 <div className="tooltip-arrow" data-popper-arrow></div>
                             </div>
                         </div>

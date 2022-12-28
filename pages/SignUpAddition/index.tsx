@@ -16,10 +16,6 @@ const SignupSchema = Yup.object().shape({
         .required('비밀번호 확인을 입력해주세요.'),
 });
 
-type submitting = {
-    setSubmitting: any
-}
-
 const SignUpAddition = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
@@ -29,17 +25,18 @@ const SignUpAddition = () => {
     const [action, setAction] = useState<any>(null);
 
     useEffect(() => {
-        if (me && me.id) {
+        if (me && me.memberid) {
             alert('로그인 한 사용자는 접근하실수 없습니다.')
             router.push('/')
         }
-    }, [me && me.id]);
+    }, [me && me.memberid]);
 
     useEffect(() => {
         if (action) {
+            // Done 넣기
             if (signupDone) {
-                alert('회원가입에 성공하셨습니다.')
-                router.push('/');
+                alert('회원가입이 완료되었습니다.')
+                router.replace('/');
             }
             if (signupError) {
                 alert(JSON.stringify(signupError, null, 4));

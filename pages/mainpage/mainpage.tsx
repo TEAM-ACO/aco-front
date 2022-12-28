@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useLayoutEffect, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import Channel from './Channel';
 import OffCanvas from './offcanvas';
-import SpeedDial from './SpeedDial';
 
 function mainLayout({ children }: {
     children: React.ReactNode

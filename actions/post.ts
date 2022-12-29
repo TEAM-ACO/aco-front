@@ -26,11 +26,11 @@ export type reportArticle = {
 
 // export const addPost = createAsyncThunk('post/article', async (data, thunkAPI) => {
 //   try {
-//     const response = await axios.post('/article', data);
-//     thunkAPI.dispatch(userSlice.actions. /*내게 보일 post*/(response.data.mid));
+//     const response = await axios.post('/article/wirte', data);
+//     thunkAPI.dispatch(userSlice.actions.(response.data.mid));
 //     return response.data;
-//   } catch (error: addPostErrorData) {
-//     return thunkAPI.rejectWithValue(error.response.data);
+//   } catch (error) {
+//     return thunkAPI.rejectWithValue((error as AxiosError).response?.data);
 //   }
 // });
 

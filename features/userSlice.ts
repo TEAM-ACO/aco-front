@@ -1,5 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { findPasswordEmail, findpassAuthRequest, loadMyInfo, loadUser, login, logout } from '@actions/user';
+import {
+  changeNickname,
+  changePassword,
+  findPasswordEmail,
+  findpassAuthRequest,
+  loadMyInfo,
+  loadUser,
+  login,
+  logout,
+} from '@actions/user';
 
 export interface IUser {
   email: string;
@@ -32,6 +41,12 @@ export interface IUserState {
   logoutLoading: boolean;
   logoutDone: boolean;
   logoutError: unknown | null;
+  changeNicknameLoading: boolean; // 닉네임 변경 시도중
+  changeNicknameDone: boolean;
+  changeNicknameError: unknown | null;
+  changePasswordLoading: boolean; // 닉네임 변경 시도중
+  changePasswordDone: boolean;
+  changePasswordError: unknown | null;
   findpasswordLoading: boolean; // 비밀번호 찾기
   findpasswordDone: boolean;
   findpasswordError: unknown | null;
@@ -61,6 +76,14 @@ const initialState: IUserState = {
   logoutLoading: false, // 로그아웃
   logoutDone: false,
   logoutError: null,
+
+  changeNicknameLoading: false, // 닉네임 변경
+  changeNicknameDone: false,
+  changeNicknameError: null,
+
+  changePasswordLoading: false, // 비밀번호 변경
+  changePasswordDone: false,
+  changePasswordError: null,
 
   findpasswordLoading: false, // 비밀번호 찾기
   findpasswordDone: false,
@@ -139,6 +162,36 @@ const userSlice = createSlice({
       .addCase(logout.rejected, (state: IUserState, action) => {
         state.logoutLoading = false;
         state.logoutError = action.payload;
+      })
+      // changeNickname
+      .addCase(changeNickname.pending, (state) => {
+        state.changeNicknameLoading = true;
+        state.changeNicknameDone = false;
+        state.changeNicknameError = null;
+      })
+      .addCase(changeNickname.fulfilled, (state, action) => {
+        state.changeNicknameLoading = false;
+        state.changeNicknameDone = true;
+        state.me.nickname = action.payload.nickname;
+      })
+      .addCase(changeNickname.rejected, (state, action) => {
+        state.changeNicknameLoading = false;
+        state.changeNicknameError = action.payload;
+      })
+      // changePassword
+      .addCase(changePassword.pending, (state) => {
+        state.changePasswordLoading = true;
+        state.changePasswordDone = false;
+        state.changePasswordError = null;
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        state.changePasswordLoading = false;
+        state.changePasswordDone = true;
+        state.me = action.payload.password;
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.changePasswordLoading = false;
+        state.changePasswordError = action.payload;
       })
       // FindPassword
       .addCase(findPasswordEmail.pending, (state: IUserState) => {

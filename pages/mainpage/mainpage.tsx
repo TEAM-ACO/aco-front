@@ -6,25 +6,25 @@ function mainLayout({ children }: {
     children: React.ReactNode
 }) {
     const [speedDial, setSpeedDial] = useState<boolean>(true);
-    const [offcanvasToggle, setOffcanvasToggle] = useState<boolean>(true);
+    // const [offcanvasToggle, setOffcanvasToggle] = useState<boolean>(true);
     const [channelToggle, setChannelToggle] = useState<boolean>(true);
 
     const onToggleSpeedDial = useCallback(() => {
         setSpeedDial((prev) => !prev)
     }, [])
 
-    const onOffcanvasToggle = useCallback(() => {
-        if (offcanvasToggle == true) {
-            setChannelToggle(false)
-            console.log('dd')
-        }
-        setOffcanvasToggle((prev) => !prev)
-    }, [])
+    // const onOffcanvasToggle = useCallback(() => {
+    //     if (offcanvasToggle == true) {
+    //         setChannelToggle(false)
+    //         console.log('dd')
+    //     }
+    //     setOffcanvasToggle((prev) => !prev)
+    // }, [])
 
     const onChannelToggle = useCallback(() => {
-        if (channelToggle == true) {
-            setOffcanvasToggle(false)
-        }
+        // if (channelToggle == true) {
+        //     setOffcanvasToggle(false)
+        // }
         setChannelToggle((prev) => !prev)
     }, [])
 
@@ -38,7 +38,7 @@ function mainLayout({ children }: {
 
     const handleResize = useCallback(() => {
         if (window.innerWidth > 890) {
-            setOffcanvasToggle(true)
+            // setOffcanvasToggle(true)
             setChannelToggle(true)
             return
         }

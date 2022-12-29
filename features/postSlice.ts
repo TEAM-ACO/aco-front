@@ -6,14 +6,16 @@ import { createSlice } from '@reduxjs/toolkit';
 import { likePost, loadPosts, reportPost } from '@actions/post';
 
 export interface IArticle {
+  length: number;
   articleId: number;
   articleContext: string;
+  articleLike: number;
   member: IMember;
   tags: string[];
   visitors: number;
-  recomends: number;
   reported: number;
   replys: IReply[];
+  // requestPage: number;
   articleImagesNames: string[];
 }
 
@@ -38,7 +40,7 @@ export interface IArticleState {
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
   loadPostsError: unknown | null;
-  // requestedPageNumber: number;
+  requestedPageNumber: number;
   // requestedPageSize: number;
   // responsedPageNumber: number;
   // totalPageSize: number;
@@ -59,11 +61,11 @@ export interface IArticleState {
 // Image를 mainPosts 밖으로 빼서 따로 받아야 할까?
 export const initialState: IArticleState = {
   mainPosts: [], // 데이터 들어오면 배열로 바꿈
-  hasMorePosts: true, // 다음 posts 여부
+  hasMorePosts: true, // 다음 article
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
-  // requestedPageNumber: 0,
+  requestedPageNumber: 0,
   // requestedPageSize: 1,
   // responsedPageNumber: 0,
   // totalPageSize: 0,
@@ -98,8 +100,8 @@ const postSlice = createSlice({
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
-        // typescript 어떻게 해야?
-        // state.hasMorePosts = action.payload.length === 10;
+        // [...state.mainPosts].concat(action.payload.results)
+        state.hasMorePosts = action.payload.length === 5;
       })
       .addCase(loadPosts.rejected, (state: IArticleState, action) => {
         state.loadPostsLoading = false;

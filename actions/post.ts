@@ -8,7 +8,6 @@ import { IReply } from '../features/postSlice';
 
 import { TypeAxios } from '@typings/db';
 
-
 axios.defaults.baseURL = backendURL;
 // 프론트 - 백 쿠키공유
 axios.defaults.withCredentials = true;
@@ -20,10 +19,10 @@ export type addPostRequestData = { content: string };
 export type errorMessage = { message: string };
 
 export type reportArticle = {
-  articlereporterId : number,
-  articleId : number,
-  articleReportContext : string | unknown
-}
+  articlereporterId: number;
+  articleId: number;
+  articleReportContext: string | unknown;
+};
 
 // export const addPost = createAsyncThunk('post/article', async (data, thunkAPI) => {
 //   try {
@@ -35,83 +34,60 @@ export type reportArticle = {
 //   }
 // });
 
-
-export const loadPosts = createAsyncThunk<IArticle, IArticle>(
-  'article/loadPosts',
-  async (data, { rejectWithValue }) => {
-    const body = {
-      requestedPageNumber: 0,
-      requestedPageSize: 5,
-    };
-    try {
-      const response: AxiosRequestConfig<any> = await axios.post('/api/article/list', body)
-      let tmp = [...response.data]
-      let result = Promise.all(tmp.map(async(v:IArticle)=>{
-        await axios.post(`/api/article/reply/${v.articleId}`, {requestedPageNumber: 0, requestedPageSize: 5})
-        .then(res=>{v.replys = [...res.data]})
-        return v
-      }))
-      return result as any;
-    } catch (error: any) {
-      console.error(error);
-      return rejectWithValue(error.response.data);
-    }
+export const loadPosts = createAsyncThunk<IArticle>('article/loadPosts', async (data, { rejectWithValue }) => {
+  try {
+    const response: AxiosRequestConfig<any> = await AxiosType.post('/api/article/list', data);
+    return response.data;
+    // let tmp = [...response.data];
+    // let result = Promise.all(
+    //   tmp.map(async (v: IArticle) => {
+    //     await axios
+    //       .post(`/api/article/reply/${v.articleId}`, { requestedPageNumber: 0, requestedPageSize: 5 })
+    //       .then((res) => {
+    //         v.replys = [...res.data];
+    //       });
+    //     return v;
+    //   }),
+    // );
+    // return result as any;
+  } catch (error) {
+    console.error(error);
+    // return rejectWithValue(error.response.data);
     return rejectWithValue((error as AxiosError).response?.data);
   }
 });
 
-export const loadReplyList = createAsyncThunk<any, any>(
-  'article/loadReplyList',
-  async (data, {rejectWithValue})=>{
-    try {
-      const response: AxiosRequestConfig<any> = await axios.post(`/api/article/reply/${data.articleId}`, {requestedPageNumber: 0, requestedPageSize: 5})
-      return response.data
-    } catch (error:any) {
-      return rejectWithValue(error.response.data)
-    }
-  }
-)
-
-// export const loadPosts = createAsyncThunk(
-//   'article/loadPosts',
-//   async (data: any) => {
-//     const response = await axios.post('/api/article/list', data);
+// export const loadReplyList = createAsyncThunk<any, any>('article/loadReplyList', async (data, { rejectWithValue }) => {
+//   try {
+//     const response: AxiosRequestConfig<any> = await AxiosType.post(`/api/article/reply/${data.articleId}`, {
+//       requestedPageNumber: 0,
+//       requestedPageSize: 5,
+//     });
 //     return response.data;
-//   },
-//   {
-//     condition: (data, { getState }): boolean | Promise<boolean> => {
-//       const { article } = getState();
-
-//       if (article.loadPostsLoading) {
-//         // console.warn('중복 요청 취소');
-//         return false;
-//       }
-//       return true;
-//     },
-//   },
-// );
+//   } catch (error: any) {
+//     return rejectWithValue(error.response.data);
+//   }
+// });
 
 // 신고
-
-export const reportPost = createAsyncThunk<reportArticle, reportArticle>('article/reportPost', async (data, { rejectWithValue }) => {
-
-  try {
-    const response = await axios.post(`/api/report/article`, {...data});
-    return response.data;
-
-  } catch (error) {
-    return rejectWithValue((error as AxiosError).response?.data);
-
-  }
-});
+export const reportPost = createAsyncThunk<reportArticle, reportArticle>(
+  'article/reportPost',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`/api/report/article`, { ...data });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
 
 export const likePost = createAsyncThunk('article/likePost', async (data, { rejectWithValue }) => {
+  console.log(data);
   try {
-    const response = await axios.post(`/article/${data}/like`);
+    const response = await axios.post(`/api/like`, { data });
     return response.data;
-
   } catch (error) {
     return rejectWithValue((error as AxiosError).response?.data);
-
   }
 });

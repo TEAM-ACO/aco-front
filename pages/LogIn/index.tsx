@@ -21,7 +21,7 @@ const LogIn = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     // Redux의 reducer를 가져옵니다.
-    const { loginLoading, loginError } = useAppSelector((state) => state.user);
+    const { loginLoading, loginError, loginDone } = useAppSelector((state) => state.user);
 
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
@@ -38,17 +38,11 @@ const LogIn = () => {
         }
         setLogInError(false);
         dispatch(login({ email, password }));
-        // 뒤로가기 눌러도 페이지 고정
-
         router.replace('/mainpage');
-
-        // if (loginError) {
-        //     // alert 넣을 것
-        //     alert('틀')
-        // }
     },
         [email, password],
     );
+
     return (
         <>
             <section className="h-screen">

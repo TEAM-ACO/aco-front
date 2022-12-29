@@ -1,5 +1,5 @@
 import { IArticle, IReply } from '@features/postSlice';
-import { useAppSelector } from '@store/config';
+import { useAppDispatch, useAppSelector } from '@store/config';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Avatar, Button, Carousel } from 'flowbite-react';
 import React, { useState, useCallback } from 'react'
@@ -8,17 +8,20 @@ import CommentList from './CommentList';
 import Dropdown from './Dropdown';
 import PostCardContent from './PostCardContent';
 import PostImage from './PostImage';
+import { likePost } from '@actions/post';
 
 type PostProps = {
     post: IArticle
 }
 
 const PostCard = ({ post }: PostProps) => {
+    const dispatch = useAppDispatch();
     const id = useAppSelector((state) => state.user.me?.email);
     const { loadPostsDone } = useAppSelector((state) => state.post);
     const [favorite, setFavorite] = useState<boolean>(false);
 
     const onFavoriteToggle = useCallback(() => {
+        dispatch(likePost({ like: favorite }))
         setFavorite((prev) => !prev)
     }, [])
 
@@ -78,7 +81,7 @@ const PostCard = ({ post }: PostProps) => {
                                     </p>
                                 </button>
                             </div>
-                            <Dropdown post={post}/>
+                            <Dropdown post={post} />
                         </div>
                         <div>
                             <p className="text-gray-700 text-base">
@@ -110,8 +113,8 @@ const PostCard = ({ post }: PostProps) => {
                                 {post.replys.map((post: IReply) => {
                                     return (
                                         <CommentList key={post.member.nickname} comment={post} />
-                                        )
-                                        {/* 총 댓글 개수는 여기서 뽑아야할것같아영 paging할때 총개수도 넘기도록 만들어놨어영*/}
+                                    )
+                                    {/* 총 댓글 개수는 여기서 뽑아야할것같아영 paging할때 총개수도 넘기도록 만들어놨어영*/ }
                                 })}
                             </div>
                         </div>

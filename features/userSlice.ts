@@ -97,7 +97,11 @@ const initialState: IUserState = {
 const userSlice = createSlice({
   name: 'member',
   initialState,
-  reducers: {},
+  reducers: {
+    addPostToMe(state, action) {
+      state.me.Posts.unshift({ id: action.payload });
+    },
+  },
   // 동기는 reducers에 비동기는 extraReducers에 작성합니다.
   extraReducers: (builder) =>
     builder

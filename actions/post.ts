@@ -24,32 +24,32 @@ export type reportArticle = {
   articleReportContext: string | unknown;
 };
 
-// export const addPost = createAsyncThunk('post/article', async (data, thunkAPI) => {
-//   try {
-//     const response = await axios.post('/article/wirte', data);
-//     thunkAPI.dispatch(userSlice.actions.(response.data.mid));
-//     return response.data;
-//   } catch (error) {
-//     return thunkAPI.rejectWithValue((error as AxiosError).response?.data);
-//   }
-// });
+export const addPost = createAsyncThunk('post/article', async (data, thunkAPI) => {
+  try {
+    const response = await axios.post('/article/wirte', data);
+    thunkAPI.dispatch(userSlice.actions.addPostToMe(response.data.mid));
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue((error as AxiosError).response?.data);
+  }
+});
 
 export const loadPosts = createAsyncThunk<IArticle>('article/loadPosts', async (data, { rejectWithValue }) => {
   try {
     const response: AxiosRequestConfig<any> = await AxiosType.post('/api/article/list', data);
-    return response.data;
-    // let tmp = [...response.data];
-    // let result = Promise.all(
-    //   tmp.map(async (v: IArticle) => {
-    //     await axios
-    //       .post(`/api/article/reply/${v.articleId}`, { requestedPageNumber: 0, requestedPageSize: 5 })
-    //       .then((res) => {
-    //         v.replys = [...res.data];
-    //       });
-    //     return v;
-    //   }),
-    // );
-    // return result as any;
+    // return response.data;
+    let tmp = [...response.data];
+    let result = Promise.all(
+      tmp.map(async (v: IArticle) => {
+        await axios
+          .post(`/api/article/reply/${v.articleId}`, { requestedPageNumber: 0, requestedPageSize: 5 })
+          .then((res) => {
+            v.replys = [...res.data];
+          });
+        return v;
+      }),
+    );
+    return result as any;
   } catch (error) {
     console.error(error);
     // return rejectWithValue(error.response.data);

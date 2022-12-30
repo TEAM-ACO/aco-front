@@ -3,7 +3,7 @@ import _find from 'lodash/concat';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { likePost, loadPosts, reportPost } from '@actions/post';
+import { addPost, likePost, loadPosts, reportPost } from '@actions/post';
 
 export interface IArticle {
   length: number;
@@ -108,21 +108,21 @@ const postSlice = createSlice({
         state.loadPostsError = action.error.message;
       })
       // addPost
-      // .addCase(addPost.pending, (state) => {
-      //   state.addPostLoading = true;
-      //   state.addPostDone = false;
-      //   state.addPostError = null;
-      // })
-      // .addCase(addPost.fulfilled, (state, action) => {
-      //   state.addPostLoading = false;
-      //   state.addPostDone = true;
-      //   state.mainPosts.unshift(action.payload);
-      //   // state.articleimage = []; // 이미지 처리 어떻게 할건지 의논
-      // })
-      // .addCase(addPost.rejected, (state, action) => {
-      //   state.addPostLoading = false;
-      //   state.addPostError = action.error.message;
-      // }),
+      .addCase(addPost.pending, (state) => {
+        state.addPostLoading = true;
+        state.addPostDone = false;
+        state.addPostError = null;
+      })
+      .addCase(addPost.fulfilled, (state, action) => {
+        state.addPostLoading = false;
+        state.addPostDone = true;
+        state.mainPosts.unshift(action.payload);
+        // state.articleimage = []; // 이미지 처리 어떻게 할건지 의논
+      })
+      .addCase(addPost.rejected, (state, action) => {
+        state.addPostLoading = false;
+        state.addPostError = action.error.message;
+      })
       // likePost
       .addCase(likePost.pending, (state) => {
         state.likePostLoading = true;

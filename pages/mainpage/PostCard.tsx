@@ -29,7 +29,6 @@ const PostCard = ({ post }: PostProps) => {
         <>
             <section className="px-6 py-4">
                 <div className="rounded overflow-hidden shadow-lg pb-7">
-                    {/* 캐러셀 임시 */}
                     <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
                         <div>
                             <Carousel className='px-6 py-4 xl:h-80  carousel-class' slide={false}>
@@ -38,32 +37,6 @@ const PostCard = ({ post }: PostProps) => {
                                         <PostImage key={articleImages} articleImages={articleImages} />
                                     )
                                 })}
-                                {/* 실제 이미지로 캐러셀 테스트 해보고 싶을 경우 주석 풀어주세요 */}
-                                {/* <img
-                                className='object-contain h-56 sm:h-64 xl:h-80 2xl:h-96'
-                                src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
-                                alt="..."
-                            />
-                            <img
-                                className='object-contain h-56 sm:h-64 xl:h-80 2xl:h-96'
-                                src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
-                                alt="..."
-                            />
-                            <img
-                                className='object-contain h-56 sm:h-64 xl:h-80 2xl:h-96'
-                                src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
-                                alt="..."
-                            />
-                            <img
-                                className='object-contain h-56 sm:h-64 xl:h-80 2xl:h-96'
-                                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                                alt="..."
-                            />
-                            <img
-                                className='object-contain h-56 sm:h-64 xl:h-80 2xl:h-96'
-                                src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
-                                alt="..."
-                            /> */}
                             </Carousel>
                         </div>
                     </div>

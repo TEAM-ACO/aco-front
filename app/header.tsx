@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
-import { Navbar } from "flowbite-react";
+import { Button, Navbar } from "flowbite-react";
+import SearchForm from '@pages/SearchForm';
 
 const header = () => {
     return (
@@ -52,7 +53,10 @@ const header = () => {
                     Project ACO
                 </span>
             </Navbar.Brand>
-            <Navbar.Toggle />
+            <div className="flex md:order-2">
+                <SearchForm />
+                <Navbar.Toggle />
+            </div>
             <Navbar.Collapse>
                 <Navbar.Link href="/" className="md:hidden px-0 mx-0">
                     임시

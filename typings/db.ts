@@ -13,3 +13,28 @@ export interface TypeAxios {
   (config: Config): void;
   (url: string, config: Config): void;
 }
+
+export interface IPageNumber {
+  requestedPageNumber: number;
+  requestedPageSize: number;
+}
+
+export interface IloadUserPosts extends IPageNumber {
+  memberId: string | string[];
+}
+
+export interface ISearchPosts extends IPageNumber {
+  keywords: string | string[];
+}
+
+export interface IAddComment {
+  article: number;
+  memberId: number;
+  replyContext: string;
+}
+
+export interface ILikePost {
+  articleId: number;
+  liked: boolean;
+  liker: number;
+}

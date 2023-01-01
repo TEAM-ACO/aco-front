@@ -55,7 +55,7 @@ const ForgotPassword = () => {
             return setChangeRepassError(true)
         }
         console.log('d')
-        // dispatch(findPasswordEmail({ email: findpassEmail }));
+        dispatch(findPasswordEmail({ email: findpassEmail }));
         setChangePassError(false)
         setChangeRepassError(false)
     }, [changePass, changeRepass]);

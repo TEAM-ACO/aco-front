@@ -3,13 +3,18 @@ import { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
 
 import PostCard from './PostCard';
-import { IArticle } from '@features/postSlice';
 import PostForm from './PostForm';
 import Mainpage from './mainpage';
+import { IArticle } from '@features/postSlice';
 import { loadPosts } from '@actions/post';
+import { loadMyInfo, loadUser } from '@actions/user';
+import { useCookies } from "react-cookie"
+import axios from 'axios';
+import { GetServerSideProps } from 'next';
 
 function mainpage() {
     const dispatch = useAppDispatch();
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
     const [ref, inView] = useInView();
     const [requestPage, setRequestPage] = useState<number>(0);
@@ -19,8 +24,10 @@ function mainpage() {
     }, [requestPage])
 
     useEffect(() => {
+        console.log(cookies)
+        // dispatch(loadUser())
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 5 }));
+            // dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 5 }));
             loadMore()
         }
     }, [inView, hasMorePosts, loadPostsLoading]);
@@ -41,5 +48,22 @@ function mainpage() {
         </div>
     )
 }
+
+
+// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+//     console.log('getServerSideProps start');
+//     console.log(req.headers);
+
+//     // 서버쪽으로 쿠키 전달하는 과정 (쿠키가 없으면 인식 못함)
+//     const cookie = req ? req.headers.cookie : '';
+//     axios.defaults.headers.Cookie = '';
+//     // 다른 사람이 내 페이지에서 로그인 했을 때 내 쿠키때문에 내 아이디로 로그인 되는 현상 방지 (쿠키공유 방지)
+//     if (req && cookie) {
+//         axios.defaults.headers.Cookie = cookie;
+//     }
+//     store.dispatch(loadPosts());
+
+//     return { props: {} }
+// })
 
 export default mainpage

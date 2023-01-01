@@ -1,17 +1,25 @@
-import { useAppSelector } from '@store/config';
+import { useAppDispatch, useAppSelector } from '@store/config';
 import React, { useCallback, useState, useEffect } from 'react'
+import { IArticle } from '@features/postSlice';
+import { useCookies } from "react-cookie"
+import { addComment } from '@actions/post';
 
-function Comments({ post }: any) {
-    const memberId = useAppSelector((state) => state.user) // me에 들어있는거로 받으면 될 듯
+export type cmt = {
+    post: IArticle
+}
+
+function Comments({ post }: cmt) {
+    const dispatch = useAppDispatch();
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [commentText, setCommentText] = useState('');
 
     const onSubmitComment = useCallback((e: React.ChangeEvent<HTMLFormElement>) => {
         // Channel을 다른 링크로 보내야 에러가 안나는 것 같다. (시도 안해봤음)
+        e.preventDefault();
         if (commentText == '') {
             return alert('댓글을 입력해주세요')
         }
-        console.log(post.mid, commentText);
-        e.preventDefault();
+        dispatch(addComment({ article: post.articleId, memberId: cookies.user.num, replyContext: commentText }))
         setCommentText('')
     }, [commentText]);
 

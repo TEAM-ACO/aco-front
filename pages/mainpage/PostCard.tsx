@@ -1,8 +1,9 @@
+import React, { useState, useCallback } from 'react'
+import { useCookies } from "react-cookie"
 import { IArticle, IReply } from '@features/postSlice';
 import { useAppDispatch, useAppSelector } from '@store/config';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Avatar, Button, Carousel } from 'flowbite-react';
-import React, { useState, useCallback } from 'react'
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import Dropdown from './Dropdown';
@@ -15,13 +16,20 @@ type PostProps = {
 }
 
 const PostCard = ({ post }: PostProps) => {
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const dispatch = useAppDispatch();
     const id = useAppSelector((state) => state.user.me?.email);
     const { loadPostsDone } = useAppSelector((state) => state.post);
     const [favorite, setFavorite] = useState<boolean>(false);
 
+    // 이 부분 어떻게 해야하지?
+    const onViewMore = useCallback(() => {
+        // dispatch(loadReply({}))
+    }, [])
+
+    // like왜 404인지
     const onFavoriteToggle = useCallback(() => {
-        dispatch(likePost({ liked: favorite }))
+        dispatch(likePost({ articleId: post.articleId, liked: favorite, liker: cookies.user.num }))
         setFavorite((prev) => !prev)
     }, [])
 
@@ -80,17 +88,25 @@ const PostCard = ({ post }: PostProps) => {
                     <CommentForm post={post} />
                     <div>
                         <div className=" border-l border-gray-200 dark:border-gray-700">
-                            {/* <div className='ml-6 py-2 mt-3 text-xs text-cyan-800'>
-                                {`${post.replys.totalCount}개의 댓글`}
-                            </div> */}
+                            <div className='ml-6 py-2 mt-3 text-xs text-cyan-800'>
+                                {`${post.replys.length}개의 댓글`}
+                            </div>
                             <div className='mt-2'>
-                                {/* 만약 CommentList로 뺀게 불편하다면 말씀해주세요. */}
+                                {/* 전체 댓글 수 보내달라고 할 것 */}
                                 {post.replys.map((post: IReply) => {
                                     return (
                                         <CommentList key={post.member.nickname} comment={post} />
                                     )
                                     {/* 총 댓글 개수는 여기서 뽑아야할것같아영 paging할때 총개수도 넘기도록 만들어놨어영*/ }
                                 })}
+                            </div>
+                            <div className='ml-6 py-2 mt-3'>
+                                {post.replys.length >= 5 ?
+                                    <Button>
+                                        댓글 더 보기
+                                    </Button>
+                                    : <></>
+                                }
                             </div>
                         </div>
                     </div>

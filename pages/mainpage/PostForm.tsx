@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { useAppSelector, useAppDispatch } from '@store/config'
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { Spinner, TextInput } from 'flowbite-react';
-import { addPost } from '@actions/post';
+import { addPost, uploadImages } from '@actions/post';
 
 function PostForm() {
     const dispatch = useAppDispatch();
@@ -71,13 +71,16 @@ function PostForm() {
 
     // 이미지
     const onImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const headers = { 'Content-Type': 'multipart/form-data' }
         if (!e.target.files) {
             return;
         }
-        // console.log(e.target.files[0].name);
-        const formData = new FormData()
-        formData.append("image", e.target.files[0]) //files[0] === upload file
-
+        console.log('images', e.target.files);
+        const formData = new FormData();
+        [].forEach.call(e.target.files, (image) => {
+            formData.append('image', image);
+        });
+        dispatch(uploadImages(formData, headers));
     }, [])
 
     const onClickImageUpload = useCallback(() => {

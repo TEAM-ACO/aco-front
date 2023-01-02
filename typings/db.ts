@@ -50,3 +50,9 @@ export interface ArticleSearch extends IArticle {
 export interface ArticleLoadPosts extends IArticle {
   length: number;
 }
+
+export interface Members {
+  memberId: number;
+  email: string;
+  nickname: string;
+}

@@ -1,14 +1,19 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import { Avatar, Modal, Button } from 'flowbite-react'
 import dayjs from 'dayjs';
 
 function CommentList({ comment }: any) {
     const date = dayjs("2022-12-12").format("YY-MM-DD");
 
+    const selectBox = useRef() as React.MutableRefObject<HTMLSelectElement>
+
     const [commentReport, setCommentReport] = useState<boolean>(false);
     const [onReportModal, setOnReportModal] = useState<boolean>(false);
     const [commentDelete, setCommentDelete] = useState<boolean>(false);
     const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
+
+    const reportTests: string[] = ["부적절한 콘텐츠입니다", "성적인 콘텐츠입니다.", "진실을 오도하고 있습니다",
+        "증오 또는 악의적인 콘텐츠입니다.", "권리를 침해하고 있습니다.", "테러를 조장하고 있습니다.", "폭력적인 콘텐츠입니다."]
 
     const onCommentModalOpen = useCallback(() => {
         setOnReportModal((prev) => !prev)
@@ -114,21 +119,20 @@ function CommentList({ comment }: any) {
                         <div className="space-y-6">
                             <div>
                                 <label
-                                    htmlFor="gender"
+                                    htmlFor="report"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                     신고사유
                                 </label>
                                 <select
-                                    id="gender"
+                                    ref={selectBox}
+                                    id="report"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value={''} disabled>신고사유를 선택해주세요</option>
-                                    <option value="01">부적절한 콘텐츠입니다.</option>
-                                    <option value="02">넣을거 없나</option>
-                                    <option value="03">진실을 오도하고 있습니다.</option>
+                                    {reportTests.map((v, i) => <option value={i}>{v}</option>)}
                                 </select>
                             </div>
                             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
+                                허위 신고시 불이익을 받을 수 있습니다.
                             </p>
                         </div>
                     </Modal.Body>

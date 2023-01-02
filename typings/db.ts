@@ -28,7 +28,7 @@ export interface ISearchPosts extends IPageNumber {
 }
 
 export interface IAddComment {
-  article: number;
+  articleId: number;
   memberId: number;
   replyContext: string;
 }

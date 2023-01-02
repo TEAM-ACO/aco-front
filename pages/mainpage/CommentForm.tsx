@@ -19,7 +19,11 @@ function Comments({ post }: cmt) {
         if (commentText == '') {
             return alert('댓글을 입력해주세요')
         }
-        dispatch(addComment({ article: post.articleId, memberId: cookies.user.num, replyContext: commentText }))
+        dispatch(addComment({
+            article: { articleId: post.articleId }, member: { memberId: cookies.user.num }, replyContext: commentText,
+            replyGroup: post.replys[post.replys.length - 1]?.totalCount,
+            replySort: 0,
+        }))
         setCommentText('')
     }, [commentText]);
 

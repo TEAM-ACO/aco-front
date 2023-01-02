@@ -107,7 +107,7 @@ export const findpassAuthRequest = createAsyncThunk<findpassAuthRequestData, fin
   async (data, { rejectWithValue }) => {
     // console.log('=============>', data);
     try {
-      const response = await axios.post('/api/member/emailverify', data);
+      const response = await axios.post('/api/member/forgotpassemailverify', data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -115,3 +115,13 @@ export const findpassAuthRequest = createAsyncThunk<findpassAuthRequestData, fin
     }
   },
 );
+
+export const changeForgotPassword = createAsyncThunk('user/changeForgotPassword', async (data, { rejectWithValue }) => {
+  console.log(data);
+  try {
+    const response = await AxiosType.post('/api/setting/changepassword', data);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue((error as AxiosError).response?.data);
+  }
+});

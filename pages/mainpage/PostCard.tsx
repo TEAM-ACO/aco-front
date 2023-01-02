@@ -89,7 +89,7 @@ const PostCard = ({ post }: PostProps) => {
                     <div>
                         <div className=" border-l border-gray-200 dark:border-gray-700">
                             <div className='ml-6 py-2 mt-3 text-xs text-cyan-800'>
-                                {`${post.replys.length}개의 댓글`}
+                                {`${post.replys[post.replys.length - 1]?.totalCount}개의 댓글`}
                             </div>
                             <div className='mt-2'>
                                 {/* 전체 댓글 수 보내달라고 할 것 */}

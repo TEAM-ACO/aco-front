@@ -27,7 +27,7 @@ function mainpage() {
         console.log(cookies)
         // dispatch(loadUser())
         if (inView && hasMorePosts && !loadPostsLoading) {
-            // dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 5 }));
+            dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 5 }));
             loadMore()
         }
     }, [inView, hasMorePosts, loadPostsLoading]);

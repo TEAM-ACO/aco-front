@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@store/config'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import useInput from '@hooks/useInput';
-import { findPasswordEmail, findpassAuthRequest } from '@actions/user';
+import { changeForgotPassword, findPasswordEmail, findpassAuthRequest } from '@actions/user';
 import { Spinner } from 'flowbite-react';
 
 const ForgotPassword = () => {
@@ -54,8 +54,7 @@ const ForgotPassword = () => {
             setChangePassError(false)
             return setChangeRepassError(true)
         }
-        console.log('d')
-        dispatch(findPasswordEmail({ email: findpassEmail }));
+        dispatch(changeForgotPassword({ upassword: changeRepass }));
         setChangePassError(false)
         setChangeRepassError(false)
     }, [changePass, changeRepass]);
@@ -74,7 +73,7 @@ const ForgotPassword = () => {
                                 </Link>
                             </p>
                         </div>
-                        {findpassAuthDone === false ?
+                        {findpassAuthDone ?
                             // 인증번호 입력 전
                             (<div className="mt-5">
                                 <div className="grid gap-y-4">

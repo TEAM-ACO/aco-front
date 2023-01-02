@@ -1,3 +1,4 @@
+import { IArticle } from '@features/postSlice';
 import { AxiosError, AxiosResponse } from 'axios';
 
 export interface Config<D = any> {
@@ -28,13 +29,24 @@ export interface ISearchPosts extends IPageNumber {
 }
 
 export interface IAddComment {
-  articleId: number;
-  memberId: number;
+  article: { articleId: number };
+  member: { memberId: number };
   replyContext: string;
+  replyGroup: number;
+  replySort: number;
 }
 
 export interface ILikePost {
-  articleId: number;
+  article: { articleId: number };
   liked: boolean;
   liker: number;
+}
+
+export interface ArticleSearch extends IArticle {
+  length: number;
+  keywords: string;
+}
+
+export interface ArticleLoadPosts extends IArticle {
+  length: number;
 }

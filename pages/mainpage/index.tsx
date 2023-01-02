@@ -7,24 +7,30 @@ import PostForm from './PostForm';
 import Mainpage from './mainpage';
 import { IArticle } from '@features/postSlice';
 import { loadPosts } from '@actions/post';
-import { loadMyInfo, loadUser } from '@actions/user';
 import { useCookies } from "react-cookie"
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 
 function mainpage() {
     const dispatch = useAppDispatch();
+    const router = useRouter();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
     const [ref, inView] = useInView();
     const [requestPage, setRequestPage] = useState<number>(0);
+
+    // useEffect(() => {
+    //     if (!cookies.user) {
+    //         router.replace('/')
+    //     }
+    // })
 
     const loadMore = useCallback(() => {
         setRequestPage(prev => prev + 1);
     }, [requestPage])
 
     useEffect(() => {
-        console.log(cookies)
         // dispatch(loadUser())
         if (inView && hasMorePosts && !loadPostsLoading) {
             dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 5 }));

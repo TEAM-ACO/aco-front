@@ -3,20 +3,10 @@ import _find from 'lodash/concat';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  addComment,
-  addPost,
-  likePost,
-  loadPosts,
-  loadUserPosts,
-  reportPost,
-  searchPosts,
-  uploadImages,
-} from '@actions/post';
+import { addComment, addPost, likePost, loadPosts, loadUserPosts, searchPosts, uploadImages } from '@actions/post';
+import { ArticleLoadPosts } from '@typings/db';
 
 export interface IArticle {
-  keywords: string;
-  length: number;
   articleId: number;
   articleContext: string;
   articleLike: number;
@@ -28,6 +18,10 @@ export interface IArticle {
   articleImagesNames: string[];
 }
 
+export interface IArticleReply {
+  articleId: number;
+}
+
 export interface IMember {
   memberId: number;
   email: string;
@@ -37,9 +31,10 @@ export interface IMember {
 export interface IReply {
   replyId: number;
   replyContext: string[];
-  hide: number;
+  replyGroup: number;
   member: IMember;
   totalCount: number;
+  replySort: number;
 }
 
 export interface IArticleState {
@@ -116,15 +111,15 @@ const postSlice = createSlice({
         state.loadPostsDone = false;
         state.loadPostsError = null;
       })
-      .addCase(loadPosts.fulfilled, (state: IArticleState, action: PayloadAction<IArticle>) => {
+      .addCase(loadPosts.fulfilled, (state: IArticleState, action: PayloadAction<ArticleLoadPosts>) => {
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
         state.hasMorePosts = action.payload.length === 5;
       })
-      .addCase(loadPosts.rejected, (state: IArticleState, action) => {
+      .addCase(loadPosts.rejected, (state: IArticleState, action: PayloadAction<unknown | null>) => {
         state.loadPostsLoading = false;
-        state.loadPostsError = action.error.message;
+        state.loadPostsError = action.payload;
       })
       // addPost
       .addCase(addPost.pending, (state: IArticleState) => {
@@ -173,33 +168,33 @@ const postSlice = createSlice({
         state.searchPostsLoading = false;
         state.searchPostsError = action.error.message;
       })
-      // loadUserPosts
-      .addCase(loadUserPosts.pending, (state: IArticleState) => {
-        state.loadPostsLoading = true;
-        state.loadPostsDone = false;
-        state.loadPostsError = null;
-      })
-      .addCase(loadUserPosts.fulfilled, (state: IArticleState, action) => {
-        state.loadPostsLoading = false;
-        state.loadPostsDone = true;
-        state.mainPosts = _concat(state.mainPosts, action.payload);
-        state.hasMorePosts = action.payload.length === 5;
-      })
-      .addCase(loadUserPosts.rejected, (state: IArticleState, action) => {
-        state.loadPostsLoading = false;
-        state.loadPostsError = action.error.message;
-      })
+      // // loadUserPosts
+      // .addCase(loadUserPosts.pending, (state: IArticleState) => {
+      //   state.loadPostsLoading = true;
+      //   state.loadPostsDone = false;
+      //   state.loadPostsError = null;
+      // })
+      // .addCase(loadUserPosts.fulfilled, (state: IArticleState, action) => {
+      //   state.loadPostsLoading = false;
+      //   state.loadPostsDone = true;
+      //   state.mainPosts = _concat(state.mainPosts, action.payload);
+      //   state.hasMorePosts = action.payload.length === 5;
+      // })
+      // .addCase(loadUserPosts.rejected, (state: IArticleState, action) => {
+      //   state.loadPostsLoading = false;
+      //   state.loadPostsError = action.error.message;
+      // })
       // likePost
       .addCase(likePost.pending, (state: IArticleState) => {
         state.likePostLoading = true;
         state.likePostDone = false;
         state.likePostError = null;
       })
-      .addCase(likePost.fulfilled, (state: IArticleState, action) => {
-        const post = _find(state.mainPosts, { articleId: action.payload.articleId });
+      .addCase(likePost.fulfilled, (state: any, action: PayloadAction<any>) => {
+        const post: any = _find(state.mainPosts, { articleId: action.payload.articleId });
         state.likePostLoading = false;
         state.likePostDone = true;
-        post.Liker.push({ Liker: action.payload.memberId });
+        post.Liker = action.payload.memberId;
       })
       .addCase(likePost.rejected, (state: IArticleState, action) => {
         state.likePostLoading = false;
@@ -211,11 +206,11 @@ const postSlice = createSlice({
         state.addCommentDone = false;
         state.addCommentError = null;
       })
-      .addCase(addComment.fulfilled, (state: IArticleState, action: PayloadAction<IArticle>) => {
-        const post = _find(state.mainPosts, { articleId: action.payload.articleId });
+      .addCase(addComment.fulfilled, (state: any, action: PayloadAction<IArticleReply>) => {
+        const post: any = _find(state.mainPosts, { articleId: action.payload.articleId });
         state.addCommentLoading = false;
         state.addCommentDone = true;
-        // post.replys.push(action.payload);
+        // post.replys.unshift(action.payload);
         post.replys = _concat(post.replys, action.payload);
       })
       .addCase(addComment.rejected, (state: IArticleState, action) => {

@@ -1,5 +1,3 @@
-import { Flowbite, DarkThemeToggle } from 'flowbite-react'
-
 export default function RootLayout({ children }: {
   children: React.ReactNode
 }) {

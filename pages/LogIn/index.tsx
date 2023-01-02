@@ -1,11 +1,12 @@
 "use client"
 import Link from 'next/link'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import useInput from '@hooks/useInput'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import { login } from '@actions/user'
 import { Spinner } from 'flowbite-react'
+import { useCookies } from "react-cookie"
 
 const BGcolor = {
     google: {
@@ -22,11 +23,19 @@ const LogIn = () => {
     const router = useRouter();
     // Redux의 reducer를 가져옵니다.
     const { loginLoading, loginError, loginDone } = useAppSelector((state) => state.user);
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
 
     const [logInError, setLogInError] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (cookies.user) {
+            router.replace('/mainpage')
+        }
+    })
+
     const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(email, password)

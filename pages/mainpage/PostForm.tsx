@@ -25,6 +25,7 @@ function PostForm() {
     const [tagError, setTagError] = useState<boolean>(false);
 
     const onSubmit = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+        const headerForMulti = { "Content-Type": "multipart/form-data;charset=UTF-8" };
         e.preventDefault();
         if (!text || !text.trim()) {
             setTextError(true)
@@ -32,7 +33,7 @@ function PostForm() {
         }
         // console.log(text)
         setTextError(false)
-        dispatch(addPost({ articleContext: text, tag: tagList }));
+        dispatch(addPost({ articleContext: text, tag: tagList, headerForMulti }));
     }, [text])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {

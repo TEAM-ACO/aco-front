@@ -215,7 +215,8 @@ const postSlice = createSlice({
         const post = _find(state.mainPosts, { articleId: action.payload.articleId });
         state.addCommentLoading = false;
         state.addCommentDone = true;
-        post.replys.unshift(action.payload);
+        // post.replys.push(action.payload);
+        post.replys = _concat(post.replys, action.payload);
       })
       .addCase(addComment.rejected, (state: IArticleState, action) => {
         state.addCommentLoading = false;

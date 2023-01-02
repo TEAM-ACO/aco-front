@@ -18,6 +18,8 @@ export interface IUser {
 export interface IMe {
   email: string;
   memberid: number;
+  nickname: string;
+  refresh: string;
   access: string;
 }
 
@@ -118,7 +120,7 @@ const userSlice = createSlice({
         state.loadMyInfoDone = true;
         state.me = action.payload;
       })
-      .addCase(loadMyInfo.rejected, (state: IUserState, action) => {
+      .addCase(loadMyInfo.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.loadMyInfoLoading = false;
         state.loadMyInfoError = action.payload;
       })
@@ -148,7 +150,7 @@ const userSlice = createSlice({
         state.me = action.payload;
         state.loginDone = true;
       })
-      .addCase(login.rejected, (state: IUserState, action) => {
+      .addCase(login.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.loginLoading = false;
         state.loginError = action.payload;
       })
@@ -163,7 +165,7 @@ const userSlice = createSlice({
         state.logoutDone = true;
         state.me = null;
       })
-      .addCase(logout.rejected, (state: IUserState, action) => {
+      .addCase(logout.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.logoutLoading = false;
         state.logoutError = action.payload;
       })
@@ -173,22 +175,22 @@ const userSlice = createSlice({
         state.changeNicknameDone = false;
         state.changeNicknameError = null;
       })
-      .addCase(changeNickname.fulfilled, (state, action) => {
+      .addCase(changeNickname.fulfilled, (state: IUserState, action: PayloadAction<any>) => {
         state.changeNicknameLoading = false;
         state.changeNicknameDone = true;
         state.me.nickname = action.payload.nickname;
       })
-      .addCase(changeNickname.rejected, (state, action) => {
+      .addCase(changeNickname.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.changeNicknameLoading = false;
         state.changeNicknameError = action.payload;
       })
       // changePassword
-      .addCase(changePassword.pending, (state) => {
+      .addCase(changePassword.pending, (state: IUserState) => {
         state.changePasswordLoading = true;
         state.changePasswordDone = false;
         state.changePasswordError = null;
       })
-      .addCase(changePassword.fulfilled, (state, action) => {
+      .addCase(changePassword.fulfilled, (state: IUserState, action: PayloadAction<any>) => {
         state.changePasswordLoading = false;
         state.changePasswordDone = true;
         state.me = action.payload.password;
@@ -208,7 +210,7 @@ const userSlice = createSlice({
         // state.me = action.payload;
         state.findpasswordDone = true;
       })
-      .addCase(findPasswordEmail.rejected, (state: IUserState, action) => {
+      .addCase(findPasswordEmail.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.findpasswordLoading = false;
         state.findpasswordError = action.payload;
       })
@@ -223,7 +225,7 @@ const userSlice = createSlice({
         state.auth = action.payload;
         state.findpassAuthDone = true;
       })
-      .addCase(findpassAuthRequest.rejected, (state: IUserState, action) => {
+      .addCase(findpassAuthRequest.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.findpassAuthLoading = false;
         state.findpassAuthError = action.payload;
       }),

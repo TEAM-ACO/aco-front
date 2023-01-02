@@ -17,15 +17,15 @@ export type findPasswordEmailRequestData = { email: string };
 export type findpassAuthRequestData = { email: string; authNum?: number };
 
 // createSlice의 name이 member입니다.
+// 계속 로드 할 수 있는 user가 필요함.
 export const loadMyInfo = createAsyncThunk('member/loadMyInfo', async () => {
-  // Api - SpringBoot의 Controller와 맞추시면 됩니다.
-  const response = await axios.get('/member');
+  const response = await axios.post('/api/setting/getmember');
   return response.data;
 });
 
 export const loadUser = createAsyncThunk('member/loadUser', async (data, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`/member/${data}`);
+    const response = await axios.post(`/api/setting/getmember`);
     return response.data;
   } catch (error) {
     return rejectWithValue((error as AxiosError).response?.data);
@@ -46,9 +46,10 @@ export const login = createAsyncThunk<LogInRequestData, LogInRequestData>(
   },
 );
 
+// 로그아웃 어떻게 되는건지 물어보기
 export const logout = createAsyncThunk('member/logout', async () => {
   try {
-    const response = await axios.post('/api/logout');
+    const response = await axios.post('/api/member/logout');
     return response.data;
   } catch (error) {
     console.error(error);
@@ -57,7 +58,7 @@ export const logout = createAsyncThunk('member/logout', async () => {
 
 export const changeNickname = createAsyncThunk('user/changeNickname', async (data, { rejectWithValue }) => {
   try {
-    const response = await axios.post('/api/setting/changenickname', data);
+    const response = await AxiosType.post('/api/setting/changenickname', data);
     return response.data;
   } catch (error) {
     return rejectWithValue((error as AxiosError).response?.data);
@@ -67,7 +68,7 @@ export const changeNickname = createAsyncThunk('user/changeNickname', async (dat
 export const changePassword = createAsyncThunk('user/changePassword', async (data, { rejectWithValue }) => {
   console.log(data);
   try {
-    const response = await axios.post('/api/setting/changepassword', data);
+    const response = await AxiosType.post('/api/setting/changepassword', data);
     return response.data;
   } catch (error) {
     return rejectWithValue((error as AxiosError).response?.data);

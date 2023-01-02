@@ -3,9 +3,10 @@ import _find from 'lodash/concat';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { addPost, likePost, loadPosts, loadUserPosts, reportPost, searchPosts } from '@actions/post';
+import { addComment, addPost, likePost, loadPosts, loadUserPosts, reportPost, searchPosts } from '@actions/post';
 
 export interface IArticle {
+  keywords: string;
   length: number;
   articleId: number;
   articleContext: string;
@@ -15,7 +16,6 @@ export interface IArticle {
   visitors: number;
   reported: number;
   replys: IReply[];
-  // requestPage: number;
   articleImagesNames: string[];
 }
 
@@ -56,12 +56,14 @@ export interface IArticleState {
   likePostLoading: boolean;
   likePostDone: boolean;
   likePostError: unknown | null;
+  addCommentLoading: boolean;
+  addCommentDone: boolean;
+  addCommentError: unknown | null;
 }
 
-// Image를 mainPosts 밖으로 빼서 따로 받아야 할까?
 export const initialState: IArticleState = {
-  mainPosts: [], // 데이터 들어오면 배열로 바꿈
-  hasMorePosts: true, // 다음 article
+  mainPosts: [],
+  hasMorePosts: true,
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
@@ -81,6 +83,9 @@ export const initialState: IArticleState = {
   likePostLoading: false,
   likePostDone: false,
   likePostError: null,
+  addCommentLoading: false,
+  addCommentDone: false,
+  addCommentError: null,
   postAdded: false,
 };
 
@@ -155,20 +160,36 @@ const postSlice = createSlice({
         state.loadPostsError = action.error.message;
       })
       // likePost
-      .addCase(likePost.pending, (state) => {
+      .addCase(likePost.pending, (state: IArticleState) => {
         state.likePostLoading = true;
         state.likePostDone = false;
         state.likePostError = null;
       })
       .addCase(likePost.fulfilled, (state, action) => {
-        // const post = _find(state.mainPosts, { id: action.payload.articleId });
+        const post = _find(state.mainPosts, { articleId: action.payload.articleId });
         state.likePostLoading = false;
         state.likePostDone = true;
-        // post.Likers.push({ id: action.payload.memberId });
+        post.Liker.push({ memberId: action.payload.memberId });
       })
       .addCase(likePost.rejected, (state, action) => {
         state.likePostLoading = false;
         state.likePostError = action.error.message;
+      })
+      // addComment
+      .addCase(addComment.pending, (state: IArticleState) => {
+        state.addCommentLoading = true;
+        state.addCommentDone = false;
+        state.addCommentError = null;
+      })
+      .addCase(addComment.fulfilled, (state: IArticleState, action: PayloadAction<IArticle>) => {
+        const post = _find(state.mainPosts, { articleId: action.payload.articleId });
+        state.addCommentLoading = false;
+        state.addCommentDone = true;
+        post.replys.unshift(action.payload);
+      })
+      .addCase(addComment.rejected, (state: IArticleState, action) => {
+        state.addCommentLoading = false;
+        state.addCommentError = action.error.message;
       }),
 });
 

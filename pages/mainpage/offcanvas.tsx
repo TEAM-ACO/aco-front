@@ -1,16 +1,23 @@
-import { useRouter } from 'next/navigation';
 import React, { useCallback, useState } from 'react'
+import { useRouter } from 'next/navigation';
+import { useCookies } from 'react-cookie';
 
 import Link from 'next/link';
 import { logout } from '@actions/user';
 import { useAppDispatch, useAppSelector } from '@store/config';
 
 function OffCanvas() {
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const [cookies2, setCookie2, removeCookie2] = useCookies(['access']);
+    const [cookies3, setCookie3, removeCookie3] = useCookies(['refresh']);
     const dispatch = useAppDispatch();
     const router = useRouter();
 
     const { me } = useAppSelector((state) => state.user);
     const onLogOut = useCallback(() => {
+        removeCookie('user')
+        removeCookie2('access')
+        removeCookie3('refresh')
         dispatch(logout())
         router.replace('/');
     }, [])
@@ -71,7 +78,7 @@ function OffCanvas() {
                                         />
                                     </svg>
                                 </span>
-                                <Link href="#">
+                                <Link href={`/user/${cookies.user?.num}`}>
                                     <span className="ml-2">내가 쓴 게시글</span>
                                 </Link>
                             </li>

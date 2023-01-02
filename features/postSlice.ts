@@ -3,7 +3,7 @@ import _find from 'lodash/concat';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { addPost, likePost, loadPosts, reportPost } from '@actions/post';
+import { addPost, likePost, loadPosts, loadUserPosts, reportPost, searchPosts } from '@actions/post';
 
 export interface IArticle {
   length: number;
@@ -41,12 +41,12 @@ export interface IArticleState {
   loadPostsDone: boolean;
   loadPostsError: unknown | null;
   requestedPageNumber: number;
-  // requestedPageSize: number;
-  // responsedPageNumber: number;
-  // totalPageSize: number;
   addPostLoading: boolean;
   addPostDone: boolean;
   addPostError: unknown | null;
+  searchPostsLoading: boolean;
+  searchPostsDone: boolean;
+  searchPostsError: unknown | null;
   updatePostLoading: boolean;
   updatePostDone: boolean;
   updatePostError: unknown | null;
@@ -66,12 +66,12 @@ export const initialState: IArticleState = {
   loadPostsDone: false,
   loadPostsError: null,
   requestedPageNumber: 0,
-  // requestedPageSize: 1,
-  // responsedPageNumber: 0,
-  // totalPageSize: 0,
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+  searchPostsLoading: false,
+  searchPostsDone: false,
+  searchPostsError: null,
   updatePostLoading: false,
   updatePostDone: false,
   updatePostError: null,
@@ -100,7 +100,6 @@ const postSlice = createSlice({
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
-        // [...state.mainPosts].concat(action.payload.results)
         state.hasMorePosts = action.payload.length === 5;
       })
       .addCase(loadPosts.rejected, (state: IArticleState, action) => {
@@ -122,6 +121,38 @@ const postSlice = createSlice({
       .addCase(addPost.rejected, (state, action) => {
         state.addPostLoading = false;
         state.addPostError = action.error.message;
+      })
+      // Search
+      .addCase(searchPosts.pending, (state) => {
+        state.searchPostsLoading = true;
+        state.searchPostsDone = false;
+        state.searchPostsError = null;
+      })
+      .addCase(searchPosts.fulfilled, (state, action) => {
+        state.searchPostsLoading = false;
+        state.searchPostsDone = true;
+        state.mainPosts = _concat(state.mainPosts, action.payload);
+        state.hasMorePosts = action.payload.length === 5;
+      })
+      .addCase(searchPosts.rejected, (state, action) => {
+        state.searchPostsLoading = false;
+        state.searchPostsError = action.error.message;
+      })
+      // loadUserPosts
+      .addCase(loadUserPosts.pending, (state) => {
+        state.loadPostsLoading = true;
+        state.loadPostsDone = false;
+        state.loadPostsError = null;
+      })
+      .addCase(loadUserPosts.fulfilled, (state, action) => {
+        state.loadPostsLoading = false;
+        state.loadPostsDone = true;
+        state.mainPosts = _concat(state.mainPosts, action.payload);
+        state.hasMorePosts = action.payload.length === 5;
+      })
+      .addCase(loadUserPosts.rejected, (state, action) => {
+        state.loadPostsLoading = false;
+        state.loadPostsError = action.error.message;
       })
       // likePost
       .addCase(likePost.pending, (state) => {

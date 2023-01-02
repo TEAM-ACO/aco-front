@@ -35,6 +35,15 @@ export const addPost = createAsyncThunk('article/addPost', async (data, thunkAPI
   }
 });
 
+export const uploadImages = createAsyncThunk('article/uploadImages', async (data, { rejectWithValue }) => {
+  try {
+    const response = await axios.post(`/api/image/images${data}`, data);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue((error as AxiosError).response?.data);
+  }
+});
+
 export const loadPosts = createAsyncThunk<IArticle, IPageNumber>(
   'article/loadPosts',
   async (data, { rejectWithValue }) => {
@@ -57,6 +66,17 @@ export const loadPosts = createAsyncThunk<IArticle, IPageNumber>(
       return rejectWithValue((error as AxiosError).response?.data);
     }
   },
+  // {
+  //   condition: (data, { getState }) => {
+  //     const { post } = getState();
+
+  //     if (post.loadPostsLoading) {
+  //       // console.warn('중복 요청 취소');
+  //       return false;
+  //     }
+  //     return true;
+  //   },
+  // }
 );
 
 // 검색

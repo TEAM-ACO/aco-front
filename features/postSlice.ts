@@ -3,7 +3,16 @@ import _find from 'lodash/concat';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { addComment, addPost, likePost, loadPosts, loadUserPosts, reportPost, searchPosts } from '@actions/post';
+import {
+  addComment,
+  addPost,
+  likePost,
+  loadPosts,
+  loadUserPosts,
+  reportPost,
+  searchPosts,
+  uploadImages,
+} from '@actions/post';
 
 export interface IArticle {
   keywords: string;
@@ -36,7 +45,6 @@ export interface IReply {
 export interface IArticleState {
   mainPosts: IArticle[];
   hasMorePosts: boolean;
-  postAdded: boolean;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
   loadPostsError: unknown | null;
@@ -44,6 +52,10 @@ export interface IArticleState {
   addPostLoading: boolean;
   addPostDone: boolean;
   addPostError: unknown | null;
+  uploadImagesLoading: boolean;
+  uploadImagesDone: boolean;
+  uploadImagesError: unknown | null;
+  imagePaths: string[] | null;
   searchPostsLoading: boolean;
   searchPostsDone: boolean;
   searchPostsError: unknown | null;
@@ -64,29 +76,32 @@ export interface IArticleState {
 export const initialState: IArticleState = {
   mainPosts: [],
   hasMorePosts: true,
-  loadPostsLoading: false,
+  loadPostsLoading: false, // post 로드
   loadPostsDone: false,
   loadPostsError: null,
-  requestedPageNumber: 0,
-  addPostLoading: false,
+  requestedPageNumber: 0, // 페이지네이션
+  addPostLoading: false, // 글쓰기
   addPostDone: false,
   addPostError: null,
-  searchPostsLoading: false,
+  uploadImagesLoading: false, // 이미지첨부
+  uploadImagesDone: false,
+  uploadImagesError: null,
+  imagePaths: null,
+  searchPostsLoading: false, // 검색
   searchPostsDone: false,
   searchPostsError: null,
   updatePostLoading: false,
   updatePostDone: false,
   updatePostError: null,
-  reportPostLoading: false,
+  reportPostLoading: false, // 신고
   reportPostDone: false,
   reportPostError: null,
-  likePostLoading: false,
+  likePostLoading: false, // 좋아요
   likePostDone: false,
   likePostError: null,
-  addCommentLoading: false,
+  addCommentLoading: false, // 댓글 쓰기
   addCommentDone: false,
   addCommentError: null,
-  postAdded: false,
 };
 
 const postSlice = createSlice({
@@ -112,50 +127,65 @@ const postSlice = createSlice({
         state.loadPostsError = action.error.message;
       })
       // addPost
-      .addCase(addPost.pending, (state) => {
+      .addCase(addPost.pending, (state: IArticleState) => {
         state.addPostLoading = true;
         state.addPostDone = false;
         state.addPostError = null;
       })
-      .addCase(addPost.fulfilled, (state, action) => {
+      .addCase(addPost.fulfilled, (state: IArticleState, action) => {
         state.addPostLoading = false;
         state.addPostDone = true;
         state.mainPosts.unshift(action.payload);
         // state.articleimage = []; // 이미지 처리 어떻게 할건지 의논
       })
-      .addCase(addPost.rejected, (state, action) => {
+      .addCase(addPost.rejected, (state: IArticleState, action) => {
         state.addPostLoading = false;
         state.addPostError = action.error.message;
       })
+      // uploadImages
+      .addCase(uploadImages.pending, (state: IArticleState) => {
+        state.uploadImagesLoading = true;
+        state.uploadImagesDone = false;
+        state.uploadImagesError = null;
+      })
+      .addCase(uploadImages.fulfilled, (state: IArticleState, action) => {
+        state.uploadImagesLoading = false;
+        state.uploadImagesDone = true;
+        state.imagePaths = _concat(state.imagePaths, action.payload);
+      })
+      .addCase(uploadImages.rejected, (state: IArticleState, action) => {
+        state.uploadImagesLoading = false;
+        state.uploadImagesError = action.error.message;
+      })
       // Search
-      .addCase(searchPosts.pending, (state) => {
+      .addCase(searchPosts.pending, (state: IArticleState) => {
         state.searchPostsLoading = true;
         state.searchPostsDone = false;
         state.searchPostsError = null;
       })
-      .addCase(searchPosts.fulfilled, (state, action) => {
+      .addCase(searchPosts.fulfilled, (state: IArticleState, action) => {
         state.searchPostsLoading = false;
         state.searchPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
         state.hasMorePosts = action.payload.length === 5;
       })
-      .addCase(searchPosts.rejected, (state, action) => {
+      .addCase(searchPosts.rejected, (state: IArticleState, action) => {
         state.searchPostsLoading = false;
         state.searchPostsError = action.error.message;
       })
       // loadUserPosts
-      .addCase(loadUserPosts.pending, (state) => {
+      .addCase(loadUserPosts.pending, (state: IArticleState) => {
         state.loadPostsLoading = true;
         state.loadPostsDone = false;
         state.loadPostsError = null;
       })
-      .addCase(loadUserPosts.fulfilled, (state, action) => {
+      .addCase(loadUserPosts.fulfilled, (state: IArticleState, action) => {
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
         state.hasMorePosts = action.payload.length === 5;
       })
-      .addCase(loadUserPosts.rejected, (state, action) => {
+      .addCase(loadUserPosts.rejected, (state: IArticleState, action) => {
         state.loadPostsLoading = false;
         state.loadPostsError = action.error.message;
       })
@@ -165,13 +195,13 @@ const postSlice = createSlice({
         state.likePostDone = false;
         state.likePostError = null;
       })
-      .addCase(likePost.fulfilled, (state, action) => {
+      .addCase(likePost.fulfilled, (state: IArticleState, action) => {
         const post = _find(state.mainPosts, { articleId: action.payload.articleId });
         state.likePostLoading = false;
         state.likePostDone = true;
-        post.Liker.push({ memberId: action.payload.memberId });
+        post.Liker.push({ Liker: action.payload.memberId });
       })
-      .addCase(likePost.rejected, (state, action) => {
+      .addCase(likePost.rejected, (state: IArticleState, action) => {
         state.likePostLoading = false;
         state.likePostError = action.error.message;
       })

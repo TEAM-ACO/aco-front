@@ -1,5 +1,5 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { Action, ThunkDispatch, combineReducers, configureStore } from '@reduxjs/toolkit';
 import { HYDRATE, createWrapper } from 'next-redux-wrapper';
 import { createLogger } from 'redux-logger';
 
@@ -33,6 +33,9 @@ const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export type ThunkAppDispatch = ThunkDispatch<RootState, void, Action>;
+export const useAppThunkDispatch = () => useDispatch<ThunkAppDispatch>();
 
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const useAppDispatch = () => useDispatch<AppDispatch>();

@@ -4,7 +4,7 @@ import React from 'react'
 
 function Channel() {
     return (
-        <div className="z-50 absolute slg:relative">
+        <div className="z-50 relative">
             <div className='py-3 slg:pr-4 bg-white'>
                 <form className="flex items-center px-3 slg:px-0">
                     <label htmlFor="simple-search" className="sr-only">Search</label>

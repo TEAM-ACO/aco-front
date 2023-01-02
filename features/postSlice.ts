@@ -6,15 +6,17 @@ import { createSlice } from '@reduxjs/toolkit';
 import { likePost, loadPosts, reportPost } from '@actions/post';
 
 export interface IArticle {
+  length: number;
   articleId: number;
   articleContext: string;
+  articleLike: number;
   member: IMember;
   tags: string[];
   visitors: number;
-  recomends: number;
   reported: number;
   replys: IReply[];
-  articleImages: string[];
+  // requestPage: number;
+  articleImagesNames: string[];
 }
 
 export interface IMember {
@@ -37,33 +39,33 @@ export interface IArticleState {
   postAdded: boolean;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
-  loadPostsError: any | null;
-  // requestedPageNumber: number;
+  loadPostsError: unknown | null;
+  requestedPageNumber: number;
   // requestedPageSize: number;
   // responsedPageNumber: number;
   // totalPageSize: number;
   addPostLoading: boolean;
   addPostDone: boolean;
-  addPostError: any | null;
+  addPostError: unknown | null;
   updatePostLoading: boolean;
   updatePostDone: boolean;
-  updatePostError: any | null;
+  updatePostError: unknown | null;
   reportPostLoading: boolean;
   reportPostDone: boolean;
-  reportPostError: any | null;
+  reportPostError: unknown | null;
   likePostLoading: boolean;
   likePostDone: boolean;
-  likePostError: any | null;
+  likePostError: unknown | null;
 }
 
 // Image를 mainPosts 밖으로 빼서 따로 받아야 할까?
 export const initialState: IArticleState = {
   mainPosts: [], // 데이터 들어오면 배열로 바꿈
-  hasMorePosts: true, // 다음 posts 여부
+  hasMorePosts: true, // 다음 article
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
-  // requestedPageNumber: 0,
+  requestedPageNumber: 0,
   // requestedPageSize: 1,
   // responsedPageNumber: 0,
   // totalPageSize: 0,
@@ -98,8 +100,8 @@ const postSlice = createSlice({
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
-        // typescript 어떻게 해야?
-        // state.hasMorePosts = action.payload.length === 10;
+        // [...state.mainPosts].concat(action.payload.results)
+        state.hasMorePosts = action.payload.length === 5;
       })
       .addCase(loadPosts.rejected, (state: IArticleState, action) => {
         state.loadPostsLoading = false;

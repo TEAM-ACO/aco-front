@@ -1,21 +1,29 @@
-import React, { useEffect, useLayoutEffect } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { useAppDispatch, useAppSelector } from '@store/config';
+import { useInView } from 'react-intersection-observer';
 
 import PostCard from './PostCard';
 import { IArticle } from '@features/postSlice';
 import PostForm from './PostForm';
 import Mainpage from './mainpage';
-import { useRouter } from 'next/router';
 import { loadPosts } from '@actions/post';
 
 function mainpage() {
-    const { mainPosts } = useAppSelector((state) => state.post);
     const dispatch = useAppDispatch();
-    const { asPath } = useRouter();
+    const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
+    const [ref, inView] = useInView();
+    const [requestPage, setRequestPage] = useState<number>(0);
+
+    const loadMore = useCallback(() => {
+        setRequestPage(prev => prev + 1);
+    }, [requestPage])
 
     useEffect(() => {
-        dispatch(loadPosts());
-    }, []);
+        if (inView && hasMorePosts && !loadPostsLoading) {
+            dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 5 }));
+            loadMore()
+        }
+    }, [inView, hasMorePosts, loadPostsLoading]);
 
     return (
         <div>
@@ -28,6 +36,7 @@ function mainpage() {
                         )
                     })}
                 </div>
+                <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 5 }} />
             </Mainpage>
         </div>
     )

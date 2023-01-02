@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { useAppSelector, useAppDispatch } from '@store/config'
 import ReactTextareaAutosize from 'react-textarea-autosize';
-import { addPosts } from '@features/postSlice';
 import { TextInput } from 'flowbite-react';
+import { addPost } from '@actions/post';
 
 function PostForm() {
     const dispatch = useAppDispatch();
-    const { addPostDone, addPostError } = useAppSelector((state) => state.post);
+    const { addPostDone, addPostLoading, addPostError } = useAppSelector((state) => state.post);
 
     useEffect(() => {
         if (addPostDone) {
@@ -24,13 +24,13 @@ function PostForm() {
         imageInput.current.click();
     }, [imageInput.current])
 
-    const onSubmit = useCallback((e: any) => {
+    const onSubmit = useCallback((e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!text || !text.trim()) {
             return alert('게시글을 작성하세요.');
         }
         // console.log(text)
-        dispatch(addPosts(text));
+        dispatch(addPost({ articleContext: text }));
     }, [text])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {

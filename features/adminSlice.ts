@@ -9,6 +9,10 @@ export interface IAdmin {
   name: string;
 }
 
+export interface IAdminVisitant {
+  week: number;
+}
+
 export interface IAdminMemberReport {
   userReportId: number;
   userReportContext: string;
@@ -80,9 +84,10 @@ const adminSlice = createSlice({
         state.adminVisitantDone = false;
         state.adminVisitantError = null;
       })
-      .addCase(adminVisitant.fulfilled, (state: IAdminState) => {
+      .addCase(adminVisitant.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
         state.adminVisitantLoading = false;
         state.adminVisitantDone = true;
+        state.adminContent = _concat(state.adminContent, action.payload);
       })
       .addCase(adminVisitant.rejected, (state: IAdminState, action) => {
         state.adminVisitantLoading = false;

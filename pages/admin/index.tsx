@@ -15,10 +15,12 @@ const options = [
 
 const Visitant = () => {
     const dispatch = useAppDispatch();
-    const [selectedOption, setSelectedOption] = useState<any>(null);
+    const [selectedOption, setSelectedOption] = useState<any>(options[0]);
+
+    console.log(selectedOption.value)
 
     useEffect(() => {
-        dispatch(adminVisitant())
+        dispatch(adminVisitant({ week: selectedOption.value }))
     }, [])
 
     return (

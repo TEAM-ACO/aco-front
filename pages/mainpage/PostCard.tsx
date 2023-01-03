@@ -26,10 +26,9 @@ const PostCard = ({ post }: PostProps) => {
     const onViewMore = useCallback(() => {
         // dispatch(loadReply({}))
     }, [])
-
-    // like왜 404인지
+    // db에는 들어가나 삭제가 안됨.
     const onFavoriteToggle = useCallback(() => {
-        dispatch(likePost({ articleId: post.articleId, liked: favorite, liker: cookies.user.num }))
+        dispatch(likePost({ article: { articleId: post.articleId }, liked: favorite, liker: cookies.user.num }))
         setFavorite((prev) => !prev)
     }, [])
 

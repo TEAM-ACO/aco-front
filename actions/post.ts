@@ -6,7 +6,16 @@ import { IArticle } from '@features/postSlice';
 
 import { IReply } from '../features/postSlice';
 
-import { IAddComment, ILikePost, IPageNumber, ISearchPosts, IloadUserPosts, TypeAxios } from '@typings/db';
+import {
+  ArticleLoadPosts,
+  ArticleSearch,
+  IAddComment,
+  ILikePost,
+  IPageNumber,
+  ISearchPosts,
+  IloadUserPosts,
+  TypeAxios,
+} from '@typings/db';
 
 axios.defaults.baseURL = backendURL;
 // 프론트 - 백 쿠키공유
@@ -44,7 +53,7 @@ export const uploadImages = createAsyncThunk('article/uploadImages', async (data
   }
 });
 
-export const loadPosts = createAsyncThunk<IArticle, IPageNumber>(
+export const loadPosts = createAsyncThunk<ArticleLoadPosts, IPageNumber>(
   'article/loadPosts',
   async (data, { rejectWithValue }) => {
     try {
@@ -80,7 +89,7 @@ export const loadPosts = createAsyncThunk<IArticle, IPageNumber>(
 );
 
 // 검색
-export const searchPosts = createAsyncThunk<IArticle, ISearchPosts>(
+export const searchPosts = createAsyncThunk<ArticleSearch, ISearchPosts>(
   'article/searchPosts',
   async (data, { rejectWithValue }) => {
     // console.log(data);
@@ -145,7 +154,7 @@ export const reportPost = createAsyncThunk<reportArticle, reportArticle>(
 export const likePost = createAsyncThunk<IArticle, ILikePost>('article/likePost', async (data, { rejectWithValue }) => {
   console.log(data);
   try {
-    const response = await axios.post(`/api/like`, data);
+    const response = await axios.post(`/api/article/like`, data);
     return response.data;
   } catch (error) {
     return rejectWithValue((error as AxiosError).response?.data);

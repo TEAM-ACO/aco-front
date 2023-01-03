@@ -3,7 +3,16 @@ import _find from 'lodash/concat';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { addComment, addPost, likePost, loadPosts, loadUserPosts, searchPosts, uploadImages } from '@actions/post';
+import {
+  addComment,
+  addPost,
+  likePost,
+  loadPosts,
+  loadUserPosts,
+  searchPosts,
+  updateComment,
+  uploadImages,
+} from '@actions/post';
 import { ArticleLoadPosts } from '@typings/db';
 
 export interface IArticle {
@@ -66,6 +75,9 @@ export interface IArticleState {
   addCommentLoading: boolean;
   addCommentDone: boolean;
   addCommentError: unknown | null;
+  updateCommentLoading: boolean;
+  updateCommentDone: boolean;
+  updateCommentError: unknown | null;
 }
 
 export const initialState: IArticleState = {
@@ -97,6 +109,9 @@ export const initialState: IArticleState = {
   addCommentLoading: false, // 댓글 쓰기
   addCommentDone: false,
   addCommentError: null,
+  updateCommentLoading: false,
+  updateCommentDone: false,
+  updateCommentError: null,
 };
 
 const postSlice = createSlice({
@@ -168,22 +183,22 @@ const postSlice = createSlice({
         state.searchPostsLoading = false;
         state.searchPostsError = action.error.message;
       })
-      // // loadUserPosts
-      // .addCase(loadUserPosts.pending, (state: IArticleState) => {
-      //   state.loadPostsLoading = true;
-      //   state.loadPostsDone = false;
-      //   state.loadPostsError = null;
-      // })
-      // .addCase(loadUserPosts.fulfilled, (state: IArticleState, action) => {
-      //   state.loadPostsLoading = false;
-      //   state.loadPostsDone = true;
-      //   state.mainPosts = _concat(state.mainPosts, action.payload);
-      //   state.hasMorePosts = action.payload.length === 5;
-      // })
-      // .addCase(loadUserPosts.rejected, (state: IArticleState, action) => {
-      //   state.loadPostsLoading = false;
-      //   state.loadPostsError = action.error.message;
-      // })
+      // loadUserPosts
+      .addCase(loadUserPosts.pending, (state: IArticleState) => {
+        state.loadPostsLoading = true;
+        state.loadPostsDone = false;
+        state.loadPostsError = null;
+      })
+      .addCase(loadUserPosts.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
+        state.loadPostsLoading = false;
+        state.loadPostsDone = true;
+        state.mainPosts = _concat(state.mainPosts, action.payload);
+        state.hasMorePosts = action.payload.length === 5;
+      })
+      .addCase(loadUserPosts.rejected, (state: IArticleState, action) => {
+        state.loadPostsLoading = false;
+        state.loadPostsError = action.error.message;
+      })
       // likePost
       .addCase(likePost.pending, (state: IArticleState) => {
         state.likePostLoading = true;
@@ -208,6 +223,7 @@ const postSlice = createSlice({
       })
       .addCase(addComment.fulfilled, (state: any, action: PayloadAction<IArticleReply>) => {
         const post: any = _find(state.mainPosts, { articleId: action.payload.articleId });
+        console.log(state.mainPosts);
         state.addCommentLoading = false;
         state.addCommentDone = true;
         // post.replys.unshift(action.payload);
@@ -216,6 +232,23 @@ const postSlice = createSlice({
       .addCase(addComment.rejected, (state: IArticleState, action) => {
         state.addCommentLoading = false;
         state.addCommentError = action.error.message;
+      })
+      // UpdateComment
+      .addCase(updateComment.pending, (state: IArticleState) => {
+        state.updateCommentLoading = true;
+        state.updateCommentDone = false;
+        state.updateCommentError = null;
+      })
+      .addCase(updateComment.fulfilled, (state: any, action: PayloadAction<any>) => {
+        const post: any = _find(state.mainPosts, { articleId: action.payload.articleId });
+        console.log(action.payload);
+        state.updateCommentLoading = false;
+        state.updateCommentDone = true;
+        post.replys = _concat(post.replys, action.payload);
+      })
+      .addCase(updateComment.rejected, (state: IArticleState, action) => {
+        state.updateCommentLoading = false;
+        state.updateCommentError = action.error.message;
       }),
 });
 

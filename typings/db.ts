@@ -28,6 +28,10 @@ export interface ISearchPosts extends IPageNumber {
   keywords: string | string[];
 }
 
+export interface IUpdateComment extends IPageNumber {
+  article: { articleId: number };
+}
+
 export interface IAddComment {
   article: { articleId: number };
   member: { memberId: number };
@@ -38,7 +42,6 @@ export interface IAddComment {
 
 export interface ILikePost {
   article: { articleId: number };
-  liked: boolean;
   liker: number;
 }
 

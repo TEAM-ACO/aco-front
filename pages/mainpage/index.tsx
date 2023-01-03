@@ -31,7 +31,6 @@ function mainpage() {
     }, [requestPage])
 
     useEffect(() => {
-        // dispatch(loadUser())
         if (inView && hasMorePosts && !loadPostsLoading) {
             dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 5 }));
             loadMore()

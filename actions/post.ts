@@ -13,6 +13,7 @@ import {
   ILikePost,
   IPageNumber,
   ISearchPosts,
+  IUpdateComment,
   IloadUserPosts,
   TypeAxios,
 } from '@typings/db';
@@ -114,7 +115,6 @@ export const searchPosts = createAsyncThunk<ArticleSearch, ISearchPosts>(
 );
 
 // 각 user의 게시글
-// 댓글 처리가 힘들다.
 export const loadUserPosts = createAsyncThunk<IArticle, IloadUserPosts>(
   'article/loadUserPosts',
   async (data, { rejectWithValue }) => {
@@ -132,6 +132,19 @@ export const loadUserPosts = createAsyncThunk<IArticle, IloadUserPosts>(
         }),
       );
       return result as any;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
+
+// 댓글 업데이트
+export const updateComment = createAsyncThunk<IArticle, IUpdateComment>(
+  'article/reply/updateComment',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`/api/article/reply/${data.article.articleId}`, data);
+      return response.data;
     } catch (error) {
       return rejectWithValue((error as AxiosError).response?.data);
     }

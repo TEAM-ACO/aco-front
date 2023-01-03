@@ -9,7 +9,7 @@ import CommentList from './CommentList';
 import Dropdown from './Dropdown';
 import PostCardContent from './PostCardContent';
 import PostImage from './PostImage';
-import { likePost } from '@actions/post';
+import { likePost, updateComment } from '@actions/post';
 
 type PostProps = {
     post: IArticle
@@ -21,14 +21,23 @@ const PostCard = ({ post }: PostProps) => {
     const id = useAppSelector((state) => state.user.me?.email);
     const { loadPostsDone } = useAppSelector((state) => state.post);
     const [favorite, setFavorite] = useState<boolean>(false);
+    const [requestPage, setRequestPage] = useState<number>(0);
 
-    // 이 부분 어떻게 해야하지?
-    const onViewMore = useCallback(() => {
-        // dispatch(loadReply({}))
-    }, [])
-    // db에는 들어가나 삭제가 안됨.
+    const loadMore = useCallback(() => {
+        setRequestPage(prev => prev + 1);
+    }, [requestPage])
+
+    // 댓글 업데이트
+    const onCommentViewMore = useCallback(() => {
+        dispatch(updateComment({
+            article: { articleId: post.articleId },
+            requestedPageNumber: requestPage, requestedPageSize: 5
+        }))
+        loadMore();
+    }, [requestPage])
+
     const onFavoriteToggle = useCallback(() => {
-        dispatch(likePost({ article: { articleId: post.articleId }, liked: favorite, liker: cookies.user.num }))
+        dispatch(likePost({ article: { articleId: post.articleId }, liker: cookies.user.num }))
         setFavorite((prev) => !prev)
     }, [])
 
@@ -101,7 +110,7 @@ const PostCard = ({ post }: PostProps) => {
                             </div>
                             <div className='ml-6 py-2 mt-3'>
                                 {post.replys.length >= 5 ?
-                                    <Button>
+                                    <Button onClick={onCommentViewMore}>
                                         댓글 더 보기
                                     </Button>
                                     : <></>

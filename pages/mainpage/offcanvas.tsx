@@ -18,14 +18,20 @@ function OffCanvas() {
     const { me } = useAppSelector((state) => state.user);
     const onLogOut = useCallback(() => {
         removeCookie('user')
+
+        router.replace('/');
+
         // removeCookie2('access')
         // removeCookie3('refresh')
         // dispatch(logout())
-        router.replace('/');
     }, [])
 
     useEffect(() => {
-        setMyNickname(cookies.user.username.toUpperCase())
+        if (cookies.user) {
+            setTimeout(() => {
+                setMyNickname(cookies.user.username.toUpperCase())
+            }, 1000)
+        }
     })
 
     return (

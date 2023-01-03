@@ -13,6 +13,7 @@ const Dropdown = ({ post }: any) => {
     const dispatch = useAppDispatch();
     const reportTests: string[] = ["부적절한 콘텐츠입니다", "성적인 콘텐츠입니다.", "진실을 오도하고 있습니다",
         "증오 또는 악의적인 콘텐츠입니다.", "권리를 침해하고 있습니다.", "테러를 조장하고 있습니다.", "폭력적인 콘텐츠입니다."]
+
     const onTogglePostCardDropdown = useCallback(() => {
         setPostCardDropdown((prev) => !prev)
     }, [])

@@ -1,12 +1,19 @@
+import React, { useCallback } from 'react'
 import { IAdmin } from '@features/adminSlice'
+import { useAppDispatch } from '@store/config'
 import { Table } from 'flowbite-react'
-import React from 'react'
+import { adminDelete } from '@actions/admin'
 
 type ContentProps = {
     content: IAdmin
 }
 
 const AdminMemberComponent = ({ content }: ContentProps) => {
+    const dispatch = useAppDispatch();
+
+    const onDelete = useCallback(() => {
+        dispatch(adminDelete({ which: "member" }))
+    }, [])
     return (
         <Table.Body className="divide-y">
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -24,6 +31,7 @@ const AdminMemberComponent = ({ content }: ContentProps) => {
                 <Table.Cell>
                     <button
                         className="font-medium text-red-600 hover:underline dark:text-red-500"
+                        onClick={onDelete}
                     >
                         삭제
                     </button>

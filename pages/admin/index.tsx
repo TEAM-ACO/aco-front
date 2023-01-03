@@ -1,14 +1,31 @@
-import React from 'react'
-import { Table, Checkbox } from 'flowbite-react'
+import React, { useEffect, useState } from 'react'
+import { Table } from 'flowbite-react'
 import AdminMenu from './AdminMenu'
+import { useAppDispatch } from '@store/config'
+import { adminVisitant } from '@actions/admin'
+import Select from 'react-select';
+import AdminGraph from './AdminGraph'
+
+const options = [
+    { value: 1, label: '1주일' },
+    { value: 2, label: '2주일' },
+    { value: 4, label: '4주일' },
+    { value: 12, label: '12주일' },
+];
 
 const Visitant = () => {
+    const dispatch = useAppDispatch();
+    const [selectedOption, setSelectedOption] = useState<any>(null);
+
+    useEffect(() => {
+        dispatch(adminVisitant())
+    }, [])
+
     return (
         <AdminMenu>
             <Table hoverable={true}>
                 <Table.Head>
                     <Table.HeadCell className="!p-4">
-                        <Checkbox />
                     </Table.HeadCell>
                     <Table.HeadCell>
                         User Email
@@ -26,33 +43,13 @@ const Visitant = () => {
                         Delete
                     </Table.HeadCell>
                 </Table.Head>
-                <Table.Body className="divide-y">
-                    <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                        <Table.Cell className="!p-4">
-                            <Checkbox />
-                        </Table.Cell>
-                        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                            CodeMaster_B-HS@hanmail.net
-                        </Table.Cell>
-                        <Table.Cell>
-                            B-HS
-                        </Table.Cell>
-                        <Table.Cell>
-                            변현석
-                        </Table.Cell>
-                        <Table.Cell>
-                            컨텐츠1
-                        </Table.Cell>
-                        <Table.Cell>
-                            <button
-                                className="font-medium text-red-600 hover:underline dark:text-red-500"
-                            >
-                                삭제
-                            </button>
-                        </Table.Cell>
-                    </Table.Row>
-                </Table.Body>
+                {/* <AdminGraph /> */}
             </Table>
+            <Select
+                defaultValue={selectedOption}
+                onChange={setSelectedOption}
+                options={options}
+            />
         </AdminMenu>
     )
 }

@@ -17,6 +17,7 @@ import {
   IloadUserPosts,
   TypeAxios,
 } from '@typings/db';
+import { result } from 'lodash';
 
 axios.defaults.baseURL = backendURL;
 // 프론트 - 백 쿠키공유
@@ -179,7 +180,13 @@ export const addComment = createAsyncThunk<IArticle, IAddComment>(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(`/api/article/reply/write`, data);
-      return response.data;
+      if(response.data){
+        const result = await axios.post(`/api/article/reply/${data.article.articleId}`, { requestedPageNumber: 0, requestedPageSize: data.replyGroup+5 })
+        return {articleId:data.article.articleId, replys:result.data};
+      }else{
+        return [] as any
+        
+      }      
     } catch (error) {
       return rejectWithValue((error as AxiosError).response?.data);
     }

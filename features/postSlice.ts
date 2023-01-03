@@ -14,6 +14,7 @@ import {
   uploadImages,
 } from '@actions/post';
 import { ArticleLoadPosts } from '@typings/db';
+import _filter from 'lodash/concat';
 
 export interface IArticle {
   articleId: number;
@@ -29,6 +30,7 @@ export interface IArticle {
 
 export interface IArticleReply {
   articleId: number;
+  replys: IReply[];
 }
 
 export interface IMember {
@@ -129,6 +131,8 @@ const postSlice = createSlice({
       .addCase(loadPosts.fulfilled, (state: IArticleState, action: PayloadAction<ArticleLoadPosts>) => {
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
+        console.log(state.mainPosts);
+        
         state.mainPosts = _concat(state.mainPosts, action.payload);
         state.hasMorePosts = action.payload.length === 5;
       })
@@ -221,13 +225,19 @@ const postSlice = createSlice({
         state.addCommentDone = false;
         state.addCommentError = null;
       })
-      .addCase(addComment.fulfilled, (state: any, action: PayloadAction<IArticleReply>) => {
-        const post: any = _find(state.mainPosts, { articleId: action.payload.articleId });
-        console.log(state.mainPosts);
+      .addCase(addComment.fulfilled, (state: any, action: PayloadAction<IArticleReply>) => {  
         state.addCommentLoading = false;
         state.addCommentDone = true;
-        // post.replys.unshift(action.payload);
-        post.replys = _concat(post.replys, action.payload);
+        state.mainPosts = _concat(state.mainPosts.map((v:IArticle)=>{
+          if(v.articleId==action.payload.articleId){           
+            let tmp  = v
+            tmp.replys = action.payload.replys
+            return tmp
+          }else{
+            return v
+          }
+        }));
+
       })
       .addCase(addComment.rejected, (state: IArticleState, action) => {
         state.addCommentLoading = false;

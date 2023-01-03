@@ -3,7 +3,7 @@ import { DropdownItem } from 'flowbite-react/lib/esm/components/Dropdown/Dropdow
 import React, { useCallback, useState, useRef, DetailedHTMLProps, SelectHTMLAttributes } from 'react'
 import { reportArticle, reportPost } from '../../actions/post';
 import { useAppDispatch } from '@store/config'
-const Dropdown = ({ post }:any) => {
+const Dropdown = ({ post }: any) => {
     const [postCardDropdown, setPostCardDropdown] = useState<boolean>(false);
     const [onReportModal, setOnReportModal] = useState<boolean>(false);
     const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
@@ -11,12 +11,13 @@ const Dropdown = ({ post }:any) => {
     const [wrongReportRequest, setWrongReportRequest] = useState<Boolean>(false)
     const selectBox = useRef<DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>>()
     const dispatch = useAppDispatch();
-    const reportTests : string[] = ["부적절한 콘텐츠입니다", "넣을거 없나", "진실을 오도하고 있습니다"]
+    const reportTests: string[] = ["부적절한 콘텐츠입니다", "성적인 콘텐츠입니다.", "진실을 오도하고 있습니다",
+        "증오 또는 악의적인 콘텐츠입니다.", "권리를 침해하고 있습니다.", "테러를 조장하고 있습니다.", "폭력적인 콘텐츠입니다."]
     const onTogglePostCardDropdown = useCallback(() => {
         setPostCardDropdown((prev) => !prev)
     }, [])
 
-    const onReportModalOpen = useCallback(() => {        
+    const onReportModalOpen = useCallback(() => {
         setOnReportModal((prev) => !prev)
     }, [])
 
@@ -34,14 +35,14 @@ const Dropdown = ({ post }:any) => {
         setPostCardDropdown(false)
     }, [])
 
-    const onReportModalSubmit = useCallback(()=>{
-        const data : reportArticle = {
-            articlereporterId : 1, //쿠키에서 가져오기,
-            articleId : post.articleId,
-            articleReportContext:reportTests[selectBox.current?.value as unknown as number]
-        } 
+    const onReportModalSubmit = useCallback(() => {
+        const data: reportArticle = {
+            articlereporterId: 1, //쿠키에서 가져오기,
+            articleId: post.articleId,
+            articleReportContext: reportTests[selectBox.current?.value as unknown as number]
+        }
         console.log(data);
-        dispatch(reportPost({...data})).then(res=>{
+        dispatch(reportPost({ ...data })).then(res => {
             switch (res.payload) {
                 case 1:
                     onReportModalClose()
@@ -50,10 +51,10 @@ const Dropdown = ({ post }:any) => {
                     setIsReported(true)
                     setTimeout(onReportModalClose, 3000)
                 case 2:
-                    //예외모달필요
+                //예외모달필요
                 default:
                     break;
-            }   
+            }
         })
     }, [])
 
@@ -166,18 +167,18 @@ const Dropdown = ({ post }:any) => {
                                                 id="report"
                                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                                 <option value={''} disabled>신고사유를 선택해주세요</option>
-                                                {reportTests.map((v, i)=> <option value={i}>{v}</option>)}
+                                                {reportTests.map((v, i) => <option value={i}>{v}</option>)}
                                             </select>
                                         </div>
                                         <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                            With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
+                                            허위 신고시 불이익을 받을 수 있습니다.
                                         </p>
                                     </div>
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button
-                                    onClick={onReportModalSubmit}
-                                    disabled={isReported==true}>
+                                        onClick={onReportModalSubmit}
+                                        disabled={isReported == true}>
                                         신고하기
                                     </Button>
                                     <Button
@@ -186,7 +187,7 @@ const Dropdown = ({ post }:any) => {
                                     >
                                         아니요
                                     </Button>
-                                    {isReported&&<span className='text-red-500'>이미 신고한 게시글입니다.<br></br> 잠시후 종료됩니다</span>}
+                                    {isReported && <span className='text-red-500'>이미 신고한 게시글입니다.<br></br> 잠시후 종료됩니다</span>}
                                 </Modal.Footer>
                             </Modal>
                         </div>

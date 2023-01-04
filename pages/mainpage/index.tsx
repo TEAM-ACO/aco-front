@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { useAppDispatch, useAppSelector } from '@store/config';
+import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
 
 import PostCard from './PostCard';
@@ -26,16 +26,16 @@ function mainpage() {
     //     }
     // })
 
-    const loadMore = useCallback(() => {
-        setRequestPage(prev => prev + 1);
-    }, [requestPage])
-
     useEffect(() => {
         if (inView && hasMorePosts && !loadPostsLoading) {
             dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 5 }));
             loadMore()
         }
     }, [inView, hasMorePosts, loadPostsLoading]);
+
+    const loadMore = useCallback(() => {
+        setRequestPage(prev => prev + 1);
+    }, [requestPage])
 
     return (
         <div>
@@ -55,20 +55,18 @@ function mainpage() {
 }
 
 
-// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-//     console.log('getServerSideProps start');
-//     console.log(req.headers);
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+    console.log('getServerSideProps start');
+    console.log(req.headers);
 
-//     // 서버쪽으로 쿠키 전달하는 과정 (쿠키가 없으면 인식 못함)
-//     const cookie = req ? req.headers.cookie : '';
-//     axios.defaults.headers.Cookie = '';
-//     // 다른 사람이 내 페이지에서 로그인 했을 때 내 쿠키때문에 내 아이디로 로그인 되는 현상 방지 (쿠키공유 방지)
-//     if (req && cookie) {
-//         axios.defaults.headers.Cookie = cookie;
-//     }
-//     store.dispatch(loadPosts());
+    const cookie = req ? req.headers.cookie : '';
+    axios.defaults.headers.Cookie = '';
+    if (req && cookie) { //cookie => cookis.user
+        axios.defaults.headers.Cookie = cookie;
+    }
+    await store.dispatch(loadPosts());
 
-//     return { props: {} }
-// })
+    return { props: { message: 'Success SSR' } }
+})
 
 export default mainpage

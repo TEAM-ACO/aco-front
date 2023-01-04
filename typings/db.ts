@@ -59,3 +59,8 @@ export interface Members {
   email: string;
   nickname: string;
 }
+
+export interface IAdminDelete {
+  which: string;
+  number: number;
+}

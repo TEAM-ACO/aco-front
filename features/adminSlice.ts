@@ -1,7 +1,15 @@
-import { adminArticle, adminArticleReport, adminMember, adminMemberReport, adminVisitant } from '@actions/admin';
+import {
+  adminArticle,
+  adminArticleReport,
+  adminDelete,
+  adminMember,
+  adminMemberReport,
+  adminVisitant,
+} from '@actions/admin';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Members } from '@typings/db';
 import _concat from 'lodash/concat';
+import _remove from 'lodash/concat';
 
 export interface IAdmin {
   email: string;
@@ -52,6 +60,9 @@ export interface IAdminState {
   adminArticleReportLoading: boolean;
   adminArticleReportDone: boolean;
   adminArticleReportError: unknown | null;
+  adminDeleteLoading: boolean;
+  adminDeleteDone: boolean;
+  adminDeleteError: unknown | null;
 }
 
 const initialState: IAdminState = {
@@ -71,6 +82,9 @@ const initialState: IAdminState = {
   adminArticleReportLoading: false,
   adminArticleReportDone: false,
   adminArticleReportError: null,
+  adminDeleteLoading: false,
+  adminDeleteDone: false,
+  adminDeleteError: null,
 };
 
 const adminSlice = createSlice({
@@ -148,6 +162,21 @@ const adminSlice = createSlice({
       .addCase(adminArticleReport.rejected, (state: IAdminState, action) => {
         state.adminArticleReportLoading = false;
         state.adminArticleReportError = action.payload;
+      })
+      .addCase(adminDelete.pending, (state: IAdminState) => {
+        state.adminDeleteLoading = true;
+        state.adminDeleteDone = false;
+        state.adminDeleteError = null;
+      })
+      .addCase(adminDelete.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
+        state.adminDeleteLoading = false;
+        state.adminDeleteDone = true;
+        // _remove(state.adminContent, action.payload);
+        // state.adminContent = _concat(state.adminContent, action.payload);
+      })
+      .addCase(adminDelete.rejected, (state: IAdminState, action) => {
+        state.adminDeleteLoading = false;
+        state.adminDeleteError = action.payload;
       }),
 });
 

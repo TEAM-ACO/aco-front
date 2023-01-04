@@ -1,24 +1,23 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import AdminMenu from '../AdminMenu'
 import AdminArticleComponent from './AdminArticle'
-import { Table } from 'flowbite-react'
-import { useAppDispatch, useAppSelector } from '@store/config'
+import { Pagination, Table } from 'flowbite-react'
+import wrapper, { useAppDispatch, useAppSelector } from '@store/config'
 import { adminArticle } from '@actions/admin'
 import { IAdminArticle } from '@features/adminSlice'
+import { GetServerSideProps } from 'next'
 
 const AdminArticle = () => {
     const dispatch = useAppDispatch();
     const { adminContent, adminArticleDone } = useAppSelector((state) => state.admin)
     const [requestPage, setRequestPage] = useState<number>(0);
 
-    const loadMore = useCallback(() => {
+    const onPageChange = useCallback(() => {
         setRequestPage(prev => prev + 1);
     }, [requestPage])
 
-
     useEffect(() => {
         dispatch(adminArticle({ requestedPageNumber: requestPage, requestedPageSize: 10 }))
-        loadMore();
     }, [])
     return (
         <AdminMenu>
@@ -52,8 +51,23 @@ const AdminArticle = () => {
                 })
                 }
             </Table>
+            <Pagination
+                currentPage={1}
+                onPageChange={onPageChange}
+                showIcons={true}
+                totalPages={100}
+            />
         </AdminMenu>
     )
 }
+
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+    console.log('getServerSideProps start');
+    console.log(req.headers);
+
+    await store.dispatch(adminArticle());
+
+    return { props: {} }
+})
 
 export default AdminArticle

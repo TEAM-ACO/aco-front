@@ -15,9 +15,8 @@ const AdminReportMember = () => {
         setRequestPage(prev => prev + 1);
     }, [requestPage])
 
-
     useEffect(() => {
-        dispatch(adminMemberReport({ requestedPageNumber: requestPage, requestedPageSize: 5 }))
+        dispatch(adminMemberReport({ requestedPageNumber: requestPage, requestedPageSize: 10 }))
         loadMore();
     }, [])
 

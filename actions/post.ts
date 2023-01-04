@@ -55,7 +55,7 @@ export const uploadImages = createAsyncThunk('article/uploadImages', async (data
   }
 });
 
-export const loadPosts = createAsyncThunk<ArticleLoadPosts, IPageNumber>(
+export const loadPosts = createAsyncThunk<ArticleLoadPosts, IPageNumber | undefined>(
   'article/loadPosts',
   async (data, { rejectWithValue }) => {
     try {

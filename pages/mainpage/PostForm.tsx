@@ -17,14 +17,14 @@ function PostForm() {
             setTagItem('');
         }
     }, [addPostDone]);
-
+    
     const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
     const [text, setText] = useState<string>('')
     const [tagItem, setTagItem] = useState<string>('')
     const [tagList, setTagList] = useState<string[]>([])
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
-
+    
     const onSubmit = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const result = new FormData;
@@ -38,10 +38,9 @@ function PostForm() {
         result.set("memberId", cookies.user.num)
         result.set("tags", tagList.join(", "))
 
+        if(imageInput.current.files){
+            for(let i = 0; i<imageInput.current.files.length; i++){
 
-
-        if (imageInput.current.files) {
-            for (let i = 0; i < imageInput.current.files.length; i++) {
                 result.append("articleImages", imageInput.current.files[i])
             }
         }

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { useAppSelector, useAppDispatch } from '@store/config'
 import ReactTextareaAutosize from 'react-textarea-autosize';
-import { Spinner, TextInput } from 'flowbite-react';
-import { addPost, uploadImages } from '@actions/post';
+import { Spinner } from 'flowbite-react';
+import { addPost } from '@actions/post';
 import { useCookies } from 'react-cookie';
 
 function PostForm() {
@@ -19,28 +19,34 @@ function PostForm() {
     }, [addPostDone]);
 
     const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
-
     const [text, setText] = useState<string>('')
     const [tagItem, setTagItem] = useState<string>('')
-    const [tagList, setTagList] = useState<string[] | []>([])
+    const [tagList, setTagList] = useState<string[]>([])
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
-    const [articleImage, setArticleImage] = useState<any>([])
 
     const onSubmit = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-        const headerForMulti = { "Content-Type": "multipart/form-data;charset=UTF-8" };
         e.preventDefault();
+        const result = new FormData;
         if (!text || !text.trim()) {
             setTextError(true)
             return
         }
         setTextError(false)
-        console.log(text, tagList, headerForMulti, articleImage)
-        dispatch(addPost({
-            articleContext: text, tags: tagList, headerForMulti, menu: "Diary",
-            member: { memberId: cookies.user.num }, articleImagesNames: articleImage
-        }));
-    }, [text])
+        result.set("articleContext", text)
+        result.set("menu", "Diary")
+        result.set("memberId", cookies.user.num)
+        result.set("tags", tagList.join(", "))
+
+
+
+        if (imageInput.current.files) {
+            for (let i = 0; i < imageInput.current.files.length; i++) {
+                result.append("articleImages", imageInput.current.files[i])
+            }
+        }
+        dispatch(addPost(result));
+    }, [text, tagList])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);
@@ -85,10 +91,6 @@ function PostForm() {
         [].forEach.call(e.target.files, (image) => {
             formData.append('image', image);
         });
-        console.log(formData)
-        setArticleImage(formData)
-        // console.log('images', formData);
-        // // dispatch(uploadImages(formData, headers));
     }, [])
     const onArticleImage = () => {
         let reader = new FileReader()

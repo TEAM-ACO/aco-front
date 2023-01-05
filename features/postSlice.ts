@@ -145,8 +145,6 @@ const postSlice = createSlice({
       .addCase(loadPosts.fulfilled, (state: IArticleState, action: PayloadAction<ArticleLoadPosts>) => {
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
-        console.log(state.mainPosts);
-
         state.mainPosts = _concat(state.mainPosts, action.payload);
         state.hasMorePosts = action.payload.length === 5;
       })
@@ -265,10 +263,22 @@ const postSlice = createSlice({
         state.updateCommentError = null;
       })
       .addCase(updateComment.fulfilled, (state: any, action: PayloadAction<any>) => {
-        const post: any = _find(state.mainPosts, { articleId: action.payload.articleId });
+        // const post: any = _find(state.mainPosts, { articleId: action.payload[0].article.articleId });
         state.updateCommentLoading = false;
         state.updateCommentDone = true;
-        post.replys = _concat(post.replys, action.payload);
+        // post.replys = _concat(post.replys, action.payload);
+        state.mainPosts = _concat(
+          state.mainPosts.map((v: IArticle) => {
+            console.log(state.mainPosts);
+            if (v.articleId == action.payload[action.payload.length - 1].article.articleId) {
+              let tmp = v;
+              tmp.replys = action.payload;
+              return tmp;
+            } else {
+              return v;
+            }
+          }),
+        );
       })
       .addCase(updateComment.rejected, (state: IArticleState, action) => {
         state.updateCommentLoading = false;
@@ -292,5 +302,4 @@ const postSlice = createSlice({
       }),
 });
 
-// export const { addPosts, loadPosts } = postSlice.actions;
 export default postSlice;

@@ -21,7 +21,8 @@ const PostCard = ({ post }: PostProps) => {
     const { loadPostsDone } = useAppSelector((state) => state.post);
     const [favorite, setFavorite] = useState<boolean>(false);
     const [requestPage, setRequestPage] = useState<number>(0);
-    const [requestComment, setRequestComment] = useState<number>(10);
+    const [requestComment, setRequestComment] = useState<number>(5);
+    const [allCount, setAllCount] = useState(post.replys[post.replys.length - 1]?.totalCount || 0)
 
     const loadMore = useCallback(() => {
         setRequestPage(prev => prev + 1);
@@ -35,11 +36,11 @@ const PostCard = ({ post }: PostProps) => {
     const onCommentViewMore = useCallback(() => {
         dispatch(updateComment({
             article: { articleId: post.articleId },
-            requestedPageNumber: requestPage, requestedPageSize: requestComment
+            requestedPageNumber: requestPage, requestedPageSize: post.replys[post.replys.length - 1].totalCount
         }))
         loadMore();
         loadMoreComment();
-    }, [requestPage])
+    }, [requestPage, requestComment])
 
     const onFavoriteToggle = useCallback(() => {
         dispatch(likePost({ article: { articleId: post.articleId }, liker: cookies.user.num }))
@@ -112,7 +113,7 @@ const PostCard = ({ post }: PostProps) => {
                                 {/* 총 댓글 개수는 여기서 뽑아야할것같아영 paging할때 총개수도 넘기도록 만들어놨어영*/}
                             </div>
                             <div className='ml-6 py-2 mt-3'>
-                                {post.replys.length >= 5 ?
+                                {allCount - post.replys.length >= 5 ?
                                     <Button onClick={onCommentViewMore}>
                                         댓글 더 보기
                                     </Button>

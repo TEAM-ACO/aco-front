@@ -1,8 +1,13 @@
 import React, { useState, useCallback, useRef } from 'react'
 import { Avatar, Modal, Button } from 'flowbite-react'
 import dayjs from 'dayjs';
+import { IReply } from '@features/postSlice';
 
-function CommentList({ comment }: any) {
+type CommentProps = {
+    comment: IReply
+}
+
+function CommentList({ comment }: CommentProps) {
     const date = dayjs("2022-12-12").format("YY-MM-DD");
 
     const selectBox = useRef() as React.MutableRefObject<HTMLSelectElement>
@@ -128,7 +133,7 @@ function CommentList({ comment }: any) {
                                     id="report"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                                     <option value={''} disabled>신고사유를 선택해주세요</option>
-                                    {reportTests.map((v, i) => <option value={i}>{v}</option>)}
+                                    {reportTests.map((v, i) => <option key={i} value={i}>{v}</option>)}
                                 </select>
                             </div>
                             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">

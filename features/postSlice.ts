@@ -21,6 +21,7 @@ export interface IArticle {
   articleId: number;
   articleContext: string;
   articleLike: number;
+  menu: string;
   member: IMember;
   tags: string[];
   visitors: number;
@@ -162,7 +163,7 @@ const postSlice = createSlice({
       .addCase(addPost.fulfilled, (state: IArticleState, action) => {
         state.addPostLoading = false;
         state.addPostDone = true;
-        state.mainPosts.unshift(action.payload);
+        // state.mainPosts.unshift(action.payload);
         // state.articleimage = []; // 이미지 처리 어떻게 할건지 의논
       })
       .addCase(addPost.rejected, (state: IArticleState, action) => {
@@ -265,7 +266,6 @@ const postSlice = createSlice({
       })
       .addCase(updateComment.fulfilled, (state: any, action: PayloadAction<any>) => {
         const post: any = _find(state.mainPosts, { articleId: action.payload.articleId });
-        console.log(action.payload);
         state.updateCommentLoading = false;
         state.updateCommentDone = true;
         post.replys = _concat(post.replys, action.payload);

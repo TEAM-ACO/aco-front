@@ -35,10 +35,8 @@ export type reportArticle = {
 export const addPost = createAsyncThunk<FormData, any>('article/addPost', async (data, thunkAPI) => {
   const headerForMulti = { 'Content-Type': 'multipart/form-data;charset=UTF-8' };
   try {
-    const response = await axios.post('/api/article/wirte', data);
-    // thunkAPI.dispatch(userSlice.actions.addPostToMe(response.data.memberId));
     const response = await axios.post('/api/article/write', data ,{headers:{"Content-Type": "multipart/form-data"}});
-    thunkAPI.dispatch(userSlice.actions.addPostToMe(response.data.memberId));
+    // thunkAPI.dispatch(userSlice.actions.addPostToMe(response.data.memberId));
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue((error as AxiosError).response?.data);

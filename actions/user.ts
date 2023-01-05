@@ -56,7 +56,7 @@ export const logout = createAsyncThunk('member/logout', async () => {
   }
 });
 
-export const changeNickname = createAsyncThunk('user/changeNickname', async (data, { rejectWithValue }) => {
+export const changeNickname = createAsyncThunk<any, any>('user/changeNickname', async (data, { rejectWithValue }) => {
   try {
     const response = await AxiosType.post('/api/setting/changenickname', data);
     return response.data;
@@ -65,7 +65,7 @@ export const changeNickname = createAsyncThunk('user/changeNickname', async (dat
   }
 });
 
-export const changePassword = createAsyncThunk('user/changePassword', async (data, { rejectWithValue }) => {
+export const changePassword = createAsyncThunk<any, any>('user/changePassword', async (data, { rejectWithValue }) => {
   console.log(data);
   try {
     const response = await AxiosType.post('/api/setting/changepassword', data);

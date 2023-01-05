@@ -21,18 +21,24 @@ const PostCard = ({ post }: PostProps) => {
     const { loadPostsDone } = useAppSelector((state) => state.post);
     const [favorite, setFavorite] = useState<boolean>(false);
     const [requestPage, setRequestPage] = useState<number>(0);
+    const [requestComment, setRequestComment] = useState<number>(10);
 
     const loadMore = useCallback(() => {
         setRequestPage(prev => prev + 1);
     }, [requestPage])
 
+    const loadMoreComment = useCallback(() => {
+        setRequestComment(prev => prev + 5);
+    }, [requestComment])
+
     // 댓글 업데이트
     const onCommentViewMore = useCallback(() => {
         dispatch(updateComment({
             article: { articleId: post.articleId },
-            requestedPageNumber: requestPage, requestedPageSize: 5
+            requestedPageNumber: requestPage, requestedPageSize: requestComment
         }))
         loadMore();
+        loadMoreComment();
     }, [requestPage])
 
     const onFavoriteToggle = useCallback(() => {
@@ -71,7 +77,7 @@ const PostCard = ({ post }: PostProps) => {
                                     </p>
                                 </button>
                             </div>
-                            <Dropdown post={post} />
+                            <Dropdown key={post.articleId} post={post} />
                         </div>
                         <div>
                             <p className="text-gray-700 text-base">
@@ -96,16 +102,14 @@ const PostCard = ({ post }: PostProps) => {
                     <div>
                         <div className=" border-l border-gray-200 dark:border-gray-700">
                             <div className='ml-6 py-2 mt-3 text-xs text-cyan-800'>
-                                {`${post.replys[post.replys.length - 1]?.totalCount}개의 댓글`}
+                                {`${post.replys[post.replys.length - 1]?.totalCount || 0}개의 댓글`}
                             </div>
                             <div className='mt-2'>
                                 {/* 전체 댓글 수 보내달라고 할 것 */}
-                                {post.replys.map((post: IReply) => {
-                                    return (
-                                        <CommentList key={post.member.nickname} comment={post} />
-                                    )
-                                    {/* 총 댓글 개수는 여기서 뽑아야할것같아영 paging할때 총개수도 넘기도록 만들어놨어영*/ }
-                                })}
+                                {post.replys.map((cmt: IReply) => (
+                                    <CommentList key={cmt.replyId} comment={cmt} />
+                                ))}
+                                {/* 총 댓글 개수는 여기서 뽑아야할것같아영 paging할때 총개수도 넘기도록 만들어놨어영*/}
                             </div>
                             <div className='ml-6 py-2 mt-3'>
                                 {post.replys.length >= 5 ?

@@ -28,7 +28,7 @@ function mainpage() {
 
     useEffect(() => {
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 5 }));
+            dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 10 }));
             loadMore()
         }
     }, [inView, hasMorePosts, loadPostsLoading]);

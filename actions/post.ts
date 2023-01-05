@@ -33,7 +33,7 @@ export type reportArticle = {
 
 // write부분의 Menu가 뭔지..
 export const addPost = createAsyncThunk<FormData, any>('article/addPost', async (data, thunkAPI) => {
-  const headerForMulti = { "Content-Type": "multipart/form-data;charset=UTF-8" };
+  const headerForMulti = { 'Content-Type': 'multipart/form-data;charset=UTF-8' };
   try {
     const response = await axios.post('/api/article/write', data ,{headers:{"Content-Type": "multipart/form-data"}});
     // thunkAPI.dispatch(userSlice.actions.addPostToMe(response.data.memberId));
@@ -55,6 +55,7 @@ export const uploadImages = createAsyncThunk('article/uploadImages', async (data
 export const loadPosts = createAsyncThunk<ArticleLoadPosts, IPageNumber | undefined>(
   'article/loadPosts',
   async (data, { rejectWithValue }) => {
+    console.log(data);
     try {
       const response: AxiosRequestConfig<any> = await AxiosType.post('/api/article/list', data);
       let tmp = [...response.data];
@@ -137,19 +138,6 @@ export const loadUserPosts = createAsyncThunk<IArticle, IloadUserPosts>(
   },
 );
 
-// 댓글 업데이트
-export const updateComment = createAsyncThunk<IArticle, IUpdateComment>(
-  'article/reply/updateComment',
-  async (data, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(`/api/article/reply/${data.article.articleId}`, data);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue((error as AxiosError).response?.data);
-    }
-  },
-);
-
 // 신고
 export const reportPost = createAsyncThunk<reportArticle, reportArticle>(
   'article/reportPost',
@@ -193,7 +181,21 @@ export const addComment = createAsyncThunk<IArticle, IAddComment>(
   },
 );
 
-export const loadMenu = createAsyncThunk<IArticle>('article/postMenu', async (data, { rejectWithValue }) => {
+// 댓글 업데이트
+export const updateComment = createAsyncThunk<IArticle, IUpdateComment>(
+  'article/reply/updateComment',
+  async (data, { rejectWithValue }) => {
+    console.log(data);
+    try {
+      const response = await axios.post(`/api/article/reply/${data.article.articleId}`, data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
+
+export const loadMenu = createAsyncThunk<IArticle, IArticle>('article/postMenu', async (data, { rejectWithValue }) => {
   console.log(data);
   try {
     const response = await axios.post(`/api/article/menu/${data.menu}`, data);

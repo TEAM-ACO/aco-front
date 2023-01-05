@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { useAppDispatch, useAppSelector } from '@store/config';
+import { useAppDispatch, useAppSelector, wrapper } from '@store/config';
 import { useInView } from 'react-intersection-observer';
 
 import PostCard from '@pages/mainpage/PostCard';
@@ -8,6 +8,7 @@ import { IArticle } from '@features/postSlice';
 import PostForm from '@pages/mainpage/PostForm';
 import Mainpage from '@pages/mainpage/mainpage';
 import { loadUserPosts } from '@actions/post';
+import axios from 'axios';
 
 // dynamic routing - 이거 하려면 Next작성 이후에 해야하는 듯.
 const userid = () => {
@@ -50,5 +51,18 @@ const userid = () => {
         </div>
     )
 }
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }: any) => {
+    console.log(store, req)
+    const cookie = req ? req.headers.cookie : '';
+    axios.defaults.headers.Cookie = '';
+    if (req && cookie) {
+        // cookie.user
+    }
+    store.dispatch(loadUserPosts({ memberId: params.id } as any) as any)
+    return {
+        props: { message: 'Message from SSR' },
+    }
+})
 
 export default userid

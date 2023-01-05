@@ -100,15 +100,14 @@ const userSlice = createSlice({
   name: 'member',
   initialState,
   reducers: {
-    addPostToMe(state, action) {
-      state.me.Posts.unshift({ id: action.payload });
-    },
+    // addPostToMe(state, action) {
+    //   state.me.mainPosts.unshift({ id: action.payload });
+    // },
   },
   // 동기는 reducers에 비동기는 extraReducers에 작성합니다.
   extraReducers: (builder) =>
     builder
       // 로그인 유지하려면 서버사이드 렌더링을 해결해야 됨.
-      // loadMyInfo, loadUser는 나중에 쓸 것.
       // loadMyInfo
       .addCase(loadMyInfo.pending, (state: IUserState) => {
         state.loadMyInfoLoading = true;

@@ -3,9 +3,11 @@ import { useAppSelector, useAppDispatch } from '@store/config'
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { Spinner, TextInput } from 'flowbite-react';
 import { addPost, uploadImages } from '@actions/post';
+import { useCookies } from 'react-cookie';
 
 function PostForm() {
     const dispatch = useAppDispatch();
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { addPostDone, addPostLoading, addPostError } = useAppSelector((state) => state.post);
 
     useEffect(() => {
@@ -23,6 +25,7 @@ function PostForm() {
     const [tagList, setTagList] = useState<string[] | []>([])
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
+    const [articleImage, setArticleImage] = useState<any>([])
 
     const onSubmit = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         const headerForMulti = { "Content-Type": "multipart/form-data;charset=UTF-8" };
@@ -31,9 +34,12 @@ function PostForm() {
             setTextError(true)
             return
         }
-        // console.log(text)
         setTextError(false)
-        dispatch(addPost({ articleContext: text, tag: tagList, headerForMulti }));
+        console.log(text, tagList, headerForMulti, articleImage)
+        dispatch(addPost({
+            articleContext: text, tags: tagList, headerForMulti, menu: "Diary",
+            member: { memberId: cookies.user.num }, articleImagesNames: articleImage
+        }));
     }, [text])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -51,7 +57,6 @@ function PostForm() {
     }, [tagItem, tagList])
 
     const submitTagItem = useCallback(() => {
-        console.log(tagItem, tagList)
         let updatedTagList = [...tagList]
         if (updatedTagList.includes(tagItem)) {
             setTagError(true)
@@ -67,7 +72,6 @@ function PostForm() {
         const deleteTagItem = e.target.parentElement.firstChild.innerText
         const filteredTagList = tagList.filter(tagItem => tagItem !== deleteTagItem)
         setTagList(filteredTagList)
-        console.log(tagItem, tagList)
     }, [tagItem, tagList])
 
     // 이미지
@@ -76,13 +80,20 @@ function PostForm() {
         if (!e.target.files) {
             return;
         }
-        console.log('images', e.target.files);
+        console.log(e.target.files)
         const formData = new FormData();
         [].forEach.call(e.target.files, (image) => {
             formData.append('image', image);
         });
-        dispatch(uploadImages(formData, headers));
+        console.log(formData)
+        setArticleImage(formData)
+        // console.log('images', formData);
+        // // dispatch(uploadImages(formData, headers));
     }, [])
+    const onArticleImage = () => {
+        let reader = new FileReader()
+        console.log(reader)
+    }
 
     const onClickImageUpload = useCallback(() => {
         if (!imageInput.current) {
@@ -176,8 +187,8 @@ function PostForm() {
                                 </svg>
                                 <span className="sr-only">Upload image</span>
                             </button>
-                            {/* <div>
-                                {articleImage.map((v: any) => {
+                            <div>
+                                {/* {articleImage.map((v: any) => {
                                     return (
                                         <div key={v} style={{ display: 'inline-block' }}>
                                             <img src={'http://localhost:3075/' + v} style={{ width: '200px' }} alt={v} />
@@ -186,8 +197,8 @@ function PostForm() {
                                             </div>
                                         </div>
                                     )
-                                })}
-                            </div> */}
+                                })} */}
+                            </div>
                         </div>
                     </div>
                 </div>

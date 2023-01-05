@@ -18,7 +18,6 @@ type PostProps = {
 const PostCard = ({ post }: PostProps) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const dispatch = useAppDispatch();
-    const id = useAppSelector((state) => state.user.me?.email);
     const { loadPostsDone } = useAppSelector((state) => state.post);
     const [favorite, setFavorite] = useState<boolean>(false);
     const [requestPage, setRequestPage] = useState<number>(0);

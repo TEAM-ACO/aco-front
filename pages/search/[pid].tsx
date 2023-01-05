@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '@store/config';
+import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
 import { loadPosts, searchPosts } from '@actions/post';
 import Mainpage from '../mainpage/mainpage';
@@ -7,6 +7,7 @@ import PostForm from '../mainpage/PostForm';
 import { IArticle } from '@features/postSlice';
 import PostCard from '../mainpage/PostCard';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 function PostList() {
     const dispatch = useAppDispatch();
@@ -48,5 +49,18 @@ function PostList() {
         </div>
     )
 }
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
+    console.log(req, params)
+    // const cookie = req ? req.headers.cookie : '';
+    // axios.defaults.headers.Cookie = '';
+    // if (req && cookie) {
+    //     axios.defaults.headers.Cookie = cookie
+    // }
+    store.dispatch(searchPosts({ keywords: params?.pid, requestedPageNumber: 0, requestedPageSize: 5 } as any))
+    return {
+        props: {},
+    }
+})
 
 export default PostList

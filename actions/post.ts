@@ -3,9 +3,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { backendURL } from '../config/url';
 import { IArticle } from '@features/postSlice';
-
-import { IReply } from '../features/postSlice';
-
 import {
   ArticleLoadPosts,
   ArticleSearch,
@@ -17,7 +14,6 @@ import {
   IloadUserPosts,
   TypeAxios,
 } from '@typings/db';
-import { result } from 'lodash';
 
 axios.defaults.baseURL = backendURL;
 // 프론트 - 백 쿠키공유
@@ -39,7 +35,7 @@ export type reportArticle = {
 export const addPost = createAsyncThunk('article/addPost', async (data, thunkAPI) => {
   try {
     const response = await axios.post('/api/article/wirte', data);
-    thunkAPI.dispatch(userSlice.actions.addPostToMe(response.data.memberId));
+    // thunkAPI.dispatch(userSlice.actions.addPostToMe(response.data.memberId));
     return response.data;
   } catch (error) {
     return thunkAPI.rejectWithValue((error as AxiosError).response?.data);
@@ -119,6 +115,7 @@ export const searchPosts = createAsyncThunk<ArticleSearch, ISearchPosts>(
 export const loadUserPosts = createAsyncThunk<IArticle, IloadUserPosts>(
   'article/loadUserPosts',
   async (data, { rejectWithValue }) => {
+    console.log(data);
     try {
       const response = await axios.post(`/api/article/list/${data.memberId}`, data);
       let tmp = [...response.data];
@@ -180,15 +177,27 @@ export const addComment = createAsyncThunk<IArticle, IAddComment>(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(`/api/article/reply/write`, data);
-      if(response.data){
-        const result = await axios.post(`/api/article/reply/${data.article.articleId}`, { requestedPageNumber: 0, requestedPageSize: data.replyGroup+5 })
-        return {articleId:data.article.articleId, replys:result.data};
-      }else{
-        return [] as any
-        
-      }      
+      if (response.data) {
+        const result = await axios.post(`/api/article/reply/${data.article.articleId}`, {
+          requestedPageNumber: 0,
+          requestedPageSize: data.replyGroup + 5,
+        });
+        return { articleId: data.article.articleId, replys: result.data };
+      } else {
+        return [] as any;
+      }
     } catch (error) {
       return rejectWithValue((error as AxiosError).response?.data);
     }
   },
 );
+
+export const loadMenu = createAsyncThunk<IArticle>('article/postMenu', async (data, { rejectWithValue }) => {
+  console.log(data);
+  try {
+    const response = await axios.post(`/api/article/menu/${data.menu}`, data);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue((error as AxiosError).response?.data);
+  }
+});

@@ -7,6 +7,7 @@ import {
   addComment,
   addPost,
   likePost,
+  loadMenu,
   loadPosts,
   loadUserPosts,
   searchPosts,
@@ -51,6 +52,9 @@ export interface IReply {
 export interface IArticleState {
   mainPosts: IArticle[];
   hasMorePosts: boolean;
+  loadUserPostsLoading: boolean;
+  loadUserPostsDone: boolean;
+  loadUserPostsError: unknown | null;
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
   loadPostsError: unknown | null;
@@ -80,11 +84,17 @@ export interface IArticleState {
   updateCommentLoading: boolean;
   updateCommentDone: boolean;
   updateCommentError: unknown | null;
+  loadMenuLoading: boolean;
+  loadMenuDone: boolean;
+  loadMenuError: unknown | null;
 }
 
 export const initialState: IArticleState = {
   mainPosts: [],
   hasMorePosts: true,
+  loadUserPostsLoading: false, // 개인 post 로드
+  loadUserPostsDone: false,
+  loadUserPostsError: null,
   loadPostsLoading: false, // post 로드
   loadPostsDone: false,
   loadPostsError: null,
@@ -114,6 +124,9 @@ export const initialState: IArticleState = {
   updateCommentLoading: false,
   updateCommentDone: false,
   updateCommentError: null,
+  loadMenuLoading: false, // 개인 post 로드
+  loadMenuDone: false,
+  loadMenuError: null,
 };
 
 const postSlice = createSlice({
@@ -132,7 +145,7 @@ const postSlice = createSlice({
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
         console.log(state.mainPosts);
-        
+
         state.mainPosts = _concat(state.mainPosts, action.payload);
         state.hasMorePosts = action.payload.length === 5;
       })
@@ -189,19 +202,19 @@ const postSlice = createSlice({
       })
       // loadUserPosts
       .addCase(loadUserPosts.pending, (state: IArticleState) => {
-        state.loadPostsLoading = true;
-        state.loadPostsDone = false;
+        state.loadUserPostsLoading = true;
+        state.loadUserPostsDone = false;
         state.loadPostsError = null;
       })
       .addCase(loadUserPosts.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
-        state.loadPostsLoading = false;
-        state.loadPostsDone = true;
+        state.loadUserPostsLoading = false;
+        state.loadUserPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
         state.hasMorePosts = action.payload.length === 5;
       })
       .addCase(loadUserPosts.rejected, (state: IArticleState, action) => {
-        state.loadPostsLoading = false;
-        state.loadPostsError = action.error.message;
+        state.loadUserPostsLoading = false;
+        state.loadUserPostsError = action.error.message;
       })
       // likePost
       .addCase(likePost.pending, (state: IArticleState) => {
@@ -225,19 +238,20 @@ const postSlice = createSlice({
         state.addCommentDone = false;
         state.addCommentError = null;
       })
-      .addCase(addComment.fulfilled, (state: any, action: PayloadAction<IArticleReply>) => {  
+      .addCase(addComment.fulfilled, (state: any, action: PayloadAction<IArticleReply>) => {
         state.addCommentLoading = false;
         state.addCommentDone = true;
-        state.mainPosts = _concat(state.mainPosts.map((v:IArticle)=>{
-          if(v.articleId==action.payload.articleId){           
-            let tmp  = v
-            tmp.replys = action.payload.replys
-            return tmp
-          }else{
-            return v
-          }
-        }));
-
+        state.mainPosts = _concat(
+          state.mainPosts.map((v: IArticle) => {
+            if (v.articleId == action.payload.articleId) {
+              let tmp = v;
+              tmp.replys = action.payload.replys;
+              return tmp;
+            } else {
+              return v;
+            }
+          }),
+        );
       })
       .addCase(addComment.rejected, (state: IArticleState, action) => {
         state.addCommentLoading = false;
@@ -259,6 +273,22 @@ const postSlice = createSlice({
       .addCase(updateComment.rejected, (state: IArticleState, action) => {
         state.updateCommentLoading = false;
         state.updateCommentError = action.error.message;
+      })
+      // loadMenu
+      .addCase(loadMenu.pending, (state: IArticleState) => {
+        state.loadMenuLoading = true;
+        state.loadMenuDone = false;
+        state.loadPostsError = null;
+      })
+      .addCase(loadMenu.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
+        state.loadMenuLoading = false;
+        state.loadMenuDone = true;
+        state.mainPosts = _concat(state.mainPosts, action.payload);
+        state.hasMorePosts = action.payload.length === 5;
+      })
+      .addCase(loadMenu.rejected, (state: IArticleState, action) => {
+        state.loadMenuLoading = false;
+        state.loadMenuError = action.error.message;
       }),
 });
 

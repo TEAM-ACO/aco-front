@@ -1,36 +1,31 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useLayoutEffect } from 'react'
 import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
-
 import Link from 'next/link';
-import { logout } from '@actions/user';
-import { useAppDispatch, useAppSelector } from '@store/config';
 
 function OffCanvas() {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     // const [cookies2, setCookie2, removeCookie2] = useCookies(['access']);
     // const [cookies3, setCookie3, removeCookie3] = useCookies(['refresh']);
-    const dispatch = useAppDispatch();
     const router = useRouter();
 
     const [myNickname, setMyNickname] = useState('')
+    const [userLink, setUserLink] = useState('')
 
-    const { me } = useAppSelector((state) => state.user);
     const onLogOut = useCallback(() => {
         removeCookie('user')
-
         router.replace('/');
-
-        // removeCookie2('access')
-        // removeCookie3('refresh')
-        // dispatch(logout())
     }, [])
+
+    useLayoutEffect(() => {
+        setUserLink(cookies.user.num)
+    })
 
     useEffect(() => {
         if (cookies.user) {
             setTimeout(() => {
                 setMyNickname(cookies.user.username.toUpperCase())
-            }, 1000)
+            }, 300)
         }
     })
 
@@ -81,7 +76,7 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <Link href={`/user/${cookies.user?.num}`}>
+                                <Link href={`/user/${userLink}`}>
                                     <span className="ml-2">내가 쓴 게시글</span>
                                 </Link>
                             </li>
@@ -95,7 +90,7 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <Link href="#">
+                                <Link href="/menu">
                                     <span className="ml-2">내가 좋아요한 게시글</span>
                                 </Link>
                             </li>

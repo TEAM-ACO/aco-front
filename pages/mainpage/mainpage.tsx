@@ -6,29 +6,16 @@ function mainLayout({ children }: {
     children: React.ReactNode
 }) {
     const [speedDial, setSpeedDial] = useState<boolean>(true);
-    // const [offcanvasToggle, setOffcanvasToggle] = useState<boolean>(true);
     const [channelToggle, setChannelToggle] = useState<boolean>(true);
 
     const onToggleSpeedDial = useCallback(() => {
         setSpeedDial((prev) => !prev)
     }, [])
 
-    // const onOffcanvasToggle = useCallback(() => {
-    //     if (offcanvasToggle == true) {
-    //         setChannelToggle(false)
-    //         console.log('dd')
-    //     }
-    //     setOffcanvasToggle((prev) => !prev)
-    // }, [])
-
     const onChannelToggle = useCallback(() => {
-        // if (channelToggle == true) {
-        //     setOffcanvasToggle(false)
-        // }
         setChannelToggle((prev) => !prev)
     }, [])
 
-    // slg넘어가면 true
     useEffect(() => {
         window.addEventListener('resize', handleResize);
         return () => {
@@ -38,7 +25,6 @@ function mainLayout({ children }: {
 
     const handleResize = useCallback(() => {
         if (window.innerWidth > 890) {
-            // setOffcanvasToggle(true)
             setChannelToggle(true)
             return
         }
@@ -65,29 +51,6 @@ function mainLayout({ children }: {
                 <div data-dial-init className="fixed right-6 bottom-6 group">
                     <div className={speedDial ? 'hidden' : 'flex'}>
                         <div id="speed-dial-menu-default" className="flex flex-col items-center mb-4 space-y-2">
-                            {/* <button
-                                onClick={onOffcanvasToggle}
-                                type="button"
-                                data-tooltip-target="tooltip-share"
-                                data-tooltip-placement="left"
-                                className="flex justify-center items-center w-[52px] h-[52px] text-gray-500 hover:text-gray-900 bg-white rounded-full border border-gray-200 dark:border-gray-600 shadow-sm dark:hover:text-white dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 focus:outline-none dark:focus:ring-gray-400">
-                                <svg
-                                    aria-hidden="true"
-                                    className="-ml-px w-6 h-6 "
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"></path>
-                                </svg>
-                                <span className="sr-only">Share</span>
-                            </button>
-                            <div
-                                id="tooltip-share"
-                                role="tooltip"
-                                className="inline-block absolute invisible z-10 py-2 px-3 w-auto text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                                Share
-                                <div className="tooltip-arrow" data-popper-arrow></div>
-                            </div> */}
                             <button
                                 onClick={onChannelToggle}
                                 type="button"
@@ -129,7 +92,6 @@ function mainLayout({ children }: {
                         <span className="sr-only">Open actions menu</span>
                     </button>
                 </div>
-                {/* <SpeedDial /> */}
             </div>
         </div>
     )

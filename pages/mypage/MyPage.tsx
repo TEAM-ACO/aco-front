@@ -2,9 +2,11 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import { changeNickname, changePassword } from '@actions/user';
 import { Spinner } from 'flowbite-react';
+import { useCookies } from "react-cookie"
 
 const MyPageForm = () => {
     const dispatch = useAppDispatch();
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { me, changeNicknameLoading, changeNicknameDone, changeNicknameError,
         changePasswordDone, changePasswordError, changePasswordLoading
     } = useAppSelector((state) => state.user);
@@ -27,7 +29,7 @@ const MyPageForm = () => {
     }, [changeNicknameDone, changeNicknameError]);
 
     const onNicknameSubmit = useCallback(() => {
-        dispatch(changeNickname({ nickname }));
+        dispatch(changeNickname({ memberId: cookies.user.num, "nickname":nickname }));
     }, [nickname]);
 
     // 비밀번호 변경
@@ -56,7 +58,7 @@ const MyPageForm = () => {
     }, [changePasswordDone, changePasswordError]);
 
     const onPasswordSubmit = useCallback(() => {
-        dispatch(changePassword({ cpassword: currentPassword, upassword: rePassword }));
+        dispatch(changePassword({ memberId: cookies.user.num, cpassword: currentPassword, upassword: rePassword }));
     }, [password]);
 
     return (

@@ -21,7 +21,7 @@ function Comments({ post }: cmt) {
         }
         dispatch(addComment({
             article: { articleId: post.articleId }, member: { memberId: cookies.user.num }, replyContext: commentText,
-            replyGroup: post.replys[post.replys.length - 1]?.totalCount,
+            replyGroup: (post.replys[post.replys.length - 1]?.totalCount || 0),
             replySort: 0,
         }))
         setCommentText('')

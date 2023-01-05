@@ -29,7 +29,7 @@ function PostList() {
             return
         }
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(searchPosts({ keywords: pid, requestedPageNumber: requestPage, requestedPageSize: 5 }));
+            dispatch(searchPosts({ keywords: pid, requestedPageNumber: requestPage, requestedPageSize: 10 }));
             loadMore()
         }
     }, [inView, hasMorePosts, loadPostsLoading, pid]);
@@ -57,7 +57,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
     // if (req && cookie) {
     //     axios.defaults.headers.Cookie = cookie
     // }
-    store.dispatch(searchPosts({ keywords: params?.pid, requestedPageNumber: 0, requestedPageSize: 5 } as any))
+    store.dispatch(searchPosts({ keywords: params?.pid } as any))
     return {
         props: {},
     }

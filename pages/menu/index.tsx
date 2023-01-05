@@ -23,7 +23,7 @@ const Menu = () => {
 
     useEffect(() => {
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(loadMenu({ menu: 0, requestedPageNumber: requestPage, requestedPageSize: 5 }));
+            dispatch(loadMenu({ menu: 0, requestedPageNumber: requestPage, requestedPageSize: 10 }));
             loadMore()
         }
     }, [inView, hasMorePosts, loadPostsLoading]);
@@ -53,7 +53,7 @@ const Menu = () => {
 //     if (req && cookie) { //cookie => cookis.user
 //         axios.defaults.headers.Cookie = cookie;
 //     }
-//     await store.dispatch(loadMenu({ menu: 0, requestedPageNumber: 0, requestedPageSize: 5 }));
+//     await store.dispatch(loadMenu({ menu: 0 }));
 
 //     return { props: { message: 'Success SSR' } }
 // })

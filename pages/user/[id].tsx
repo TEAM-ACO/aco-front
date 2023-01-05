@@ -32,7 +32,7 @@ const userid = () => {
             return
         }
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(loadUserPosts({ memberId: id, requestedPageNumber: requestPage, requestedPageSize: 5 }));
+            dispatch(loadUserPosts({ memberId: id, requestedPageNumber: requestPage, requestedPageSize: 10 }));
             loadMore();
         }
     }, [inView, hasMorePosts, loadPostsLoading, id]);
@@ -61,7 +61,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
     // if (req && cookie) {
     //     axios.defaults.headers.Cookie = cookie
     // }
-    store.dispatch(loadUserPosts({ memberId: params.id, requestedPageNumber: 0, requestedPageSize: 5 } as any))
+    store.dispatch(loadUserPosts({ memberId: params.id } as any))
     return {
         props: {},
     }

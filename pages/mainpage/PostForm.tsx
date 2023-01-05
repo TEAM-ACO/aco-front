@@ -80,23 +80,6 @@ function PostForm() {
         setTagList(filteredTagList)
     }, [tagItem, tagList])
 
-    // 이미지
-    const onImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const headers = { 'Content-Type': 'multipart/form-data' }
-        if (!e.target.files) {
-            return;
-        }
-        console.log(e.target.files)
-        const formData = new FormData();
-        [].forEach.call(e.target.files, (image) => {
-            formData.append('image', image);
-        });
-    }, [])
-    const onArticleImage = () => {
-        let reader = new FileReader()
-        console.log(reader)
-    }
-
     const onClickImageUpload = useCallback(() => {
         if (!imageInput.current) {
             return;
@@ -172,7 +155,6 @@ function PostForm() {
                                 multiple
                                 hidden
                                 ref={imageInput}
-                                onChange={onImageUpload}
                             />
                             <button
                                 className="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"

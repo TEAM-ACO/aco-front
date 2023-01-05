@@ -7,6 +7,7 @@ import { useCookies } from 'react-cookie';
 
 function PostForm() {
     const dispatch = useAppDispatch();
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { addPostDone, addPostLoading, addPostError } = useAppSelector((state) => state.post);
 
     useEffect(() => {
@@ -18,7 +19,6 @@ function PostForm() {
     }, [addPostDone]);
     
     const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [text, setText] = useState<string>('')
     const [tagItem, setTagItem] = useState<string>('')
     const [tagList, setTagList] = useState<string[]>([])
@@ -37,11 +37,10 @@ function PostForm() {
         result.set("menu", "Diary")
         result.set("memberId", cookies.user.num)
         result.set("tags", tagList.join(", "))
-        
-        
-        
+
         if(imageInput.current.files){
             for(let i = 0; i<imageInput.current.files.length; i++){
+
                 result.append("articleImages", imageInput.current.files[i])
             }
         }
@@ -63,7 +62,6 @@ function PostForm() {
     }, [tagItem, tagList])
 
     const submitTagItem = useCallback(() => {
-        console.log(tagItem, tagList)
         let updatedTagList = [...tagList]
         if (updatedTagList.includes(tagItem)) {
             setTagError(true)
@@ -79,7 +77,6 @@ function PostForm() {
         const deleteTagItem = e.target.parentElement.firstChild.innerText
         const filteredTagList = tagList.filter(tagItem => tagItem !== deleteTagItem)
         setTagList(filteredTagList)
-        console.log(tagItem, tagList)
     }, [tagItem, tagList])
 
     // 이미지
@@ -88,12 +85,16 @@ function PostForm() {
         if (!e.target.files) {
             return;
         }
-        console.log('images', e.target.files);
+        console.log(e.target.files)
         const formData = new FormData();
         [].forEach.call(e.target.files, (image) => {
             formData.append('image', image);
         });
     }, [])
+    const onArticleImage = () => {
+        let reader = new FileReader()
+        console.log(reader)
+    }
 
     const onClickImageUpload = useCallback(() => {
         if (!imageInput.current) {
@@ -187,8 +188,8 @@ function PostForm() {
                                 </svg>
                                 <span className="sr-only">Upload image</span>
                             </button>
-                            {/* <div>
-                                {articleImage.map((v: any) => {
+                            <div>
+                                {/* {articleImage.map((v: any) => {
                                     return (
                                         <div key={v} style={{ display: 'inline-block' }}>
                                             <img src={'http://localhost:3075/' + v} style={{ width: '200px' }} alt={v} />
@@ -197,8 +198,8 @@ function PostForm() {
                                             </div>
                                         </div>
                                     )
-                                })}
-                            </div> */}
+                                })} */}
+                            </div>
                         </div>
                     </div>
                 </div>

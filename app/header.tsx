@@ -1,24 +1,25 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCookies } from "react-cookie"
 import { Navbar } from "flowbite-react";
 import SearchForm from '@pages/SearchForm';
 
 const header = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const [headerCookie, setHeaderCookie] = useState(null)
 
     useEffect(() => {
-
+        setHeaderCookie(cookies.user)
     })
 
     return (
         <>
-            {/* {cookies.user ?
+            {headerCookie !== null ?
                 <Navbar
                     className='pr-0 md:pr-10'
                     fluid={true}
                     rounded={false}
                 >
-                    <Navbar.Brand href="/">
+                    <Navbar.Brand href="/mainpage">
                         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
                             Project ACO
                         </span>
@@ -44,42 +45,43 @@ const header = () => {
                         </Navbar.Link>
                     </Navbar.Collapse>
                 </Navbar>
-                : */}
-            <Navbar
-                className='pr-0 md:pr-10'
-                fluid={true}
-                rounded={false}
-            >
-                <Navbar.Brand href="/">
-                    <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-                        Project ACO
-                    </span>
-                </Navbar.Brand>
-                <div className="flex">
-                    <SearchForm />
-                    <Navbar.Toggle />
-                </div>
-                <Navbar.Collapse>
-                    <Navbar.Link href="/" className="md:hidden px-0 mx-0">
-                        내가 쓴 게시글
-                    </Navbar.Link>
-                    <Navbar.Link href="/" className="md:hidden px-0 mx-0">
-                        내가 좋아요한 게시글
-                    </Navbar.Link>
-                    <Navbar.Link
-                        href="/"
-                        active={true}
-                    >
-                        Home
-                    </Navbar.Link>
-                    <Navbar.Link href="/LogIn">
-                        로그인
-                    </Navbar.Link>
-                    <Navbar.Link href="/SignUp">
-                        회원가입
-                    </Navbar.Link>
-                </Navbar.Collapse>
-            </Navbar>
+                :
+                <Navbar
+                    className='pr-0 md:pr-10'
+                    fluid={true}
+                    rounded={false}
+                >
+                    <Navbar.Brand href="/">
+                        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+                            Project ACO
+                        </span>
+                    </Navbar.Brand>
+                    <div className="flex">
+                        <SearchForm />
+                        <Navbar.Toggle />
+                    </div>
+                    <Navbar.Collapse>
+                        <Navbar.Link href="/" className="md:hidden px-0 mx-0">
+                            내가 쓴 게시글
+                        </Navbar.Link>
+                        <Navbar.Link href="/" className="md:hidden px-0 mx-0">
+                            내가 좋아요한 게시글
+                        </Navbar.Link>
+                        <Navbar.Link
+                            href="/"
+                            active={true}
+                        >
+                            Home
+                        </Navbar.Link>
+                        <Navbar.Link href="/LogIn">
+                            로그인
+                        </Navbar.Link>
+                        <Navbar.Link href="/SignUp">
+                            회원가입
+                        </Navbar.Link>
+                    </Navbar.Collapse>
+                </Navbar>
+            }
         </>
     )
 }

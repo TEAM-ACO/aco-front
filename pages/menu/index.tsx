@@ -1,19 +1,17 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
-import { loadPosts, searchPosts } from '@actions/post';
+import { loadMenu, searchPosts } from '@actions/post';
 import Mainpage from '../mainpage/mainpage';
 import PostForm from '../mainpage/PostForm';
 import { IArticle } from '@features/postSlice';
 import PostCard from '../mainpage/PostCard';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import { GetServerSideProps } from 'next';
 
-function PostList() {
+const Menu = () => {
     const dispatch = useAppDispatch();
-    const router = useRouter()
-    const { pid } = router.query
-    // singlePosts 만들기
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
     const [requestPage, setRequestPage] = useState<number>(0);
 
@@ -24,15 +22,11 @@ function PostList() {
     }, [requestPage])
 
     useEffect(() => {
-        console.log(pid)
-        if (pid === undefined) {
-            return
-        }
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(searchPosts({ keywords: pid, requestedPageNumber: requestPage, requestedPageSize: 5 }));
+            dispatch(loadMenu({ menu: 0, requestedPageNumber: requestPage, requestedPageSize: 5 }));
             loadMore()
         }
-    }, [inView, hasMorePosts, loadPostsLoading, pid]);
+    }, [inView, hasMorePosts, loadPostsLoading]);
     return (
         <div>
             <Mainpage>
@@ -50,17 +44,18 @@ function PostList() {
     )
 }
 
-export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
-    console.log(req, params)
-    // const cookie = req ? req.headers.cookie : '';
-    // axios.defaults.headers.Cookie = '';
-    // if (req && cookie) {
-    //     axios.defaults.headers.Cookie = cookie
-    // }
-    store.dispatch(searchPosts({ keywords: params?.pid, requestedPageNumber: 0, requestedPageSize: 5 } as any))
-    return {
-        props: {},
-    }
-})
+// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+//     console.log('getServerSideProps start');
+//     console.log(req.headers);
 
-export default PostList
+//     const cookie = req ? req.headers.cookie : '';
+//     axios.defaults.headers.Cookie = '';
+//     if (req && cookie) { //cookie => cookis.user
+//         axios.defaults.headers.Cookie = cookie;
+//     }
+//     await store.dispatch(loadMenu({ menu: 0, requestedPageNumber: 0, requestedPageSize: 5 }));
+
+//     return { props: { message: 'Success SSR' } }
+// })
+
+export default Menu

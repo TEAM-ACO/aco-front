@@ -31,15 +31,15 @@ export type reportArticle = {
   articleReportContext: string | unknown;
 };
 
-// write부분의 Menu가 뭔지..
-export const addPost = createAsyncThunk<FormData, any>('article/addPost', async (data, thunkAPI) => {
-  const headerForMulti = { 'Content-Type': 'multipart/form-data;charset=UTF-8' };
+export const addPost = createAsyncThunk<FormData, any>('article/addPost', async (data, { rejectWithValue }) => {
+  // const headerForMulti = { 'Content-Type': 'multipart/form-data;charset=UTF-8' };
   try {
-    const response = await axios.post('/api/article/write', data ,{headers:{"Content-Type": "multipart/form-data"}});
-    // thunkAPI.dispatch(userSlice.actions.addPostToMe(response.data.memberId));
+    const response = await axios.post('/api/article/write', data, {
+      headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
+    });
     return response.data;
   } catch (error) {
-    return thunkAPI.rejectWithValue((error as AxiosError).response?.data);
+    return rejectWithValue((error as AxiosError).response?.data);
   }
 });
 
@@ -55,7 +55,6 @@ export const uploadImages = createAsyncThunk('article/uploadImages', async (data
 export const loadPosts = createAsyncThunk<ArticleLoadPosts, IPageNumber | undefined>(
   'article/loadPosts',
   async (data, { rejectWithValue }) => {
-    console.log(data);
     try {
       const response: AxiosRequestConfig<any> = await AxiosType.post('/api/article/list', data);
       let tmp = [...response.data];
@@ -75,24 +74,12 @@ export const loadPosts = createAsyncThunk<ArticleLoadPosts, IPageNumber | undefi
       return rejectWithValue((error as AxiosError).response?.data);
     }
   },
-  // {
-  //   condition: (data, { getState }) => {
-  //     const { post } = getState();
-
-  //     if (post.loadPostsLoading) {
-  //       // console.warn('중복 요청 취소');
-  //       return false;
-  //     }
-  //     return true;
-  //   },
-  // }
 );
 
 // 검색
 export const searchPosts = createAsyncThunk<ArticleSearch, ISearchPosts>(
   'article/searchPosts',
   async (data, { rejectWithValue }) => {
-    // console.log(data);
     try {
       const response = await axios.post(`/api/article/search/${data.keywords}`, data);
       let tmp = [...response.data];
@@ -151,6 +138,7 @@ export const reportPost = createAsyncThunk<reportArticle, reportArticle>(
   },
 );
 
+// 좋아요
 export const likePost = createAsyncThunk<IArticle, ILikePost>('article/likePost', async (data, { rejectWithValue }) => {
   console.log(data);
   try {
@@ -161,6 +149,7 @@ export const likePost = createAsyncThunk<IArticle, ILikePost>('article/likePost'
   }
 });
 
+// 댓글쓰기
 export const addComment = createAsyncThunk<IArticle, IAddComment>(
   'article/addComment',
   async (data, { rejectWithValue }) => {
@@ -195,6 +184,7 @@ export const updateComment = createAsyncThunk<IArticle, IUpdateComment>(
   },
 );
 
+// 각 메뉴별 게시글
 export const loadMenu = createAsyncThunk<IArticle, IArticle>('article/postMenu', async (data, { rejectWithValue }) => {
   console.log(data);
   try {

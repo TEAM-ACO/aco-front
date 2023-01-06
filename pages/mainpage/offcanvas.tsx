@@ -18,8 +18,8 @@ function OffCanvas() {
     }, [])
 
     useEffect(() => {
-        setUserLink(cookies.user.num)
         if (cookies.user) {
+            setUserLink(cookies.user.num)
             setTimeout(() => {
                 setMyNickname(cookies.user.username.toUpperCase())
             }, 300)

@@ -1,11 +1,9 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { adminArticle, adminDelete } from '@actions/admin'
+import { adminDelete } from '@actions/admin'
 import { IAdminArticle } from '@features/adminSlice'
-import wrapper, { useAppDispatch } from '@store/config'
+import { useAppDispatch } from '@store/config'
 import { Table } from 'flowbite-react'
-import { GetServerSideProps } from 'next'
-import { IAdminDelete } from '@typings/db'
-import { NextRouter, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 
 type ContentProps = {
     content: IAdminArticle
@@ -58,13 +56,5 @@ const AdminArticleComponent = ({ content }: ContentProps) => {
         </Table.Body>
     )
 }
-
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-    console.log(req.headers);
-
-    await store.dispatch(adminDelete({ which: "article" }));
-
-    return { props: {} }
-})
 
 export default AdminArticleComponent

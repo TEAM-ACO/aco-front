@@ -1,12 +1,23 @@
+import { adminDelete } from '@actions/admin'
 import { IAdminArticleReport } from '@features/adminSlice'
+import { useAppDispatch } from '@store/config'
 import { Table } from 'flowbite-react'
-import React from 'react'
+import { useRouter } from 'next/router'
+import React, { useCallback } from 'react'
 
 type ContentProps = {
     content: IAdminArticleReport
 }
 
 const AdminReportArticleComponent = ({ content }: ContentProps) => {
+    const dispatch = useAppDispatch();
+    const router = useRouter()
+
+    const onDelete = useCallback(() => {
+        const refresh: any = router.reload
+        dispatch(adminDelete({ which: "articlereport", number: content.articleReportId }))
+        refresh(window.location.pathname)
+    }, [])
     return (
         <Table.Body className="divide-y">
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -24,6 +35,7 @@ const AdminReportArticleComponent = ({ content }: ContentProps) => {
                 <Table.Cell>
                     <button
                         className="font-medium text-red-600 hover:underline dark:text-red-500"
+                        onClick={onDelete}
                     >
                         삭제
                     </button>

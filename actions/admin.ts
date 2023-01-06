@@ -60,7 +60,7 @@ export const adminArticle = createAsyncThunk<IAdminState, IPageNumber | undefine
   },
 );
 
-export const adminArticleReport = createAsyncThunk<IAdminState, IPageNumber>(
+export const adminArticleReport = createAsyncThunk<IAdminState, IPageNumber | undefined>(
   'admin/articlereport',
   async (data, { rejectWithValue }) => {
     try {

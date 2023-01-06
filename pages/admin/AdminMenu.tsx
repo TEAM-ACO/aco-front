@@ -20,31 +20,32 @@ const AdminMenu = ({ children }: {
                             방문자 분석</Link>
                     </li>
                     <li className="mr-2">
-                        <Link href="/admin/member"
+                        <Link href="/admin/member/1"
                             className={`inline-block p-4 rounded-t-lg 
-                            ${router.pathname === "/admin/member" ? "text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500"
+                            ${router.route === "/admin/member/[pid]" ? "pointer-events-none text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500"
                                     : "hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"}`}>
                             멤버 관리</Link>
                     </li>
                     {/* 조회, 삭제만 */}
                     <li className="mr-2">
-                        <Link href="/admin/article"
+                        <Link href="/admin/article/1"
+                            prefetch={false}
                             className={`inline-block p-4 rounded-t-lg 
-                            ${router.pathname === "/admin/article" ? "text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500"
+                            ${router.route === "/admin/article/[pid]" ? "pointer-events-none text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500"
                                     : "hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"}`}>
                             게시글 관리</Link>
                     </li>
                     <li className="mr-2">
-                        <Link href="/admin/reportarticle"
+                        <Link href="/admin/reportarticle/1"
                             className={`inline-block p-4 rounded-t-lg 
-                            ${router.pathname === "/admin/reportarticle" ? "text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500"
+                            ${router.route === "/admin/reportarticle/[pid]" ? "text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500"
                                     : "hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"}`}>
                             게시글 신고 관리</Link>
                     </li>
                     <li className="mr-2">
-                        <Link href="/admin/reportmember"
+                        <Link href="/admin/reportmember/1"
                             className={`inline-block p-4 rounded-t-lg 
-                            ${router.pathname === "/admin/reportmember" ? "text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500"
+                            ${router.route === "/admin/reportmember[pid]" ? "text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500"
                                     : "hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"}`}>
                             멤버 신고 관리</Link>
                     </li>

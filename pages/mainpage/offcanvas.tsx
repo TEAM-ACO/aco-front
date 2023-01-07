@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useLayoutEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import Link from 'next/link';
@@ -17,11 +17,8 @@ function OffCanvas() {
         router.replace('/');
     }, [])
 
-    useLayoutEffect(() => {
-        setUserLink(cookies.user.num)
-    })
-
     useEffect(() => {
+        setUserLink(cookies.user.num)
         if (cookies.user) {
             setTimeout(() => {
                 setMyNickname(cookies.user.username.toUpperCase())

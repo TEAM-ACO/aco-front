@@ -21,7 +21,7 @@ export const adminVisitant = createAsyncThunk<IAdminState, IAdminVisitant>(
   },
 );
 
-export const adminMember = createAsyncThunk<IAdminState, IPageNumber>(
+export const adminMember = createAsyncThunk<IAdminState, IPageNumber | undefined>(
   'admin/member',
   async (data, { rejectWithValue }) => {
     try {
@@ -34,7 +34,7 @@ export const adminMember = createAsyncThunk<IAdminState, IPageNumber>(
   },
 );
 
-export const adminMemberReport = createAsyncThunk<IAdminState, IPageNumber>(
+export const adminMemberReport = createAsyncThunk<IAdminState, IPageNumber | undefined>(
   'admin/memberreport',
   async (data, { rejectWithValue }) => {
     try {

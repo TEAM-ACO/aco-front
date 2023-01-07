@@ -177,7 +177,7 @@ const userSlice = createSlice({
       .addCase(changeNickname.fulfilled, (state: IUserState, action: PayloadAction<any>) => {
         state.changeNicknameLoading = false;
         state.changeNicknameDone = true;
-        state.me.nickname = action.payload.nickname;
+        state.me = action.payload.nickname;
       })
       .addCase(changeNickname.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.changeNicknameLoading = false;

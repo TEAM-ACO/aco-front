@@ -4,6 +4,8 @@ import { IAdminArticle } from '@features/adminSlice'
 import wrapper, { useAppDispatch } from '@store/config'
 import { Table } from 'flowbite-react'
 import { GetServerSideProps } from 'next'
+import { IAdminDelete } from '@typings/db'
+import { NextRouter, useRouter } from 'next/router'
 
 type ContentProps = {
     content: IAdminArticle
@@ -11,10 +13,18 @@ type ContentProps = {
 
 const AdminArticleComponent = ({ content }: ContentProps) => {
     const dispatch = useAppDispatch();
+    const router = useRouter()
+    const [memberEmail, setMemberEmail] = useState('');
+
+    useEffect(() => {
+        if (content.member === undefined) return
+        setMemberEmail(content.member.email)
+    }, [])
 
     const onDelete = useCallback(() => {
+        const refresh: any = router.reload
         dispatch(adminDelete({ which: "article", number: content.articleId }))
-        window.location.replace("/admin/article")
+        refresh(window.location.pathname)
     }, [])
     return (
         <Table.Body className="divide-y">
@@ -25,7 +35,7 @@ const AdminArticleComponent = ({ content }: ContentProps) => {
                     {content.articleContext}
                 </Table.Cell>
                 <Table.Cell>
-                    {content.member.email}
+                    {memberEmail}
                 </Table.Cell>
                 <Table.Cell>
                     {content.menu}
@@ -50,11 +60,9 @@ const AdminArticleComponent = ({ content }: ContentProps) => {
 }
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-    console.log('getServerSideProps start');
     console.log(req.headers);
 
-    // await store.dispatch(adminArticle());
-    await store.dispatch(adminDelete());
+    await store.dispatch(adminDelete({ which: "article" }));
 
     return { props: {} }
 })

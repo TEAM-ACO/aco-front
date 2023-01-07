@@ -3,7 +3,7 @@ import { Table } from 'flowbite-react'
 import AdminMenu from './AdminMenu'
 import { useAppDispatch } from '@store/config'
 import { adminVisitant } from '@actions/admin'
-import Select from 'react-select';
+import Select, { ActionMeta, SingleValue } from 'react-select';
 import AdminGraph from './AdminGraph'
 
 const options = [
@@ -13,11 +13,15 @@ const options = [
     { value: 12, label: '12주일' },
 ];
 
+type IOptions = {
+    value: number;
+    label: string;
+    onChange?: ((option: SingleValue<IOptions> | null, actionMeta: ActionMeta<IOptions>) => void) | undefined
+}
+
 const Visitant = () => {
     const dispatch = useAppDispatch();
-    const [selectedOption, setSelectedOption] = useState<any>(options[0]);
-
-    console.log(selectedOption.value)
+    const [selectedOption, setSelectedOption] = useState<IOptions | any>(options[0]);
 
     useEffect(() => {
         dispatch(adminVisitant({ week: selectedOption.value }))
@@ -48,6 +52,7 @@ const Visitant = () => {
                 {/* <AdminGraph /> */}
             </Table>
             <Select
+                instanceId="long-value-select"
                 defaultValue={selectedOption}
                 onChange={setSelectedOption}
                 options={options}

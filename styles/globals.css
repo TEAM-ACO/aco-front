@@ -193,3 +193,11 @@ button {
 .carousel-class > div:nth-child(4) > button > span:hover {
   background-color: #e4eaf6;
 }
+
+/*.navMediaquery {
+  background: blue;
+}
+.navMediaquery > div > ul {
+  background: red;
+  gap: 0;
+}*/

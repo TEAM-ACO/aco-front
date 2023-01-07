@@ -3,6 +3,7 @@ import { useCookies } from "react-cookie"
 import { IArticle, IReply } from '@features/postSlice';
 import { useAppDispatch, useAppSelector } from '@store/config';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import dayjs from 'dayjs';
 import { Avatar, Button, Carousel } from 'flowbite-react';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
@@ -10,14 +11,17 @@ import Dropdown from './Dropdown';
 import PostCardContent from './PostCardContent';
 import PostImage from './PostImage';
 import { likePost, updateComment } from '@actions/post';
+import { useRouter } from 'next/router';
 
 type PostProps = {
     post: IArticle
 }
 
 const PostCard = ({ post }: PostProps) => {
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const date = dayjs(post.date).format("YY-MM-DD");
+    const router = useRouter();
     const dispatch = useAppDispatch();
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { loadPostsDone } = useAppSelector((state) => state.post);
     const [favorite, setFavorite] = useState<boolean>(false);
     const [requestPage, setRequestPage] = useState<number>(0);
@@ -45,6 +49,10 @@ const PostCard = ({ post }: PostProps) => {
     const onFavoriteToggle = useCallback(() => {
         dispatch(likePost({ article: { articleId: post.articleId }, liker: cookies.user.num }))
         setFavorite((prev) => !prev)
+    }, [])
+
+    const onMenu = useCallback(() => {
+        router.push(`/category/${post.menu.toLowerCase()}`)
     }, [])
 
     return (
@@ -79,6 +87,17 @@ const PostCard = ({ post }: PostProps) => {
                                 </button>
                             </div>
                             <Dropdown key={post.articleId} post={post} />
+                        </div>
+                        <div className='text-gray-500 text-xs items-center mb-3 flex justify-between'>
+                            <p>
+                                카테고리:&nbsp;
+                                <button onClick={onMenu}>
+                                    {post.menu}
+                                </button>
+                            </p>
+                            <div>
+                                {date}
+                            </div>
                         </div>
                         <div>
                             <p className="text-gray-700 text-base">

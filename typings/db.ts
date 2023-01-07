@@ -32,6 +32,11 @@ export interface IUpdateComment extends IPageNumber {
   article: { articleId: number };
 }
 
+export interface IMenu extends IPageNumber {
+  menu: string;
+  num: number;
+}
+
 export interface IAddComment {
   article: { articleId: number };
   member: { memberId: number };

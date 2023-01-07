@@ -4,9 +4,18 @@ import ReactTextareaAutosize from 'react-textarea-autosize';
 import { Spinner } from 'flowbite-react';
 import { addPost } from '@actions/post';
 import { useCookies } from 'react-cookie';
+import Select from 'react-select';
 
+const options = [
+    { value: 0, label: 'Diary' },
+    { value: 1, label: 'Tip' },
+    { value: 2, label: 'Question' },
+];
+
+// 기본 이미지 넣기
 function PostForm() {
     const dispatch = useAppDispatch();
+    const [selectedOption, setSelectedOption] = useState<any>(options[0]);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { addPostDone, addPostLoading, addPostError } = useAppSelector((state) => state.post);
 
@@ -17,14 +26,14 @@ function PostForm() {
             setTagItem('');
         }
     }, [addPostDone]);
-    
+
     const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
     const [text, setText] = useState<string>('')
     const [tagItem, setTagItem] = useState<string>('')
     const [tagList, setTagList] = useState<string[]>([])
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
-    
+
     const onSubmit = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const result = new FormData;
@@ -34,12 +43,12 @@ function PostForm() {
         }
         setTextError(false)
         result.set("articleContext", text)
-        result.set("menu", "Diary")
+        result.set("menu", selectedOption.value)
         result.set("memberId", cookies.user.num)
         result.set("tags", tagList.join(", "))
 
-        if(imageInput.current.files){
-            for(let i = 0; i<imageInput.current.files.length; i++){
+        if (imageInput.current.files) {
+            for (let i = 0; i < imageInput.current.files.length; i++) {
 
                 result.append("articleImages", imageInput.current.files[i])
             }
@@ -62,6 +71,10 @@ function PostForm() {
     }, [tagItem, tagList])
 
     const submitTagItem = useCallback(() => {
+        if (tagList.length >= 10) {
+            alert('태그는 10개까지 등록할 수 있습니다.')
+            return
+        }
         let updatedTagList = [...tagList]
         if (updatedTagList.includes(tagItem)) {
             setTagError(true)
@@ -87,9 +100,6 @@ function PostForm() {
     }, [imageInput.current]);
 
 
-
-
-    // 그냥 물어보기
     return (
         <div className='w-full'>
             {/* <div className="px-6" encType="multipart/form-data" onSubmit={onSubmit}> */}
@@ -136,6 +146,14 @@ function PostForm() {
                         </div>
                     </div>
                     {tagError && <p className='text-xs py-1 px-4 text-red-500 font-medium'>이미 등록된 태그입니다.</p>}
+                    <Select
+                        className="px-4 py-2"
+                        id="long-value-select"
+                        instanceId="long-value-select"
+                        defaultValue={selectedOption}
+                        onChange={setSelectedOption}
+                        options={options}
+                    />
                     <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
                         <button
                             type="button"

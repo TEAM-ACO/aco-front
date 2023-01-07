@@ -2,9 +2,10 @@ import React, { useState, useCallback, useEffect } from 'react'
 import AdminMenu from '../AdminMenu'
 import AdminReportArticleComponent from './AdminReportArticle'
 import { Table } from 'flowbite-react'
-import { useAppDispatch, useAppSelector } from '@store/config'
+import wrapper, { useAppDispatch, useAppSelector } from '@store/config'
 import { adminArticleReport } from '@actions/admin'
 import { IAdminArticleReport } from '@features/adminSlice'
+import { GetServerSideProps } from 'next'
 
 const AdminReportArticle = () => {
     const dispatch = useAppDispatch();
@@ -14,7 +15,6 @@ const AdminReportArticle = () => {
     const loadMore = useCallback(() => {
         setRequestPage(prev => prev + 1);
     }, [requestPage])
-
 
     useEffect(() => {
         dispatch(adminArticleReport({ requestedPageNumber: requestPage, requestedPageSize: 10 }))
@@ -49,5 +49,13 @@ const AdminReportArticle = () => {
         </AdminMenu>
     )
 }
+
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+    console.log(req.headers);
+
+    await store.dispatch(adminArticleReport());
+
+    return { props: {} }
+})
 
 export default AdminReportArticle

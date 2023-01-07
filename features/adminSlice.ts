@@ -14,7 +14,7 @@ import _remove from 'lodash/concat';
 export interface IAdmin {
   email: string;
   nickname: string;
-  name: string;
+  memberId: number;
 }
 
 export interface IAdminVisitant {

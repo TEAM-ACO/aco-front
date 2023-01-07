@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { IAdmin } from '@features/adminSlice'
 import { useAppDispatch } from '@store/config'
 import { Table } from 'flowbite-react'
 import { adminDelete } from '@actions/admin'
+import { useRouter } from 'next/router'
 
 type ContentProps = {
     content: IAdmin
@@ -10,9 +11,12 @@ type ContentProps = {
 
 const AdminMemberComponent = ({ content }: ContentProps) => {
     const dispatch = useAppDispatch();
+    const router = useRouter()
 
     const onDelete = useCallback(() => {
-        dispatch(adminDelete({ which: "member" }))
+        const refresh: any = router.reload
+        dispatch(adminDelete({ which: "member", number: content.memberId }))
+        refresh(window.location.pathname)
     }, [])
     return (
         <Table.Body className="divide-y">
@@ -26,7 +30,7 @@ const AdminMemberComponent = ({ content }: ContentProps) => {
                     {content.nickname}
                 </Table.Cell>
                 <Table.Cell>
-                    {content.name}
+                    {content.memberId}
                 </Table.Cell>
                 <Table.Cell>
                     <button

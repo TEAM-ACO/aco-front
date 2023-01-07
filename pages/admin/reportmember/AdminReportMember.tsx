@@ -12,7 +12,7 @@ const AdminReportMemberComponent = ({ content }: ContentProps) => {
     const dispatch = useAppDispatch();
 
     const onDelete = useCallback(() => {
-        dispatch(adminDelete({ which: "memberreport" }))
+        dispatch(adminDelete({ which: "memberreport", number: content.userReportId }))
     }, [])
 
     return (

@@ -29,7 +29,7 @@ const MyPageForm = () => {
     }, [changeNicknameDone, changeNicknameError]);
 
     const onNicknameSubmit = useCallback(() => {
-        dispatch(changeNickname({ memberId: cookies.user.num, "nickname":nickname }));
+        dispatch(changeNickname({ memberId: cookies.user.num, "nickname": nickname }));
     }, [nickname]);
 
     // 비밀번호 변경
@@ -151,36 +151,6 @@ const MyPageForm = () => {
                             readOnly
                             required />
                     </div>
-                    {/* <div>
-                        <label
-                            htmlFor="gender"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Gender
-                        </label>
-                        <select
-                            id="gender"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option value={''} disabled>성별</option>
-                            <option value="남성">남성</option>
-                            <option value="여성">여성</option>
-                            <option value="비공개">비공개</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label
-                            htmlFor="birth"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Birth
-                        </label>
-                        <input
-                            type="number"
-                            name="birth"
-                            id="birth"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            value="2022"
-                            placeholder="Ex. 12"
-                            required />
-                    </div> */}
                     <div className="sm:col-span-2">
                         <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                         <textarea id="description" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Write a product description here...">Standard glass, 3.8GHz 8-core 10th-generation Intel Core i7 processor, Turbo Boost up to 5.0GHz, 16GB 2666MHz DDR4 memory, Radeon Pro 5500 XT with 8GB of GDDR6 memory, 256GB SSD storage, Gigabit Ethernet, Magic Mouse 2, Magic Keyboard - US</textarea>

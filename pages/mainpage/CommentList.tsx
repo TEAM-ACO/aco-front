@@ -8,7 +8,7 @@ type CommentProps = {
 }
 
 function CommentList({ comment }: CommentProps) {
-    const date = dayjs("2022-12-12").format("YY-MM-DD");
+    const date = dayjs(comment.date).format("YY-MM-DD");
 
     const selectBox = useRef() as React.MutableRefObject<HTMLSelectElement>
 

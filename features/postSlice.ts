@@ -26,6 +26,7 @@ export interface IArticle {
   tags: string[];
   visitors: number;
   reported: number;
+  date: string;
   replys: IReply[];
   articleImagesNames: string[];
 }
@@ -46,6 +47,7 @@ export interface IReply {
   replyContext: string[];
   replyGroup: number;
   member: IMember;
+  date: string;
   totalCount: number;
   replySort: number;
 }
@@ -146,7 +148,7 @@ const postSlice = createSlice({
         state.loadPostsLoading = false;
         state.loadPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
-        state.hasMorePosts = action.payload.length === 5;
+        state.hasMorePosts = action.payload.length === 10;
       })
       .addCase(loadPosts.rejected, (state: IArticleState, action: PayloadAction<unknown | null>) => {
         state.loadPostsLoading = false;
@@ -193,7 +195,7 @@ const postSlice = createSlice({
         state.searchPostsLoading = false;
         state.searchPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
-        state.hasMorePosts = action.payload.length === 5;
+        state.hasMorePosts = action.payload.length === 10;
       })
       .addCase(searchPosts.rejected, (state: IArticleState, action) => {
         state.searchPostsLoading = false;
@@ -209,7 +211,7 @@ const postSlice = createSlice({
         state.loadUserPostsLoading = false;
         state.loadUserPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
-        state.hasMorePosts = action.payload.length === 5;
+        state.hasMorePosts = action.payload.length === 10;
       })
       .addCase(loadUserPosts.rejected, (state: IArticleState, action) => {
         state.loadUserPostsLoading = false;
@@ -294,7 +296,7 @@ const postSlice = createSlice({
         state.loadMenuLoading = false;
         state.loadMenuDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
-        state.hasMorePosts = action.payload.length === 5;
+        state.hasMorePosts = action.payload.length === 10;
       })
       .addCase(loadMenu.rejected, (state: IArticleState, action) => {
         state.loadMenuLoading = false;

@@ -1,16 +1,14 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
-import { loadMenu, searchPosts } from '@actions/post';
-import Mainpage from '../mainpage/mainpage';
-import PostForm from '../mainpage/PostForm';
+import { loadMenu } from '@actions/post';
+import Mainpage from '../../mainpage/mainpage';
+import PostForm from '../../mainpage/PostForm';
 import { IArticle } from '@features/postSlice';
-import PostCard from '../mainpage/PostCard';
-import { useRouter } from 'next/router';
-import axios from 'axios';
+import PostCard from '../../mainpage/PostCard';
 import { GetServerSideProps } from 'next';
 
-const Menu = () => {
+const Tip = () => {
     const dispatch = useAppDispatch();
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
     const [requestPage, setRequestPage] = useState<number>(0);
@@ -23,7 +21,7 @@ const Menu = () => {
 
     useEffect(() => {
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(loadMenu({ menu: 0, requestedPageNumber: requestPage, requestedPageSize: 10 }));
+            dispatch(loadMenu({ num: 1, menu: "Tip", requestedPageNumber: requestPage, requestedPageSize: 10 }));
             loadMore()
         }
     }, [inView, hasMorePosts, loadPostsLoading]);
@@ -44,18 +42,11 @@ const Menu = () => {
     )
 }
 
-// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-//     console.log('getServerSideProps start');
-//     console.log(req.headers);
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
 
-//     const cookie = req ? req.headers.cookie : '';
-//     axios.defaults.headers.Cookie = '';
-//     if (req && cookie) { //cookie => cookis.user
-//         axios.defaults.headers.Cookie = cookie;
-//     }
-//     await store.dispatch(loadMenu({ menu: 0 }));
+    await store.dispatch(loadMenu());
 
-//     return { props: { message: 'Success SSR' } }
-// })
+    return { props: {} }
+})
 
-export default Menu
+export default Tip

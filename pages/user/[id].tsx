@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useAppDispatch, useAppSelector, wrapper } from '@store/config';
 import { useInView } from 'react-intersection-observer';
+import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
+
 
 import PostCard from '@pages/mainpage/PostCard';
-import { useRouter } from 'next/router';
 import { IArticle } from '@features/postSlice';
 import PostForm from '@pages/mainpage/PostForm';
 import Mainpage from '@pages/mainpage/mainpage';
 import { loadUserPosts } from '@actions/post';
 import axios from 'axios';
-import { GetServerSideProps } from 'next';
 
 const userid = () => {
     const dispatch = useAppDispatch();
@@ -24,8 +25,6 @@ const userid = () => {
     const loadMore = useCallback(() => {
         setRequestPage(prev => prev + 1);
     }, [requestPage])
-
-    // console.log(mainPosts)
 
     useEffect(() => {
         if (id === undefined) {
@@ -54,13 +53,8 @@ const userid = () => {
     )
 }
 
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
-    // console.log(req, params)
-    // const cookie = req ? req.headers.cookie : '';
-    // axios.defaults.headers.Cookie = '';
-    // if (req && cookie) {
-    //     axios.defaults.headers.Cookie = cookie
-    // }
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }: any) => {
+
     store.dispatch(loadUserPosts({ memberId: params.id } as any))
     return {
         props: {},

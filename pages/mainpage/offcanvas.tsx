@@ -5,8 +5,6 @@ import Link from 'next/link';
 
 function OffCanvas() {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    // const [cookies2, setCookie2, removeCookie2] = useCookies(['access']);
-    // const [cookies3, setCookie3, removeCookie3] = useCookies(['refresh']);
     const router = useRouter();
 
     const [myNickname, setMyNickname] = useState('')
@@ -87,8 +85,36 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <Link href="/menu">
-                                    <span className="ml-2">내가 좋아요한 게시글</span>
+                                <Link href="/category/diary">
+                                    <span className="ml-2">다이어리</span>
+                                </Link>
+                            </li>
+                            <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
+                                <span>
+                                    <svg className="fill-current h-5 w-5 " viewBox="0 0 24 24">
+                                        <path
+                                            d="M16 20h4v-4h-4m0-2h4v-4h-4m-6-2h4V4h-4m6
+                        4h4V4h-4m-6 10h4v-4h-4m-6 4h4v-4H4m0 10h4v-4H4m6
+                        4h4v-4h-4M4 8h4V4H4v4z"
+                                        ></path>
+                                    </svg>
+                                </span>
+                                <Link href="/category/tip">
+                                    <span className="ml-2">팁</span>
+                                </Link>
+                            </li>
+                            <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
+                                <span>
+                                    <svg className="fill-current h-5 w-5 " viewBox="0 0 24 24">
+                                        <path
+                                            d="M16 20h4v-4h-4m0-2h4v-4h-4m-6-2h4V4h-4m6
+                        4h4V4h-4m-6 10h4v-4h-4m-6 4h4v-4H4m0 10h4v-4H4m6
+                        4h4v-4h-4M4 8h4V4H4v4z"
+                                        ></path>
+                                    </svg>
+                                </span>
+                                <Link href="/category/question">
+                                    <span className="ml-2">질문</span>
                                 </Link>
                             </li>
                             <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">

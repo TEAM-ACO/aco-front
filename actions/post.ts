@@ -8,6 +8,7 @@ import {
   ArticleSearch,
   IAddComment,
   ILikePost,
+  IMenu,
   IPageNumber,
   ISearchPosts,
   IUpdateComment,
@@ -185,12 +186,26 @@ export const updateComment = createAsyncThunk<IArticle, IUpdateComment>(
 );
 
 // 각 메뉴별 게시글
-export const loadMenu = createAsyncThunk<IArticle, IArticle>('article/postMenu', async (data, { rejectWithValue }) => {
-  console.log(data);
-  try {
-    const response = await axios.post(`/api/article/menu/${data.menu}`, data);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue((error as AxiosError).response?.data);
-  }
-});
+export const loadMenu = createAsyncThunk<IArticle, IMenu | undefined>(
+  'article/postMenu',
+  async (data, { rejectWithValue }) => {
+    console.log(data);
+    try {
+      const response = await axios.post(`/api/article/menu/${data?.num}`, data);
+      let tmp = [...response.data];
+      let result = Promise.all(
+        tmp.map(async (v: IArticle) => {
+          await axios
+            .post(`/api/article/reply/${v.articleId}`, { requestedPageNumber: 0, requestedPageSize: 5 })
+            .then((res) => {
+              v.replys = [...res.data];
+            });
+          return v;
+        }),
+      );
+      return result as any;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);

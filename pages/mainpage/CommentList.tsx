@@ -2,31 +2,29 @@ import React, { useState, useCallback, useRef } from 'react'
 import { Avatar, Modal, Button } from 'flowbite-react'
 import dayjs from 'dayjs';
 import { IReply } from '@features/postSlice';
+import { useRouter } from 'next/router';
+import ReComments from './ReCommentForm';
 
 type CommentProps = {
     comment: IReply
 }
 
 function CommentList({ comment }: CommentProps) {
+    const router = useRouter();
     const date = dayjs(comment.date).format("YY-MM-DD");
 
-    const selectBox = useRef() as React.MutableRefObject<HTMLSelectElement>
+    console.log(comment)
 
     const [commentReport, setCommentReport] = useState<boolean>(false);
-    const [onReportModal, setOnReportModal] = useState<boolean>(false);
     const [commentDelete, setCommentDelete] = useState<boolean>(false);
     const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
 
-    const reportTests: string[] = ["부적절한 콘텐츠입니다", "성적인 콘텐츠입니다.", "진실을 오도하고 있습니다",
-        "증오 또는 악의적인 콘텐츠입니다.", "권리를 침해하고 있습니다.", "테러를 조장하고 있습니다.", "폭력적인 콘텐츠입니다."]
-
-    const onCommentModalOpen = useCallback(() => {
-        setOnReportModal((prev) => !prev)
+    const userinfo = useCallback(() => {
+        router.push(`/user/${comment.member.memberId}`)
     }, [])
 
-    const onReportModalClose = useCallback(() => {
-        setOnReportModal((prev) => !prev)
-        setCommentReport(false)
+    const onRereplyModalOpen = useCallback(() => {
+        setCommentReport((prev) => !prev)
     }, [])
 
     const onDeleteOpen = useCallback(() => {
@@ -42,8 +40,10 @@ function CommentList({ comment }: CommentProps) {
         <div>
             <li className="ml-6 flex items-center justify-between">
                 <div className='flex items-center'>
-                    {/* 누르면 프로필로 가게 할 것 */}
-                    <button className='pr-2'>
+                    <div>
+                        {comment.replySort === 1 && <p className='px-3'>ㄴ</p>}
+                    </div>
+                    <button className='pr-2' onClick={userinfo}>
                         <div className='w-10'>
                             <Avatar
                                 img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
@@ -52,7 +52,8 @@ function CommentList({ comment }: CommentProps) {
                         </div>
                     </button>
                     <div className='mr-5 w-10'>
-                        <button className="text-sm font-medium text-gray-900 dark:text-white">{comment.member.nickname}</button>
+                        <button className="text-sm font-medium text-gray-900 dark:text-white"
+                            onClick={userinfo}>{comment.member.nickname}</button>
                     </div>
                     <div className="text-sm break-words font-normal text-gray-500 lex dark:text-gray-300">
                         {comment.replyContext}
@@ -62,9 +63,11 @@ function CommentList({ comment }: CommentProps) {
                     <time className="mr-3 text-xs font-normal text-gray-400 sm:mb-0">
                         {date}
                     </time>
-                    <button onClick={onCommentModalOpen} className="sm:order-last mr-3">
-                        신고
-                    </button>
+                    {comment.replySort === 0 &&
+                        <button onClick={onRereplyModalOpen} className="sm:order-last mr-3">
+                            {commentReport ? '취소' : '답글'}
+                        </button>
+                    }
                     <button onClick={onDeleteOpen} className="sm:order-last mr-3">
                         삭제
                     </button>
@@ -112,47 +115,7 @@ function CommentList({ comment }: CommentProps) {
                 </Modal>
             </div>
             <div className={commentReport ? 'flex' : 'hidden'}>
-                <Modal
-                    show={onReportModal}
-                    size="md"
-                    onClose={onReportModalClose}
-                >
-                    <Modal.Header>
-                        댓글 신고하기
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="space-y-6">
-                            <div>
-                                <label
-                                    htmlFor="report"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    신고사유
-                                </label>
-                                <select
-                                    ref={selectBox}
-                                    id="report"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option value={''} disabled>신고사유를 선택해주세요</option>
-                                    {reportTests.map((v, i) => <option key={i} value={i}>{v}</option>)}
-                                </select>
-                            </div>
-                            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                허위 신고시 불이익을 받을 수 있습니다.
-                            </p>
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button>
-                            신고하기
-                        </Button>
-                        <Button
-                            color="gray"
-                            onClick={onReportModalClose}
-                        >
-                            아니요
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                <ReComments comment={comment} />
             </div>
         </div>
     )

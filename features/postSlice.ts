@@ -10,6 +10,7 @@ import {
   loadMenu,
   loadPosts,
   loadUserPosts,
+  reportMember,
   searchPosts,
   updateComment,
   uploadImages,
@@ -43,6 +44,7 @@ export interface IMember {
 }
 
 export interface IReply {
+  article: { articleId: number };
   replyId: number;
   replyContext: string[];
   replyGroup: number;
@@ -78,6 +80,9 @@ export interface IArticleState {
   reportPostLoading: boolean;
   reportPostDone: boolean;
   reportPostError: unknown | null;
+  reportMemberLoading: boolean;
+  reportMemberDone: boolean;
+  reportMemberError: unknown | null;
   likePostLoading: boolean;
   likePostDone: boolean;
   likePostError: unknown | null;
@@ -109,6 +114,9 @@ export const initialState: IArticleState = {
   uploadImagesDone: false,
   uploadImagesError: null,
   imagePaths: null,
+  reportMemberLoading: false, // 멤버 신고
+  reportMemberDone: false,
+  reportMemberError: null,
   searchPostsLoading: false, // 검색
   searchPostsDone: false,
   searchPostsError: null,
@@ -184,6 +192,20 @@ const postSlice = createSlice({
       .addCase(uploadImages.rejected, (state: IArticleState, action) => {
         state.uploadImagesLoading = false;
         state.uploadImagesError = action.error.message;
+      })
+      // reportMember
+      .addCase(reportMember.pending, (state: IArticleState) => {
+        state.reportMemberLoading = true;
+        state.reportMemberDone = false;
+        state.reportMemberError = null;
+      })
+      .addCase(reportMember.fulfilled, (state: IArticleState) => {
+        state.reportMemberLoading = false;
+        state.reportMemberDone = true;
+      })
+      .addCase(reportMember.rejected, (state: IArticleState, action) => {
+        state.reportMemberLoading = false;
+        state.reportMemberError = action.error.message;
       })
       // Search
       .addCase(searchPosts.pending, (state: IArticleState) => {

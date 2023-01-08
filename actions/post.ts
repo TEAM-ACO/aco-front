@@ -14,6 +14,7 @@ import {
   IUpdateComment,
   IloadUserPosts,
   TypeAxios,
+  IReportMember,
 } from '@typings/db';
 
 axios.defaults.baseURL = backendURL;
@@ -32,15 +33,14 @@ export type reportArticle = {
   articleReportContext: string | unknown;
 };
 
-export const addPost = createAsyncThunk<FormData, any>('article/addPost', async (data, { rejectWithValue }) => {
-  // const headerForMulti = { 'Content-Type': 'multipart/form-data;charset=UTF-8' };
+export const addPost = createAsyncThunk<FormData, any>('article/addPost', async (data, thunkAPI) => {
   try {
     const response = await axios.post('/api/article/write', data, {
       headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
     });
     return response.data;
   } catch (error) {
-    return rejectWithValue((error as AxiosError).response?.data);
+    return thunkAPI.rejectWithValue((error as AxiosError).response?.data);
   }
 });
 
@@ -139,11 +139,24 @@ export const reportPost = createAsyncThunk<reportArticle, reportArticle>(
   },
 );
 
+// 신고
+export const reportMember = createAsyncThunk<IArticle, IReportMember>(
+  'article/reportMember',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`/api/report/member`, data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
+
 // 좋아요
 export const likePost = createAsyncThunk<IArticle, ILikePost>('article/likePost', async (data, { rejectWithValue }) => {
   console.log(data);
   try {
-    const response = await axios.post(`/api/article/like`, data);
+    const response = await axios.post(`/api/like`, data);
     return response.data;
   } catch (error) {
     return rejectWithValue((error as AxiosError).response?.data);
@@ -189,7 +202,6 @@ export const updateComment = createAsyncThunk<IArticle, IUpdateComment>(
 export const loadMenu = createAsyncThunk<IArticle, IMenu | undefined>(
   'article/postMenu',
   async (data, { rejectWithValue }) => {
-    console.log(data);
     try {
       const response = await axios.post(`/api/article/menu/${data?.num}`, data);
       let tmp = [...response.data];

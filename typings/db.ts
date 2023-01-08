@@ -69,3 +69,8 @@ export interface IAdminDelete {
   which: string;
   number: number;
 }
+
+export interface IReportMember {
+  memberId: number;
+  memberReportContext: string | unknown;
+}

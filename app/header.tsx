@@ -55,19 +55,22 @@ const header = () => {
                             Project ACO
                         </span>
                     </Navbar.Brand>
-                    <Navbar.Collapse>
-                        <Navbar.Link
-                            href="/"
-                        >
-                            Home
-                        </Navbar.Link>
-                        <Navbar.Link href="/LogIn">
-                            로그인
-                        </Navbar.Link>
-                        <Navbar.Link href="/SignUp" active={true}>
-                            회원가입
-                        </Navbar.Link>
-                    </Navbar.Collapse>
+                    {router.route === '/mainpage' ? <></>
+                        :
+                        <Navbar.Collapse>
+                            <Navbar.Link
+                                href="/"
+                            >
+                                Home
+                            </Navbar.Link>
+                            <Navbar.Link href="/LogIn">
+                                로그인
+                            </Navbar.Link>
+                            <Navbar.Link href="/SignUp" active={true}>
+                                회원가입
+                            </Navbar.Link>
+                        </Navbar.Collapse>
+                    }
                 </Navbar>
                 :
                 <Navbar
@@ -130,7 +133,7 @@ const header = () => {
                             >
                                 관리자페이지
                             </Navbar.Link>
-                            <Navbar.Link href="/" className="md:ml-3" onClick={onLogOut} active={true}>
+                            <Navbar.Link href="/" className="md:ml-3 md:hidden" onClick={onLogOut} active={true}>
                                 로그아웃
                             </Navbar.Link>
                         </ul>

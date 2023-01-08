@@ -1,14 +1,14 @@
 import { useAppDispatch } from '@store/config';
 import React, { useCallback, useState, useEffect } from 'react'
-import { IArticle } from '@features/postSlice';
+import { IReply } from '@features/postSlice';
 import { useCookies } from "react-cookie"
 import { addComment } from '@actions/post';
 
 export type cmt = {
-    post: IArticle
+    comment: IReply
 }
 
-function Comments({ post }: cmt) {
+function ReComments({ comment }: cmt) {
     const dispatch = useAppDispatch();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [commentText, setCommentText] = useState('');
@@ -19,9 +19,9 @@ function Comments({ post }: cmt) {
             return alert('댓글을 입력해주세요')
         }
         dispatch(addComment({
-            article: { articleId: post.articleId }, member: { memberId: cookies.user.num }, replyContext: commentText,
-            replyGroup: (post.replys[post.replys.length - 1]?.totalCount || 0),
-            replySort: 0,
+            article: { articleId: comment.article.articleId }, member: { memberId: cookies.user.num }, replyContext: commentText,
+            replyGroup: (comment.totalCount),
+            replySort: 1,
         }))
         setCommentText('')
     }, [commentText]);
@@ -56,4 +56,4 @@ function Comments({ post }: cmt) {
     )
 }
 
-export default Comments
+export default ReComments

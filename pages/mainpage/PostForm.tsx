@@ -5,15 +5,17 @@ import { Spinner } from 'flowbite-react';
 import { addPost } from '@actions/post';
 import { useCookies } from 'react-cookie';
 import Select from 'react-select';
+import { useRouter } from 'next/router';
 
 const options = [
-    { value: 0, label: 'Diary' },
-    { value: 1, label: 'Tip' },
-    { value: 2, label: 'Question' },
+    { value: "Diary", label: 'Diary' },
+    { value: 'Tip', label: 'Tip' },
+    { value: 'Question', label: 'Question' },
 ];
 
 // 기본 이미지 넣기
 function PostForm() {
+    const router = useRouter();
     const dispatch = useAppDispatch();
     const [selectedOption, setSelectedOption] = useState<any>(options[0]);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
@@ -36,6 +38,7 @@ function PostForm() {
 
     const onSubmit = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        const refresh: any = router.reload
         const result = new FormData;
         if (!text || !text.trim()) {
             setTextError(true)
@@ -54,6 +57,7 @@ function PostForm() {
             }
         }
         dispatch(addPost(result));
+        refresh(window.location.pathname)
     }, [text, tagList])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {

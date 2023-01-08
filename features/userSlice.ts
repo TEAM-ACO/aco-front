@@ -9,6 +9,7 @@ import {
   login,
   logout,
 } from '@actions/user';
+import _remove from 'lodash';
 
 export interface IUser {
   email: string;
@@ -99,11 +100,7 @@ const initialState: IUserState = {
 const userSlice = createSlice({
   name: 'member',
   initialState,
-  reducers: {
-    // addPostToMe(state, action) {
-    //   state.me.mainPosts.unshift({ id: action.payload });
-    // },
-  },
+  reducers: {},
   // 동기는 reducers에 비동기는 extraReducers에 작성합니다.
   extraReducers: (builder) =>
     builder

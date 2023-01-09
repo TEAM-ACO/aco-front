@@ -5,7 +5,6 @@ import React, { useCallback } from 'react'
 const Chat = () => {
     const [chat, onChangeChat, setChat] = useInput('');
 
-    // 하다가 뭔가 이상한거 같으면 Form으로 바꿔도 괜찮습니다.
     const onSubmit = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
         console.log(chat)

@@ -7,7 +7,7 @@ import { useCookies } from "react-cookie"
 const MyPageForm = () => {
     const dispatch = useAppDispatch();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const { me, changeNicknameLoading, changeNicknameDone, changeNicknameError,
+    const { changeNicknameLoading, changeNicknameDone, changeNicknameError,
         changePasswordDone, changePasswordError, changePasswordLoading
     } = useAppSelector((state) => state.user);
 

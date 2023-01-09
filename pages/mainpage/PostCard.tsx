@@ -28,6 +28,10 @@ const PostCard = ({ post }: PostProps) => {
     const [requestComment, setRequestComment] = useState<number>(5);
     const [allCount, setAllCount] = useState(post.replys[post.replys.length - 1]?.totalCount || 0)
 
+    const userinfo = useCallback(() => {
+        router.push(`/user/${post.member.memberId}`)
+    }, [])
+
     const loadMore = useCallback(() => {
         setRequestPage(prev => prev + 1);
     }, [requestPage])
@@ -76,6 +80,7 @@ const PostCard = ({ post }: PostProps) => {
                             <div className='flex justify-start items-center'>
                                 {/* 누르면 프로필로 가게 할 것 */}
                                 <button
+                                    onClick={userinfo}
                                     className='flex justify-start items-center'>
                                     <Avatar
                                         img="https://flowbite.com/docs/images/people/profile-picture-2.jpg"

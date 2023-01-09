@@ -5,8 +5,8 @@ import React from 'react'
 function Channel() {
     return (
         <div className="z-50 relative">
-            <div className='py-3 slg:pr-4 bg-white'>
-                <aside className="w-64 mt-4" aria-label="Sidebar">
+            <div className='slg:pr-4 bg-white'>
+                <aside className="w-64" aria-label="Sidebar">
                     <div className="overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800">
                         <div id="dropdown-cta" className="p-4 mt-6 bg-blue-50 rounded-lg dark:bg-blue-900" role="alert">
                             <div className="flex items-center mb-3">
@@ -26,7 +26,7 @@ function Channel() {
                         <div className="p-5 mb-4 bg-gray-50 rounded-lg border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
                             <ol className="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
                                 <li>
-                                    <Link href="/mainpage/dm" className="block items-center p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <Link href="/mainpage/dm" className="items-center p-3 flex hover:bg-gray-100 dark:hover:bg-gray-700">
                                         <Avatar
                                             img="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
                                             rounded={true}
@@ -37,7 +37,7 @@ function Channel() {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/mainpage/dm" className="block items-center p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <Link href="/mainpage/dm" className="items-center p-3 flex hover:bg-gray-100 dark:hover:bg-gray-700">
                                         <Avatar
                                             img="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
                                             rounded={true}

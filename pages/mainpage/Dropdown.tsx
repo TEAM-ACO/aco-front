@@ -1,6 +1,6 @@
-import { Modal, Button } from 'flowbite-react';
-import { DropdownItem } from 'flowbite-react/lib/esm/components/Dropdown/DropdownItem';
 import React, { useCallback, useState, useRef, DetailedHTMLProps, SelectHTMLAttributes } from 'react'
+import { useCookies } from "react-cookie"
+import { Modal, Button } from 'flowbite-react';
 import { reportArticle, reportPost } from '../../actions/post';
 import { useAppDispatch } from '@store/config'
 import { IArticle } from '@features/postSlice';
@@ -10,11 +10,12 @@ type PostProps = {
 }
 
 const Dropdown = ({ post }: PostProps) => {
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [postCardDropdown, setPostCardDropdown] = useState<boolean>(false);
     const [onReportModal, setOnReportModal] = useState<boolean>(false);
     const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
     const [isReported, setIsReported] = useState<Boolean>(false)
-    const [wrongReportRequest, setWrongReportRequest] = useState<Boolean>(false)
+    const [memberCheck, setMemberCheck] = useState<Boolean>(false)
     const selectBox = useRef<DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>>()
     const dispatch = useAppDispatch();
     const reportTests: string[] = ["부적절한 콘텐츠입니다", "성적인 콘텐츠입니다.", "진실을 오도하고 있습니다",
@@ -89,13 +90,41 @@ const Dropdown = ({ post }: PostProps) => {
                         id="dropdownDotsHorizontal"
                         className="z-10 w-20 absolute right-0 top-2
                          bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                        {/* {post.member.memberId === cookies.user.num ?
+                            <ul
+                                className="py-1 text-sm text-gray-700 dark:text-gray-200"
+                                aria-labelledby="dropdownMenuIconHorizontalButton">
+                                <li>
+                                    <button className="block py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        수정하기
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        onClick={onDeleteOpen}
+                                        className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        삭제하기
+                                    </button>
+                                </li>
+                            </ul>
+                            :
+                            <ul>
+                                <li>
+                                    <button
+                                        onClick={onReportModalOpen}
+                                        className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        신고하기
+                                    </button>
+                                </li>
+                            </ul>
+                        } */}
                         <ul
                             className="py-1 text-sm text-gray-700 dark:text-gray-200"
                             aria-labelledby="dropdownMenuIconHorizontalButton">
                             <li>
-                                <a href="#" className="block py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                <button className="block py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                     수정하기
-                                </a>
+                                </button>
                             </li>
                             <li>
                                 <button

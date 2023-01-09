@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
+  changeForgotPassword,
   changeNickname,
   changePassword,
   findPasswordEmail,
@@ -24,8 +25,9 @@ export interface IMe {
   access: string;
 }
 
-export interface IAuth {
-  auth: number;
+export interface IForgotPass {
+  upassword: string;
+  email: string;
 }
 
 export interface IUserState {
@@ -56,6 +58,9 @@ export interface IUserState {
   findpassAuthLoading: boolean; // 비밀번호 찾기 인증번호
   findpassAuthDone: boolean;
   findpassAuthError: unknown | null;
+  changeForgotPasswordLoading: boolean; // 비밀번호 찾기 비번 변경
+  changeForgotPasswordDone: boolean;
+  changeForgotPasswordError: unknown | null;
 }
 
 // api연결되면 data안에 넣어 한곳에서 받을 수 있도록합니다.
@@ -95,6 +100,10 @@ const initialState: IUserState = {
   findpassAuthLoading: false, // 비밀번호 찾기 인증번호
   findpassAuthDone: false,
   findpassAuthError: null,
+
+  changeForgotPasswordLoading: false, // 비밀번호 찾기 비번 변경
+  changeForgotPasswordDone: false,
+  changeForgotPasswordError: null,
 };
 
 const userSlice = createSlice({
@@ -224,6 +233,20 @@ const userSlice = createSlice({
       .addCase(findpassAuthRequest.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.findpassAuthLoading = false;
         state.findpassAuthError = action.payload;
+      })
+      // changeForgotPassword
+      .addCase(changeForgotPassword.pending, (state: IUserState) => {
+        state.changeForgotPasswordLoading = true;
+        state.changeForgotPasswordDone = false;
+        state.changeForgotPasswordError = null;
+      })
+      .addCase(changeForgotPassword.fulfilled, (state: IUserState) => {
+        state.changeForgotPasswordLoading = false;
+        state.changeForgotPasswordDone = true;
+      })
+      .addCase(changeForgotPassword.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
+        state.changeForgotPasswordLoading = false;
+        state.changeForgotPasswordError = action.payload;
       }),
 });
 

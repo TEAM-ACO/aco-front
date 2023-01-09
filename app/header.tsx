@@ -44,7 +44,7 @@ const header = () => {
 
     return (
         <>
-            {headerCookie ?
+            {!(cookies.user) ?
                 <Navbar
                     className='pr-0 md:pr-10'
                     fluid={true}
@@ -55,22 +55,22 @@ const header = () => {
                             Project ACO
                         </span>
                     </Navbar.Brand>
-                    {router.route === '/mainpage' ? <></>
-                        :
-                        <Navbar.Collapse>
-                            <Navbar.Link
-                                href="/"
-                            >
-                                Home
-                            </Navbar.Link>
-                            <Navbar.Link href="/LogIn">
-                                로그인
-                            </Navbar.Link>
-                            <Navbar.Link href="/SignUp" active={true}>
-                                회원가입
-                            </Navbar.Link>
-                        </Navbar.Collapse>
-                    }
+                    {/* {router.route === '/mainpage' ? <></>
+                        : */}
+                    <Navbar.Collapse>
+                        <Navbar.Link
+                            href="/"
+                        >
+                            Home
+                        </Navbar.Link>
+                        <Navbar.Link href="/LogIn">
+                            로그인
+                        </Navbar.Link>
+                        <Navbar.Link href="/SignUp" active={true}>
+                            회원가입
+                        </Navbar.Link>
+                    </Navbar.Collapse>
+                    {/* } */}
                 </Navbar>
                 :
                 <Navbar

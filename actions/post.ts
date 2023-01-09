@@ -33,20 +33,22 @@ export type reportArticle = {
   articleReportContext: string | unknown;
 };
 
-export const addPost = createAsyncThunk<FormData, any>('article/addPost', async (data, thunkAPI) => {
+export const addPost = createAsyncThunk<FormData, any>('article/addPost', async (data, { rejectWithValue }) => {
   try {
     const response = await axios.post('/api/article/write', data, {
       headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
     });
     return response.data;
   } catch (error) {
-    return thunkAPI.rejectWithValue((error as AxiosError).response?.data);
+    return rejectWithValue((error as AxiosError).response?.data);
   }
 });
 
 export const uploadImages = createAsyncThunk('article/uploadImages', async (data, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`/api/image/images${data}`, data);
+    const response = await axios.post(`/api/setting/changeuserimg`, data, {
+      headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
+    });
     return response.data;
   } catch (error) {
     return rejectWithValue((error as AxiosError).response?.data);
@@ -143,6 +145,7 @@ export const reportPost = createAsyncThunk<reportArticle, reportArticle>(
 export const reportMember = createAsyncThunk<IArticle, IReportMember>(
   'article/reportMember',
   async (data, { rejectWithValue }) => {
+    console.log(data);
     try {
       const response = await axios.post(`/api/report/member`, data);
       return response.data;

@@ -52,7 +52,6 @@ function PostForm() {
 
         if (imageInput.current.files) {
             for (let i = 0; i < imageInput.current.files.length; i++) {
-
                 result.append("articleImages", imageInput.current.files[i])
             }
         }
@@ -106,7 +105,6 @@ function PostForm() {
 
     return (
         <div className='w-full'>
-            {/* <div className="px-6" encType="multipart/form-data" onSubmit={onSubmit}> */}
             <div className="px-6">
                 <div className="shadow-lg pb-2 w-full mb-4 border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600">
                     <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">

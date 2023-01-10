@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@store/config';
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState } from 'react'
 import { IReply } from '@features/postSlice';
 import { useCookies } from "react-cookie"
 import { addComment } from '@actions/post';

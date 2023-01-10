@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
-import { Reducer } from 'redux';
 import backendURL from '../config/url';
 import { TypeAxios } from '@typings/db';
 
@@ -17,7 +16,6 @@ export type findPasswordEmailRequestData = { email: string };
 export type findpassAuthRequestData = { email: string; authNum?: number };
 
 // createSlice의 name이 member입니다.
-// 계속 로드 할 수 있는 user가 필요함.
 export const loadMyInfo = createAsyncThunk('member/loadMyInfo', async () => {
   const response = await axios.post('/api/setting/getmember');
   return response.data;

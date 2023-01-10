@@ -5,30 +5,32 @@ import OffCanvas from './offcanvas';
 function mainLayout({ children }: {
     children: React.ReactNode
 }) {
-    const [speedDial, setSpeedDial] = useState<boolean>(true);
+    // const [speedDial, setSpeedDial] = useState<boolean>(true);
     const [channelToggle, setChannelToggle] = useState<boolean>(true);
 
-    const onToggleSpeedDial = useCallback(() => {
-        setSpeedDial((prev) => !prev)
-    }, [])
+    // const onToggleSpeedDial = useCallback(() => {
+    //     setSpeedDial((prev) => !prev)
+    // }, [])
 
     const onChannelToggle = useCallback(() => {
+        console.log(channelToggle)
         setChannelToggle((prev) => !prev)
-    }, [])
+    }, [channelToggle])
 
     useEffect(() => {
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize); //clean up
         };
-    }, []);
+    }, [channelToggle]);
 
     const handleResize = useCallback(() => {
-        if (window.innerWidth > 890) {
+        if (window.innerWidth > 768) {
+            console.log(channelToggle)
             setChannelToggle(true)
             return
         }
-    }, []);
+    }, [channelToggle]);
 
     return (
         <div>
@@ -41,15 +43,15 @@ function mainLayout({ children }: {
                 <div className='w-full order-3 md:order-2'>
                     {children}
                 </div>
-                <div className="slg:w-80 md:w-72 relative order-2 md:order-3">
-                    <div className={channelToggle ? 'sticky top-14 w-64' : 'hidden'}>
+                <div className="slg:w-80 md:w-64 relative order-2 md:order-3">
+                    <div className={channelToggle ? 'hidden md:flex sticky top-14 w-52 slg:w-64' : 'sticky md:hidden'}>
                         <Channel />
                     </div>
                 </div>
             </div>
             <div className='md:hidden'>
                 <div data-dial-init className="fixed right-6 bottom-6 group">
-                    <div className={speedDial ? 'hidden' : 'flex'}>
+                    {/* <div className={speedDial ? 'hidden' : 'flex'}>
                         <div id="speed-dial-menu-default" className="flex flex-col items-center mb-4 space-y-2">
                             <button
                                 onClick={onChannelToggle}
@@ -73,13 +75,14 @@ function mainLayout({ children }: {
                                 <div className="tooltip-arrow" data-popper-arrow></div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <button
                         type="button"
                         data-dial-toggle="speed-dial-menu-default"
                         aria-controls="speed-dial-menu-default"
                         aria-expanded="false"
-                        onClick={onToggleSpeedDial}
+                        // onClick={onToggleSpeedDial}
+                        onClick={onChannelToggle}
                         className="flex justify-center items-center w-[52px] h-[52px] text-white bg-blue-700 rounded-full hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">
                         <svg
                             aria-hidden="true"

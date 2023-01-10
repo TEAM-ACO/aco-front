@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback } from 'react'
+import { useCookies } from "react-cookie"
 import { Avatar, Modal, Button } from 'flowbite-react'
 import dayjs from 'dayjs';
 import { IReply } from '@features/postSlice';
@@ -11,9 +12,8 @@ type CommentProps = {
 
 function CommentList({ comment }: CommentProps) {
     const router = useRouter();
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const date = dayjs(comment.date).format("YY-MM-DD");
-
-    console.log(comment)
 
     const [commentReport, setCommentReport] = useState<boolean>(false);
     const [commentDelete, setCommentDelete] = useState<boolean>(false);
@@ -68,9 +68,11 @@ function CommentList({ comment }: CommentProps) {
                             {commentReport ? '취소' : '답글'}
                         </button>
                     }
-                    <button onClick={onDeleteOpen} className="sm:order-last mr-3">
-                        삭제
-                    </button>
+                    {comment.member.memberId === cookies.user.num &&
+                        <button onClick={onDeleteOpen} className="sm:order-last mr-3">
+                            삭제
+                        </button>
+                    }
                 </div>
             </li>
             <div className={commentDelete ? 'flex' : 'hidden'}>

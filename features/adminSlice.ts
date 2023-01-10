@@ -15,6 +15,14 @@ export interface IAdmin {
   email: string;
   nickname: string;
   memberId: number;
+  totalCount: number;
+}
+
+export interface IAdminAction {
+  adminMemberLoading: boolean;
+  adminMemberDone: boolean;
+  adminMemberError: unknown | null;
+  adminMemberContent: IAdmin[];
 }
 
 export interface IAdminVisitant {
@@ -26,6 +34,7 @@ export interface IAdminMemberReport {
   userReportContext: string;
   targetUserId: number;
   reporterUserId: number;
+  totalCount: number;
 }
 
 export interface IAdminArticle {
@@ -34,6 +43,7 @@ export interface IAdminArticle {
   menu: string;
   reported: number;
   member: Members;
+  totalCount: number;
 }
 
 export interface IAdminArticleReport {
@@ -41,10 +51,15 @@ export interface IAdminArticleReport {
   articleReportContext: string;
   articleId: number;
   articlereporterId: number;
+  totalCount: number;
 }
 
 export interface IAdminState {
   adminContent: any;
+  adminMemberContent: IAdmin[];
+  adminMemberReportContent: IAdminMemberReport[];
+  adminArticleContent: IAdminArticle[];
+  adminArticleReportContent: IAdminArticleReport[];
   adminVisitantLoading: boolean;
   adminVisitantDone: boolean;
   adminVisitantError: unknown | null;
@@ -66,7 +81,11 @@ export interface IAdminState {
 }
 
 const initialState: IAdminState = {
-  adminContent: [],
+  adminContent: [], // 페이징 할 때 이전 페이지 찌거기 남는 현상 때문에 각각 Content분리
+  adminMemberContent: [],
+  adminMemberReportContent: [],
+  adminArticleContent: [],
+  adminArticleReportContent: [],
   adminVisitantLoading: false,
   adminVisitantDone: false,
   adminVisitantError: null,
@@ -112,10 +131,10 @@ const adminSlice = createSlice({
         state.adminMemberDone = false;
         state.adminMemberError = null;
       })
-      .addCase(adminMember.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
+      .addCase(adminMember.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.adminMemberLoading = false;
         state.adminMemberDone = true;
-        state.adminContent = _concat(state.adminContent, action.payload);
+        state.adminMemberContent = _concat(state.adminMemberContent, action.payload);
       })
       .addCase(adminMember.rejected, (state: IAdminState, action) => {
         state.adminMemberLoading = false;
@@ -126,10 +145,10 @@ const adminSlice = createSlice({
         state.adminMemberReportDone = false;
         state.adminMemberReportError = null;
       })
-      .addCase(adminMemberReport.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
+      .addCase(adminMemberReport.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.adminMemberReportLoading = false;
         state.adminMemberReportDone = true;
-        state.adminContent = _concat(state.adminContent, action.payload);
+        state.adminMemberReportContent = _concat(state.adminMemberReportContent, action.payload);
       })
       .addCase(adminMemberReport.rejected, (state: IAdminState, action) => {
         state.adminMemberReportLoading = false;
@@ -140,10 +159,10 @@ const adminSlice = createSlice({
         state.adminArticleDone = false;
         state.adminArticleError = null;
       })
-      .addCase(adminArticle.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
+      .addCase(adminArticle.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.adminArticleLoading = false;
         state.adminArticleDone = true;
-        state.adminContent = _concat(state.adminContent, action.payload);
+        state.adminArticleContent = _concat(state.adminArticleContent, action.payload);
       })
       .addCase(adminArticle.rejected, (state: IAdminState, action) => {
         state.adminArticleLoading = false;
@@ -154,10 +173,10 @@ const adminSlice = createSlice({
         state.adminArticleReportDone = false;
         state.adminArticleReportError = null;
       })
-      .addCase(adminArticleReport.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
+      .addCase(adminArticleReport.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.adminArticleReportLoading = false;
         state.adminArticleReportDone = true;
-        state.adminContent = _concat(state.adminContent, action.payload);
+        state.adminArticleReportContent = _concat(state.adminArticleReportContent, action.payload);
       })
       .addCase(adminArticleReport.rejected, (state: IAdminState, action) => {
         state.adminArticleReportLoading = false;

@@ -37,6 +37,7 @@ const LogIn = () => {
     })
 
     const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+        const refresh: any = router.refresh
         e.preventDefault();
         console.log(email, password)
         if (!email) {
@@ -47,6 +48,7 @@ const LogIn = () => {
         }
         setLogInError(false);
         dispatch(login({ email, password }));
+        refresh(window.location.pathname)
         router.replace('/mainpage');
     },
         [email, password],

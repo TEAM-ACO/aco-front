@@ -71,6 +71,7 @@ export interface IAdminDelete {
 }
 
 export interface IReportMember {
-  memberId: number;
-  memberReportContext: string | unknown;
+  targetUserId: number;
+  reporterUserId: number;
+  userReportContext: string | unknown;
 }

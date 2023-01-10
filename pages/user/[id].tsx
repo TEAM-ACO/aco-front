@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector, wrapper } from '@store/config';
 import { useInView } from 'react-intersection-observer';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
-
+import { useCookies } from "react-cookie"
 
 import PostCard from '@pages/mainpage/PostCard';
 import { IArticle } from '@features/postSlice';
@@ -17,6 +17,7 @@ const userid = () => {
     const router = useRouter();
     const { id } = router.query;
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
     const [ref, inView] = useInView();
     const selectBox = useRef() as React.MutableRefObject<HTMLSelectElement>
@@ -28,7 +29,11 @@ const userid = () => {
         "증오 또는 악의적인 콘텐츠입니다.", "권리를 침해하고 있습니다.", "테러를 조장하고 있습니다.", "폭력적인 콘텐츠입니다."]
 
     const onReport = useCallback(() => {
-        dispatch(reportMember({ memberId: Number(id), memberReportContext: reportTests[selectBox.current?.value as unknown as number] }))
+        dispatch(reportMember({
+            targetUserId: Number(id),
+            userReportContext: reportTests[selectBox.current.value as unknown as number],
+            reporterUserId: cookies.user.num
+        }))
         setIsReported(true)
         setTimeout(() => {
             setOnReportModal(false)

@@ -12,25 +12,28 @@ const header = () => {
     const [myNickname, setMyNickname] = useState<string>('')
     const [userLink, setUserLink] = useState<string>('')
     const [buttonToggle, setButtonToggle] = useState<boolean>(false)
-    // const [navActive, setNavActive] = useState<boolean>(false)
 
     const onLogOut = useCallback(() => {
         removeCookie('user')
         router.replace('/');
-    }, [])
+    }, [cookies])
 
     const onClickButton = useCallback(() => {
         setButtonToggle((prev) => !prev)
     }, [buttonToggle])
 
     useEffect(() => {
+        console.log(router.route)
+    }, [])
+
+    useEffect(() => {
         if (cookies.user) {
             setUserLink(cookies.user.num)
             setTimeout(() => {
                 setMyNickname(cookies.user.username.toUpperCase())
-            }, 300)
+            }, 100)
         }
-    }, [])
+    }, [cookies])
 
     useEffect(() => {
         if (cookies.user === undefined) {
@@ -39,12 +42,11 @@ const header = () => {
         } else {
             setHeaderCookie(false)
         }
-        console.log(headerCookie)
     }, [headerCookie])
 
     return (
         <>
-            {!(cookies.user) ?
+            {!userLink ?
                 <Navbar
                     className='pr-0 md:pr-10'
                     fluid={true}
@@ -55,8 +57,6 @@ const header = () => {
                             Project ACO
                         </span>
                     </Navbar.Brand>
-                    {/* {router.route === '/mainpage' ? <></>
-                        : */}
                     <Navbar.Collapse>
                         <Navbar.Link
                             href="/"
@@ -70,7 +70,6 @@ const header = () => {
                             회원가입
                         </Navbar.Link>
                     </Navbar.Collapse>
-                    {/* } */}
                 </Navbar>
                 :
                 <Navbar

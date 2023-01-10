@@ -10,7 +10,9 @@ const ForgotPassword = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { findpasswordLoading, findpasswordDone,
-        findpassAuthLoading, findpassAuthDone } = useAppSelector((state) => state.user);
+        findpassAuthLoading, findpassAuthDone,
+        changeForgotPasswordDone, changeForgotPasswordLoading
+    } = useAppSelector((state) => state.user);
 
     const [findpassEmail, onChangeFindpassEmail] = useInput('');
     const [authNumber, onChangeAuthNumber] = useInput('');
@@ -42,7 +44,6 @@ const ForgotPassword = () => {
         }
         dispatch(findpassAuthRequest({ email: findpassEmail, authNum: authNumber as unknown as number }))
         // 변경할 비밀번호 창으로 넘기기
-        console.log("===============>>>>" + findpassEmail, authNumber)
         setAuthError(false)
     }, [authNumber, authSwitch, findpassEmail, findpasswordDone]);
 
@@ -54,10 +55,13 @@ const ForgotPassword = () => {
             setChangePassError(false)
             return setChangeRepassError(true)
         }
-        dispatch(changeForgotPassword({ upassword: changeRepass }));
+        dispatch(changeForgotPassword({ email: findpassEmail, upassword: changeRepass }));
         setChangePassError(false)
         setChangeRepassError(false)
-    }, [changePass, changeRepass]);
+        setTimeout(() => {
+            router.replace('/LogIn')
+        }, 3000)
+    }, [changePass, changeRepass, findpassEmail]);
 
     return (
         <main id="content" role="main" className="flex justify-center items-center w-full h-screen90 max-w-slg mx-auto">
@@ -73,7 +77,7 @@ const ForgotPassword = () => {
                                 </Link>
                             </p>
                         </div>
-                        {findpassAuthDone ?
+                        {!findpassAuthDone ?
                             // 인증번호 입력 전
                             (<div className="mt-5">
                                 <div className="grid gap-y-4">
@@ -171,12 +175,28 @@ const ForgotPassword = () => {
                                     <button
                                         onClick={onPassChangeSubmit}
                                         type="button"
+                                        disabled={changeForgotPasswordDone}
                                         className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
-                                        {findpassAuthLoading ?
+                                        {changeForgotPasswordLoading ?
                                             <Spinner aria-label="Default status example" /> :
                                             '비밀번호 변경'
                                         }
                                     </button>
+                                    {changeForgotPasswordDone &&
+                                        <div className='flex'>
+                                            <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+                                                <svg aria-hidden="true"
+                                                    className="w-5 h-5"
+                                                    fill="currentColor"
+                                                    viewBox="0 0 20 20"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path fillRule="evenodd"
+                                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                                                </svg>
+                                            </div>
+                                            <p className='ml-2 flex items-center font-medium text-sm text-red-500'>비밀번호가 변경되었습니다. 3초 뒤에 로그인 화면으로 이동합니다</p>
+                                        </div>
+                                    }
                                 </div>
                             </div>)
                         }

@@ -21,7 +21,7 @@ import _filter from 'lodash/concat';
 export interface IArticle {
   articleId: number;
   articleContext: string;
-  articleLike: number;
+  likes: number;
   menu: string;
   member: IMember;
   tags: string[];
@@ -168,11 +168,9 @@ const postSlice = createSlice({
         state.addPostDone = false;
         state.addPostError = null;
       })
-      .addCase(addPost.fulfilled, (state: IArticleState, action) => {
+      .addCase(addPost.fulfilled, (state: IArticleState) => {
         state.addPostLoading = false;
         state.addPostDone = true;
-        // state.mainPosts.unshift(action.payload);
-        // state.articleimage = []; // 이미지 처리 어떻게 할건지 의논
       })
       .addCase(addPost.rejected, (state: IArticleState, action) => {
         state.addPostLoading = false;
@@ -199,7 +197,7 @@ const postSlice = createSlice({
         state.reportMemberDone = false;
         state.reportMemberError = null;
       })
-      .addCase(reportMember.fulfilled, (state: IArticleState) => {
+      .addCase(reportMember.fulfilled, (state: IArticleState, action) => {
         state.reportMemberLoading = false;
         state.reportMemberDone = true;
       })
@@ -287,10 +285,8 @@ const postSlice = createSlice({
         state.updateCommentError = null;
       })
       .addCase(updateComment.fulfilled, (state: any, action: PayloadAction<any>) => {
-        // const post: any = _find(state.mainPosts, { articleId: action.payload[0].article.articleId });
         state.updateCommentLoading = false;
         state.updateCommentDone = true;
-        // post.replys = _concat(post.replys, action.payload);
         state.mainPosts = _concat(
           state.mainPosts.map((v: IArticle) => {
             console.log(state.mainPosts);

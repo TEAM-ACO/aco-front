@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 import backendURL from '../config/url';
 import { TypeAxios } from '@typings/db';
+import { IForgotPass } from '@features/userSlice';
 
 const AxiosType: TypeAxios = axios;
 axios.defaults.baseURL = backendURL;
@@ -33,7 +34,6 @@ export const loadUser = createAsyncThunk('member/loadUser', async (data, { rejec
 export const login = createAsyncThunk<LogInRequestData, LogInRequestData>(
   'member/login',
   async (data, { rejectWithValue }) => {
-    console.log('=============>', data);
     try {
       const response = await axios.post('/api/member/login', data);
       return response.data;
@@ -44,7 +44,7 @@ export const login = createAsyncThunk<LogInRequestData, LogInRequestData>(
   },
 );
 
-// 로그아웃 어떻게 되는건지 물어보기
+// 로그아웃 쿠키만 삭제 이거 필요없음
 export const logout = createAsyncThunk('member/logout', async () => {
   try {
     const response = await axios.post('/api/member/logout');
@@ -84,7 +84,6 @@ export const findPasswordEmail = createAsyncThunk<findPasswordEmailRequestData, 
       } else {
         try {
           const response = await axios.post('/api/member/emailauth', data);
-          console.log(response);
           alert('이메일이 발송되었습니다.');
           return response.data;
         } catch (error) {
@@ -103,7 +102,6 @@ export const findPasswordEmail = createAsyncThunk<findPasswordEmailRequestData, 
 export const findpassAuthRequest = createAsyncThunk<findpassAuthRequestData, findpassAuthRequestData>(
   'member/findpassAuthRequest',
   async (data, { rejectWithValue }) => {
-    // console.log('=============>', data);
     try {
       const response = await axios.post('/api/member/forgotpassemailverify', data);
       return response.data;
@@ -114,12 +112,14 @@ export const findpassAuthRequest = createAsyncThunk<findpassAuthRequestData, fin
   },
 );
 
-export const changeForgotPassword = createAsyncThunk('user/changeForgotPassword', async (data, { rejectWithValue }) => {
-  console.log(data);
-  try {
-    const response = await AxiosType.post('/api/setting/changepassword', data);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue((error as AxiosError).response?.data);
-  }
-});
+export const changeForgotPassword = createAsyncThunk<any, IForgotPass>(
+  'user/changeForgotPassword',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await AxiosType.post('/api/setting/changefindpassword', data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);

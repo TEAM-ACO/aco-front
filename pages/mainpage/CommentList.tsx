@@ -68,7 +68,7 @@ function CommentList({ comment }: CommentProps) {
                             {commentReport ? '취소' : '답글'}
                         </button>
                     }
-                    {comment.member.memberId === cookies.user.num &&
+                    {comment.member.memberId === cookies.user?.num &&
                         <button onClick={onDeleteOpen} className="sm:order-last mr-3">
                             삭제
                         </button>

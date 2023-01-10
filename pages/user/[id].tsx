@@ -33,6 +33,25 @@ const userid = () => {
         setTimeout(() => {
             setOnReportModal(false)
         }, 3000)
+        // const data: any = {
+        //     memberId: Number(id),
+        //     articleReportContext: reportTests[selectBox.current?.value as unknown as number]
+        // }
+        // console.log(data);
+        // dispatch(reportMember({ ...data })).then(res => {
+        //     switch (res.payload) {
+        //         case 1:
+        //             onReportModalClose()
+        //             break;
+        //         case -1:
+        //             setIsReported(true)
+        //             setTimeout(onReportModalClose, 3000)
+        //         case 2:
+        //         //예외모달필요
+        //         default:
+        //             break;
+        //     }
+        // })
     }, [userReport])
 
     const onUserModalOpen = useCallback(() => {

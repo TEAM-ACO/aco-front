@@ -6,6 +6,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   addComment,
   addPost,
+  deletePost,
+  editPost,
   likePost,
   loadMenu,
   loadPosts,
@@ -95,6 +97,12 @@ export interface IArticleState {
   loadMenuLoading: boolean;
   loadMenuDone: boolean;
   loadMenuError: unknown | null;
+  editPostLoading: boolean;
+  editPostDone: boolean;
+  editPostError: unknown | null;
+  deletePostLoading: boolean;
+  deletePostDone: boolean;
+  deletePostError: unknown | null;
 }
 
 export const initialState: IArticleState = {
@@ -132,12 +140,18 @@ export const initialState: IArticleState = {
   addCommentLoading: false, // 댓글 쓰기
   addCommentDone: false,
   addCommentError: null,
-  updateCommentLoading: false,
+  updateCommentLoading: false, // 댓글 변동시 로드
   updateCommentDone: false,
   updateCommentError: null,
   loadMenuLoading: false, // 개인 post 로드
   loadMenuDone: false,
   loadMenuError: null,
+  editPostLoading: false, // edit 삭제
+  editPostDone: false,
+  editPostError: null,
+  deletePostLoading: false, // post 삭제
+  deletePostDone: false,
+  deletePostError: null,
 };
 
 const postSlice = createSlice({
@@ -225,7 +239,7 @@ const postSlice = createSlice({
       .addCase(loadUserPosts.pending, (state: IArticleState) => {
         state.loadUserPostsLoading = true;
         state.loadUserPostsDone = false;
-        state.loadPostsError = null;
+        state.loadUserPostsError = null;
       })
       .addCase(loadUserPosts.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
         state.loadUserPostsLoading = false;
@@ -308,7 +322,7 @@ const postSlice = createSlice({
       .addCase(loadMenu.pending, (state: IArticleState) => {
         state.loadMenuLoading = true;
         state.loadMenuDone = false;
-        state.loadPostsError = null;
+        state.loadMenuError = null;
       })
       .addCase(loadMenu.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
         state.loadMenuLoading = false;
@@ -319,6 +333,34 @@ const postSlice = createSlice({
       .addCase(loadMenu.rejected, (state: IArticleState, action) => {
         state.loadMenuLoading = false;
         state.loadMenuError = action.error.message;
+      })
+      // editPost
+      .addCase(editPost.pending, (state: IArticleState) => {
+        state.editPostLoading = true;
+        state.editPostDone = false;
+        state.editPostError = null;
+      })
+      .addCase(editPost.fulfilled, (state: IArticleState) => {
+        state.editPostLoading = false;
+        state.editPostDone = true;
+      })
+      .addCase(editPost.rejected, (state: IArticleState, action) => {
+        state.editPostLoading = false;
+        state.editPostError = action.error.message;
+      })
+      // deletePost
+      .addCase(deletePost.pending, (state: IArticleState) => {
+        state.deletePostLoading = true;
+        state.deletePostDone = false;
+        state.deletePostError = null;
+      })
+      .addCase(deletePost.fulfilled, (state: IArticleState) => {
+        state.deletePostLoading = false;
+        state.deletePostDone = true;
+      })
+      .addCase(deletePost.rejected, (state: IArticleState, action) => {
+        state.deletePostLoading = false;
+        state.deletePostError = action.error.message;
       }),
 });
 

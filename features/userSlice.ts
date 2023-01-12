@@ -5,6 +5,8 @@ import {
   changePassword,
   findPasswordEmail,
   findpassAuthRequest,
+  googleLogin,
+  kakaoLogin,
   loadMyInfo,
   loadUser,
   login,
@@ -46,6 +48,12 @@ export interface IUserState {
   logoutLoading: boolean;
   logoutDone: boolean;
   logoutError: unknown | null;
+  googleLoginLoading: boolean;
+  googleLoginDone: boolean;
+  googleLoginError: unknown | null;
+  kakaoLoginLoading: boolean;
+  kakaoLoginDone: boolean;
+  kakaoLoginError: unknown | null;
   changeNicknameLoading: boolean; // 닉네임 변경 시도중
   changeNicknameDone: boolean;
   changeNicknameError: unknown | null;
@@ -84,6 +92,14 @@ const initialState: IUserState = {
   logoutLoading: false, // 로그아웃
   logoutDone: false,
   logoutError: null,
+
+  googleLoginLoading: false, // 구글 로그인
+  googleLoginDone: false,
+  googleLoginError: null,
+
+  kakaoLoginLoading: false, // 구글 로그인
+  kakaoLoginDone: false,
+  kakaoLoginError: null,
 
   changeNicknameLoading: false, // 닉네임 변경
   changeNicknameDone: false,
@@ -173,6 +189,36 @@ const userSlice = createSlice({
       .addCase(logout.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.logoutLoading = false;
         state.logoutError = action.payload;
+      })
+      // Google login
+      .addCase(googleLogin.pending, (state: IUserState) => {
+        state.googleLoginLoading = true;
+        state.googleLoginDone = false;
+        state.googleLoginError = null;
+      })
+      .addCase(googleLogin.fulfilled, (state: IUserState, action: PayloadAction<IUser>) => {
+        state.googleLoginLoading = false;
+        state.me = action.payload;
+        state.googleLoginDone = true;
+      })
+      .addCase(googleLogin.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
+        state.googleLoginLoading = false;
+        state.googleLoginError = action.payload;
+      })
+      // Kakao login
+      .addCase(kakaoLogin.pending, (state: IUserState) => {
+        state.kakaoLoginLoading = true;
+        state.kakaoLoginDone = false;
+        state.kakaoLoginError = null;
+      })
+      .addCase(kakaoLogin.fulfilled, (state: IUserState, action: PayloadAction<IUser>) => {
+        state.kakaoLoginLoading = false;
+        state.me = action.payload;
+        state.kakaoLoginDone = true;
+      })
+      .addCase(kakaoLogin.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
+        state.kakaoLoginLoading = false;
+        state.kakaoLoginError = action.payload;
       })
       // changeNickname
       .addCase(changeNickname.pending, (state) => {

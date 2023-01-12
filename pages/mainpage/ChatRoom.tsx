@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Client, over } from 'stompjs';
 import SockJS from 'sockjs-client';
+import { useCookies } from "react-cookie"
 import Error from 'next/error';
 
 type IUserData = {
@@ -12,11 +13,12 @@ type IUserData = {
 
 var stompClient: any = null;
 const ChatRoom = () => {
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [privateChats, setPrivateChats] = useState<any>(new Map());
     const [publicChats, setPublicChats] = useState<any | any[]>([]);
     const [tab, setTab] = useState<any>("CHATROOM");
     const [userData, setUserData] = useState<IUserData>({
-        username: '',
+        username: cookies.user.username,
         receivername: '',
         connected: false,
         message: ''
@@ -26,7 +28,7 @@ const ChatRoom = () => {
     }, [userData]);
 
     const connect = () => {
-        let Sock = new SockJS('http://localhost:15152/ws');
+        let Sock = new SockJS('http://127.0.0.1:3075/api/ws');
         stompClient = over(Sock);
         stompClient.connect({}, onConnected, onError);
     }
@@ -116,6 +118,9 @@ const ChatRoom = () => {
     }
 
     const handleUsername = (event: any) => {
+        if (!event.target) {
+            alert('닉네임을 입력해주세요')
+        }
         const { value } = event.target;
         setUserData({ ...userData, "username": value });
     }

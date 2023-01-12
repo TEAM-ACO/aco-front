@@ -224,3 +224,33 @@ export const loadMenu = createAsyncThunk<IArticle, IMenu | undefined>(
     }
   },
 );
+
+// 댓글 업데이트
+export const editPost = createAsyncThunk<IArticle, IUpdateComment>(
+  'article/editPost',
+  async (data, { rejectWithValue }) => {
+    console.log(data);
+    try {
+      const response = await axios.post(`/api/article/modify`, data, {
+        headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
+
+// 댓글 업데이트
+export const deletePost = createAsyncThunk<IArticle, IUpdateComment>(
+  'article/deletePost',
+  async (data, { rejectWithValue }) => {
+    console.log(data);
+    try {
+      const response = await axios.post(`/api/article/delete`, data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);

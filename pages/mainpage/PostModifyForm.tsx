@@ -1,11 +1,13 @@
-import React, { useCallback, useEffect, useState, useRef, ChangeEvent } from 'react'
+import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { useAppSelector, useAppDispatch } from '@store/config'
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { Spinner } from 'flowbite-react';
-import { addPost } from '@actions/post';
+import { addPost, editPost } from '@actions/post';
 import { useCookies } from 'react-cookie';
 import Select from 'react-select';
 import { useRouter } from 'next/router';
+import { IArticle } from '@features/postSlice';
+import _find from 'lodash'
 
 const options = [
     { value: "Diary", label: 'Diary' },
@@ -13,38 +15,18 @@ const options = [
     { value: 'Question', label: 'Question' },
 ];
 
+type PostProps = {
+    post: IArticle
+}
+
 // 기본 이미지 넣기
-function PostForm() {
+function PostModifyForm({ post }: PostProps) {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const [selectedOption, setSelectedOption] = useState<any>(options[0]);
+    const [selectedOption, setSelectedOption] = useState<any>(post.menu == 'Diary' ? options[0] :
+        post.menu == 'Tip' ? options[1] : options[2]);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { addPostDone, addPostLoading, addPostError } = useAppSelector((state) => state.post);
-    const [imgStorage, setImageStorage] = useState<File[]>([]);
-    // const [imgl, setImgList] = useState<HTMLImageElement[]>([]);
-    const [imgl, setImgList] = useState<string[]>([]);
-    const imageInput = useRef() as React.RefObject<HTMLInputElement>;
-    const [text, setText] = useState<string>('')
-    const [tagItem, setTagItem] = useState<string>('')
-    const [tagList, setTagList] = useState<string[]>([])
-    const [textError, setTextError] = useState<boolean>(false);
-    const [tagError, setTagError] = useState<boolean>(false);
-    
-    const imageStorageFunction = (e:ChangeEvent<HTMLInputElement>)=>{
-        if(e.target.files?.length){
-            for (let i = 0; i < e.target.files.length; i++) {
-                const element = e.target.files[i];
-                setImageStorage(file =>[...file, element])
-                console.log(element.name);
-                let reader = new FileReader();
-                reader.readAsDataURL(element)
-                reader.onload = (f)=>{
-                    setImgList(v=>[...v, f.target!.result as string])
-                }
-            }
-        }
-        e.target.files=null
-    }
 
     useEffect(() => {
         if (addPostDone) {
@@ -54,7 +36,14 @@ function PostForm() {
         }
     }, [addPostDone]);
 
-    const onSubmit = useCallback(async(e: React.MouseEvent<HTMLButtonElement>) => {
+    const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
+    const [text, setText] = useState<string>(post.articleContext)
+    const [tagItem, setTagItem] = useState<string>('')
+    const [tagList, setTagList] = useState<string[]>(post.tags)
+    const [textError, setTextError] = useState<boolean>(false);
+    const [tagError, setTagError] = useState<boolean>(false);
+
+    const onSubmit = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const refresh: any = router.reload
         const result = new FormData;
@@ -67,16 +56,20 @@ function PostForm() {
         result.set("menu", selectedOption.value)
         result.set("memberId", cookies.user.num)
         result.set("tags", tagList.join(", "))
+        result.set("articleId", (post.articleId) as any)
 
-        if (imgStorage) {
-            for (let i = 0; i < imgStorage.length; i++) {
-                result.append("articleImages", imgStorage[i])
-                console.log(imgStorage[i].name);
-                
+        if (imageInput.current.files) {
+            for (let i = 0; i < imageInput.current.files.length; i++) {
+                result.append("articleImagesNames", imageInput.current.files[i])
             }
         }
-        dispatch(addPost(result));
-        refresh(window.location.pathname)
+        dispatch(editPost(result));
+        // dispatch(editPost({
+        //     articleId: post.articleId, articleImagesNames: post.articleImagesNames,
+        //     tags: post.tags, articleContext: post.articleContext, name: post.member.nickname,
+        //     menu: post.menu
+        // }))
+        // refresh(window.location.pathname)
     }, [text, tagList])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -122,22 +115,6 @@ function PostForm() {
         imageInput.current.click();
     }, [imageInput.current]);
 
-    // const onUploadImage = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    //     if (!e.target.files) {
-    //         return;
-    //     }
-    //     if (imageList.length >= 10) {
-    //         alert('이미지는 10개까지 등록할 수 있습니다.')
-    //         return
-    //     }
-    //     let updatedImageList = [...imageList]
-    //     if (updatedImageList.includes(e.target.files[0].name)) {
-    //         return
-    //     }
-    //     updatedImageList.push(e.target.files[0].name)
-    //     setImageList(updatedImageList)
-    //     console.log(imageList);
-    // }, [imageList])
 
     return (
         <div className='w-full'>
@@ -200,7 +177,7 @@ function PostForm() {
                         >
                             {addPostLoading ?
                                 <Spinner aria-label="Default status example" /> :
-                                '글쓰기'
+                                '수정하기'
                             }
                         </button>
                         {/* 이미지 업로드 */}
@@ -210,17 +187,7 @@ function PostForm() {
                                 multiple
                                 hidden
                                 ref={imageInput}
-                                onChange={async(e)=>{
-                                    imageStorageFunction(e)
-                                }}
                             />
-                            <div className='flex'>
-                                {
-                                    imgl.map((v, i)=>{
-                                        return <img src={v} key={i} width="75px" height="75px" ></img>
-                                    })
-                                }
-                            </div>
                             <button
                                 className="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
                                 onClick={onClickImageUpload}
@@ -236,18 +203,6 @@ function PostForm() {
                                 </svg>
                                 <span className="sr-only">Upload image</span>
                             </button>
-                            <div>
-                                {/* {articleImage.map((v: any) => {
-                                    return (
-                                        <div key={v} style={{ display: 'inline-block' }}>
-                                            <img src={'http://localhost:3075/' + v} style={{ width: '200px' }} alt={v} />
-                                            <div>
-                                                <button>제거</button>
-                                            </div>
-                                        </div>
-                                    )
-                                })} */}
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -256,4 +211,4 @@ function PostForm() {
     )
 }
 
-export default PostForm
+export default PostModifyForm

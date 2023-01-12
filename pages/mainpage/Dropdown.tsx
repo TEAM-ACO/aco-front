@@ -1,16 +1,22 @@
-import React, { useCallback, useState, useRef, DetailedHTMLProps, SelectHTMLAttributes } from 'react'
+import React, { useCallback, useState, useRef, DetailedHTMLProps, SelectHTMLAttributes, Dispatch, SetStateAction } from 'react'
 import { useCookies } from "react-cookie"
-import { Modal, Button } from 'flowbite-react';
-import { reportArticle, reportPost } from '../../actions/post';
-import { useAppDispatch } from '@store/config'
+import { Modal, Button, Spinner } from 'flowbite-react';
+import { deletePost, editPost, reportArticle, reportPost } from '../../actions/post';
+import { useAppDispatch, useAppSelector } from '@store/config'
 import { IArticle } from '@features/postSlice';
+import { useRouter } from 'next/router';
 
 type PostProps = {
     post: IArticle
+    contextModify: boolean
+    setContextModify: Dispatch<SetStateAction<boolean>>
 }
 
-const Dropdown = ({ post }: PostProps) => {
+const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
+    const router = useRouter();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const { deletePostDone, deletePostLoading, editPostDone } = useAppSelector((state) => state.post)
+
     const [postCardDropdown, setPostCardDropdown] = useState<boolean>(false);
     const [onReportModal, setOnReportModal] = useState<boolean>(false);
     const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
@@ -66,6 +72,18 @@ const Dropdown = ({ post }: PostProps) => {
         })
     }, [])
 
+    const onEditPost = useCallback(() => {
+        setContextModify((prev) => !prev)
+    }, [contextModify])
+
+    const onDeleteArticle = useCallback(() => {
+        const refresh: any = router.reload
+        dispatch(deletePost({ articleId: post.articleId }))
+        if (deletePostDone) {
+            refresh(window.location.pathname)
+        }
+    }, [deletePostDone])
+
     return (
         <div>
             <div>
@@ -90,13 +108,19 @@ const Dropdown = ({ post }: PostProps) => {
                         id="dropdownDotsHorizontal"
                         className="z-10 w-20 absolute right-0 top-2
                          bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                        {/* {post.member.memberId === cookies.user.num ?
+                        {post.member.memberId === cookies.user?.num ?
                             <ul
                                 className="py-1 text-sm text-gray-700 dark:text-gray-200"
                                 aria-labelledby="dropdownMenuIconHorizontalButton">
                                 <li>
-                                    <button className="block py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        수정하기
+                                    <button
+                                        onClick={onEditPost}
+                                        className="flex justify-start py-2 pl-3.5 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        {contextModify ?
+                                            '수정취소'
+                                            :
+                                            '수정하기'
+                                        }
                                     </button>
                                 </li>
                                 <li>
@@ -117,30 +141,7 @@ const Dropdown = ({ post }: PostProps) => {
                                     </button>
                                 </li>
                             </ul>
-                        } */}
-                        <ul
-                            className="py-1 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="dropdownMenuIconHorizontalButton">
-                            <li>
-                                <button className="block py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                    수정하기
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    onClick={onDeleteOpen}
-                                    className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                    삭제하기
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    onClick={onReportModalOpen}
-                                    className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                    신고하기
-                                </button>
-                            </li>
-                        </ul>
+                        }
                         <div className="sm h-full flex justify-center items-center">
                             {/* 삭제 Modal */}
                             <Modal
@@ -167,9 +168,12 @@ const Dropdown = ({ post }: PostProps) => {
                                         <div className="flex justify-center gap-4">
                                             <Button
                                                 color="failure"
-                                            // onClick={onClick}
+                                                onClick={onDeleteArticle}
                                             >
-                                                삭제하기
+                                                {deletePostLoading ?
+                                                    <Spinner />
+                                                    : '삭제하기'
+                                                }
                                             </Button>
                                             <Button
                                                 color="gray"

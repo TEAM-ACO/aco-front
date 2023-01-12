@@ -12,6 +12,8 @@ import PostCardContent from './PostCardContent';
 import PostImage from './PostImage';
 import { likePost, updateComment } from '@actions/post';
 import { useRouter } from 'next/router';
+import ReactTextareaAutosize from 'react-textarea-autosize';
+import PostModifyForm from './PostModifyForm';
 
 type PostProps = {
     post: IArticle
@@ -23,6 +25,8 @@ const PostCard = ({ post }: PostProps) => {
     const dispatch = useAppDispatch();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { loadPostsDone } = useAppSelector((state) => state.post);
+    const [contextModify, setContextModify] = useState<boolean>(false);
+    const [text, setText] = useState<string>('')
     const [favorite, setFavorite] = useState<boolean>(false);
     const [requestPage, setRequestPage] = useState<number>(0);
     const [requestComment, setRequestComment] = useState<number>(5);
@@ -91,61 +95,74 @@ const PostCard = ({ post }: PostProps) => {
                                     </p>
                                 </button>
                             </div>
-                            <Dropdown key={post.articleId} post={post} />
+                            <Dropdown key={post.articleId} post={post}
+                                contextModify={contextModify} setContextModify={setContextModify} />
                         </div>
-                        <div className='text-gray-500 text-xs items-center mb-3 flex justify-between'>
-                            <p>
-                                카테고리:&nbsp;
-                                <button onClick={onMenu}>
-                                    {post.menu}
-                                </button>
-                            </p>
+                        {contextModify ?
+                            <PostModifyForm key={post.articleId} post={post} />
+                            :
                             <div>
-                                {date}
+                                <div className='text-gray-500 text-xs items-center mb-3 flex justify-between'>
+                                    <p>
+                                        카테고리:&nbsp;
+                                        <button onClick={onMenu}>
+                                            {post.menu}
+                                        </button>
+                                    </p>
+                                    <div>
+                                        {date}
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className="text-gray-700 text-base">
+                                        {post.articleContext}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <p className="text-gray-700 text-base">
-                                {post.articleContext}
-                            </p>
-                        </div>
+                        }
                     </div>
-                    <div className="px-6 py-4">
-                        {favorite ? <FaHeart onClick={onFavoriteToggle} className='text-red-600 cursor-pointer'></FaHeart>
-                            : <FaRegHeart onClick={onFavoriteToggle} className='text-gray-400 cursor-pointer'></FaRegHeart>}
-                    </div>
-                    {/* HASHTAG */}
-                    <div className="px-6 pt-4 pb-2">
-                        {post.tags.map((tags) => {
-                            return (
-                                <PostCardContent key={tags} tags={tags} />
-                            )
-                        })}
-                    </div>
-                    {/* Comment Input */}
-                    <CommentForm post={post} />
-                    <div>
-                        <div className=" border-l border-gray-200 dark:border-gray-700">
-                            <div className='ml-6 py-2 mt-3 text-xs text-cyan-800'>
-                                {`${post.replys[post.replys.length - 1]?.totalCount || 0}개의 댓글`}
+                    {contextModify ?
+                        <></>
+                        :
+                        <>
+                            <div className="px-6 py-4">
+                                {favorite ? <FaHeart onClick={onFavoriteToggle} className='text-red-600 cursor-pointer'></FaHeart>
+                                    : <FaRegHeart onClick={onFavoriteToggle} className='text-gray-400 cursor-pointer'></FaRegHeart>}
                             </div>
-                            <div className='mt-2'>
-                                {/* 전체 댓글 수 보내달라고 할 것 */}
-                                {post.replys.map((cmt: IReply) => (
-                                    <CommentList key={cmt.replyId} comment={cmt} />
-                                ))}
-                                {/* 총 댓글 개수는 여기서 뽑아야할것같아영 paging할때 총개수도 넘기도록 만들어놨어영*/}
+                            {/* HASHTAG */}
+                            <div className="px-6 pt-4 pb-2">
+                                {post.tags.map((tags) => {
+                                    return (
+                                        <PostCardContent key={tags} tags={tags} />
+                                    )
+                                })}
                             </div>
-                            <div className='ml-6 py-2 mt-3'>
-                                {allCount - post.replys.length >= 5 ?
-                                    <Button onClick={onCommentViewMore}>
-                                        댓글 더 보기
-                                    </Button>
-                                    : <></>
-                                }
+                            {/* Comment Input */}
+                            <CommentForm post={post} />
+                            <div>
+                                <div className=" border-l border-gray-200 dark:border-gray-700">
+                                    <div className='ml-6 py-2 mt-3 text-xs text-cyan-800'>
+                                        {`${post.replys[post.replys.length - 1]?.totalCount || 0}개의 댓글`}
+                                    </div>
+                                    <div className='mt-2'>
+                                        {/* 전체 댓글 수 보내달라고 할 것 */}
+                                        {post.replys.map((cmt: IReply) => (
+                                            <CommentList key={cmt.replyId} comment={cmt} />
+                                        ))}
+                                        {/* 총 댓글 개수는 여기서 뽑아야할것같아영 paging할때 총개수도 넘기도록 만들어놨어영*/}
+                                    </div>
+                                    <div className='ml-6 py-2 mt-3'>
+                                        {allCount - post.replys.length >= 5 ?
+                                            <Button onClick={onCommentViewMore}>
+                                                댓글 더 보기
+                                            </Button>
+                                            : <></>
+                                        }
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </>
+                    }
                 </div>
             </section>
         </>

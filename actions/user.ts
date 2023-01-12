@@ -54,6 +54,34 @@ export const logout = createAsyncThunk('member/logout', async () => {
   }
 });
 
+// 구글 로그인
+export const googleLogin = createAsyncThunk<LogInRequestData, LogInRequestData>(
+  'member/googlelogin',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.get('/api/oauth/chrome');
+      return response.data;
+    } catch (error: LogInErrorData) {
+      console.error(error);
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+// 카카오 로그인
+export const kakaoLogin = createAsyncThunk<LogInRequestData, LogInRequestData>(
+  'member/kakaologin',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/api/oauth/kakao', data);
+      return response.data;
+    } catch (error: LogInErrorData) {
+      console.error(error);
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const changeNickname = createAsyncThunk<any, any>('user/changeNickname', async (data, { rejectWithValue }) => {
   try {
     const response = await AxiosType.post('/api/setting/changenickname', data);

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Client, over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import { useCookies } from "react-cookie"
 import Error from 'next/error';
+import { Toast } from 'flowbite-react';
 
 type IUserData = {
     username: string;
@@ -17,8 +18,10 @@ const ChatRoom = () => {
     const [privateChats, setPrivateChats] = useState<any>(new Map());
     const [publicChats, setPublicChats] = useState<any | any[]>([]);
     const [tab, setTab] = useState<any>("CHATROOM");
+    const [connectError, setConnectError] = useState<boolean>(false);
+    const [chatError, setChatError] = useState<boolean>(false);
     const [userData, setUserData] = useState<IUserData>({
-        username: cookies.user.username,
+        username: cookies.user?.username,
         receivername: '',
         connected: false,
         message: ''
@@ -87,6 +90,10 @@ const ChatRoom = () => {
         setUserData({ ...userData, "message": value });
     }
     const sendValue = () => {
+        if (userData.message === '') {
+            setChatError(true)
+            return
+        }
         if (stompClient) {
             var chatMessage = {
                 senderName: userData.username,
@@ -96,8 +103,22 @@ const ChatRoom = () => {
             console.log(chatMessage);
             stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
             setUserData({ ...userData, "message": "" });
+            setChatError(false)
         }
+        setChatError(false)
     }
+
+    const onKeyPress = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.key === 'Enter') {
+            sendValue();
+        }
+    }, [userData.message])
+
+    const onKeyPressPr = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.key === 'Enter') {
+            sendPrivateValue();
+        }
+    }, [userData.message])
 
     const sendPrivateValue = () => {
         if (stompClient) {
@@ -117,76 +138,135 @@ const ChatRoom = () => {
         }
     }
 
-    const handleUsername = (event: any) => {
-        if (!event.target) {
-            alert('닉네임을 입력해주세요')
-        }
+    const handleUsername = useCallback((event: any) => {
         const { value } = event.target;
         setUserData({ ...userData, "username": value });
-    }
+    }, [userData.username])
 
     const registerUser = () => {
+        if (userData.username === '') {
+            setConnectError(true)
+            return
+        }
         connect();
+        setConnectError(false)
     }
     return (
-        <div className="container">
+        <div className="relative">
             {userData.connected ?
                 <div className="chat-box">
-                    <div className="member-list">
+                    <div className="w-1/5">
                         <ul>
-                            <li onClick={() => { setTab("CHATROOM") }} className={`member ${tab === "CHATROOM" && "active"}`}>Chatroom</li>
+                            <li onClick={() => { setTab("CHATROOM") }}
+                                className={`rounded-lg member ${tab === "CHATROOM" && "active"}`}>Chatroom</li>
                             {[...privateChats.keys()].map((name, index) => (
-                                <li onClick={() => { setTab(name) }} className={`member ${tab === name && "active"}`} key={index}>{name}</li>
+                                <li onClick={() => { setTab(name) }}
+                                    className={`rounded-lg member ${tab === name && "active"}`} key={index}>{name}</li>
                             ))}
                         </ul>
                     </div>
-                    {tab === "CHATROOM" && <div className="chat-content">
-                        <ul className="chat-messages">
+                    {tab === "CHATROOM" && <div className="w-4/5 ml-3 rounded-lg">
+                        <ul className="h-4/5 p-6 mb-5 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                             {publicChats.map((chat: any, index: number) => (
-                                <li className={`message ${chat.senderName === userData.username && "self"}`} key={index}>
+                                <li className={`message border border-gray-200 rounded-lg
+                                 ${chat.senderName === userData.username && "justify-end"}`} key={index}>
                                     {chat.senderName !== userData.username && <div className="avatar">{chat.senderName}</div>}
-                                    <div className="message-data">{chat.message}</div>
-                                    {chat.senderName === userData.username && <div className="avatar self">{chat.senderName}</div>}
+                                    <div className="message-data flex items-center">{chat.message}</div>
+                                    {chat.senderName === userData.username &&
+                                        <div className="flex items-center px-3 py-2 rounded-lg bg-green-100">{chat.senderName}</div>}
                                 </li>
                             ))}
                         </ul>
-
                         <div className="send-message">
-                            <input type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} />
-                            <button type="button" className="send-button" onClick={sendValue}>send</button>
+                            <input type="text"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="채팅을 입력해주세요."
+                                value={userData.message}
+                                onChange={handleMessage}
+                                onKeyDown={onKeyPress} />
+                            <button
+                                type="button"
+                                onClick={sendValue}
+                                className="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                                <svg
+                                    aria-hidden="true"
+                                    className="w-6 h-6 rotate-90"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                                </svg>
+                                <span className="sr-only">Send message</span>
+                            </button>
                         </div>
+                        {chatError ? <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                            공백은 입력할 수 없습니다.</p> : <></>}
                     </div>}
-                    {tab !== "CHATROOM" && <div className="chat-content">
-                        <ul className="chat-messages">
+                    {tab !== "CHATROOM" && <div className="w-4/5 ml-3 rounded-lg">
+                        <ul className="h-4/5 p-6 mb-5 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                             {[...privateChats.get(tab)].map((chat, index) => (
-                                <li className={`message ${chat.senderName === userData.username && "self"}`} key={index}>
+                                <li className={`message border border-gray-200 rounded-lg
+                                 ${chat.senderName === userData.username && "justify-end"}`} key={index}>
                                     {chat.senderName !== userData.username && <div className="avatar">{chat.senderName}</div>}
-                                    <div className="message-data">{chat.message}</div>
-                                    {chat.senderName === userData.username && <div className="avatar self">{chat.senderName}</div>}
+                                    <div className="message-data flex items-center">{chat.message}</div>
+                                    {chat.senderName === userData.username &&
+                                        <div className="flex items-center px-3 py-2 rounded-lg bg-green-100">{chat.senderName}</div>}
                                 </li>
                             ))}
                         </ul>
-
                         <div className="send-message">
-                            <input type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} />
-                            <button type="button" className="send-button" onClick={sendPrivateValue}>send</button>
+                            <input type="text"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="채팅을 입력해주세요."
+                                value={userData.message}
+                                onChange={handleMessage}
+                                onKeyDown={onKeyPressPr} />
+                            <button
+                                type="button"
+                                onClick={sendPrivateValue}
+                                className="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                                <svg
+                                    aria-hidden="true"
+                                    className="w-6 h-6 rotate-90"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                                </svg>
+                                <span className="sr-only">Send message</span>
+                            </button>
                         </div>
                     </div>}
                 </div>
                 :
-                <div className="register">
-                    <input
-                        id="user-name"
-                        placeholder="Enter your name"
-                        name="userName"
-                        value={userData.username}
-                        onChange={handleUsername}
-                    // margin="normal"
-                    />
-                    <button type="button" onClick={registerUser}>
-                        connect
-                    </button>
-                </div>}
+                <div className='flex justify-center items-center h-screen90'>
+                    <div className="flex flex-col justify-center items-center max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md
+                     hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                        <div className='w-full'>
+                            <input
+                                type="text"
+                                id="username-error"
+                                className={`block w-full max-w-sm border text-sm rounded-lg p-2.5
+                                ${connectError ?
+                                        'border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:bg-red-100 dark:border-red-400'
+                                        : ''}`}
+                                placeholder="채팅ID를 입력해주세요."
+                                value={userData.username}
+                                onChange={handleUsername}
+                            />
+                            {connectError &&
+                                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                                    채팅ID를 입력해주세요.</p>
+                            }
+                        </div>
+                        <button
+                            type="button"
+                            className="mt-4 w-full text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+                            onClick={registerUser}
+                        >입장</button>
+                    </div>
+                </div>
+            }
         </div>
     )
 }

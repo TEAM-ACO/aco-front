@@ -3,6 +3,7 @@ import axios, { AxiosError } from 'axios';
 import backendURL from '../config/url';
 import { TypeAxios } from '@typings/db';
 import { IForgotPass } from '@features/userSlice';
+import { signupRequestData } from './signup';
 
 const AxiosType: TypeAxios = axios;
 axios.defaults.baseURL = backendURL;
@@ -69,7 +70,7 @@ export const googleLogin = createAsyncThunk<LogInRequestData, LogInRequestData>(
 );
 
 // 카카오 로그인
-export const kakaoLogin = createAsyncThunk<LogInRequestData, LogInRequestData>(
+export const kakaoLogin = createAsyncThunk<LogInRequestData, signupRequestData>(
   'member/kakaologin',
   async (data, { rejectWithValue }) => {
     try {

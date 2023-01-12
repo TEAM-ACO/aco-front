@@ -81,10 +81,6 @@ const SignUp = () => {
         dispatch(signup({ email, name, nickname, password }))
     }, [email, password, passwordCheck]);
 
-    const onKakao = useCallback(() => {
-        // router.push(`${KAKAO_AUTH_URL}`)
-    }, [])
-
     return (
         <>
             <section className="h-screen94">

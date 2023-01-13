@@ -43,16 +43,13 @@ const AdminReportMember = () => {
                     <Table.HeadCell className="!p-4">
                     </Table.HeadCell>
                     <Table.HeadCell>
-                        User Email
+                        Num
                     </Table.HeadCell>
                     <Table.HeadCell>
-                        Nickname
+                        Context
                     </Table.HeadCell>
                     <Table.HeadCell>
-                        Name
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        ????
+                        Member Email
                     </Table.HeadCell>
                     <Table.HeadCell>
                         Delete

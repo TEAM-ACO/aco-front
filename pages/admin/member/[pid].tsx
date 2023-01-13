@@ -48,13 +48,13 @@ const AdminMember = () => {
                     <Table.HeadCell className="!p-4">
                     </Table.HeadCell>
                     <Table.HeadCell>
-                        Member Email
+                        Num
                     </Table.HeadCell>
                     <Table.HeadCell>
                         Nickname
                     </Table.HeadCell>
                     <Table.HeadCell>
-                        Name
+                        Member Email
                     </Table.HeadCell>
                     <Table.HeadCell>
                         Delete

@@ -13,6 +13,7 @@ import {
   logout,
 } from '@actions/user';
 import _remove from 'lodash';
+import { ChangeNicknameRequest, ChangePassRequest } from '@typings/db';
 
 export interface IUser {
   email: string;
@@ -221,12 +222,12 @@ const userSlice = createSlice({
         state.kakaoLoginError = action.payload;
       })
       // changeNickname
-      .addCase(changeNickname.pending, (state) => {
+      .addCase(changeNickname.pending, (state: IUserState) => {
         state.changeNicknameLoading = true;
         state.changeNicknameDone = false;
         state.changeNicknameError = null;
       })
-      .addCase(changeNickname.fulfilled, (state: IUserState, action: PayloadAction<any>) => {
+      .addCase(changeNickname.fulfilled, (state: IUserState, action: PayloadAction<ChangeNicknameRequest>) => {
         state.changeNicknameLoading = false;
         state.changeNicknameDone = true;
         state.me = action.payload.nickname;
@@ -241,12 +242,12 @@ const userSlice = createSlice({
         state.changePasswordDone = false;
         state.changePasswordError = null;
       })
-      .addCase(changePassword.fulfilled, (state: IUserState, action: PayloadAction<any>) => {
+      .addCase(changePassword.fulfilled, (state: IUserState, action: PayloadAction<ChangePassRequest>) => {
         state.changePasswordLoading = false;
         state.changePasswordDone = true;
-        state.me = action.payload.password;
+        state.me = action.payload.upassword;
       })
-      .addCase(changePassword.rejected, (state, action) => {
+      .addCase(changePassword.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.changePasswordLoading = false;
         state.changePasswordError = action.payload;
       })
@@ -256,7 +257,7 @@ const userSlice = createSlice({
         state.findpasswordDone = false;
         state.findpasswordError = null;
       })
-      .addCase(findPasswordEmail.fulfilled, (state: IUserState, action) => {
+      .addCase(findPasswordEmail.fulfilled, (state: IUserState) => {
         state.findpasswordLoading = false;
         // state.me = action.payload;
         state.findpasswordDone = true;

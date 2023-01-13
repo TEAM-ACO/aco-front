@@ -75,3 +75,14 @@ export interface IReportMember {
   reporterUserId: number;
   userReportContext: string | unknown;
 }
+
+export interface ChangeNicknameRequest {
+  memberId: string;
+  nickname: string;
+}
+
+export interface ChangePassRequest {
+  memberId: string;
+  cpassword: string;
+  upassword: string;
+}

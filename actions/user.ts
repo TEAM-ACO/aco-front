@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 import backendURL from '../config/url';
-import { TypeAxios } from '@typings/db';
+import { ChangeNicknameRequest, ChangePassRequest, TypeAxios } from '@typings/db';
 import { IForgotPass } from '@features/userSlice';
 import { signupRequestData } from './signup';
 
@@ -83,24 +83,30 @@ export const kakaoLogin = createAsyncThunk<LogInRequestData, signupRequestData>(
   },
 );
 
-export const changeNickname = createAsyncThunk<any, any>('user/changeNickname', async (data, { rejectWithValue }) => {
-  try {
-    const response = await AxiosType.post('/api/setting/changenickname', data);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue((error as AxiosError).response?.data);
-  }
-});
+export const changeNickname = createAsyncThunk<ChangeNicknameRequest, ChangeNicknameRequest>(
+  'user/changeNickname',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/api/setting/changenickname', data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
 
-export const changePassword = createAsyncThunk<any, any>('user/changePassword', async (data, { rejectWithValue }) => {
-  console.log(data);
-  try {
-    const response = await AxiosType.post('/api/setting/changepassword', data);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue((error as AxiosError).response?.data);
-  }
-});
+export const changePassword = createAsyncThunk<ChangePassRequest, ChangePassRequest>(
+  'user/changePassword',
+  async (data, { rejectWithValue }) => {
+    console.log(data);
+    try {
+      const response = await axios.post('/api/setting/changepassword', data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
 
 export const findPasswordEmail = createAsyncThunk<findPasswordEmailRequestData, findPasswordEmailRequestData>(
   'member/findpasswordemail',

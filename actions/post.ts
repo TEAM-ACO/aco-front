@@ -16,6 +16,7 @@ import {
   TypeAxios,
   IReportMember,
 } from '@typings/db';
+import { signupRequestData } from './signup';
 
 axios.defaults.baseURL = backendURL;
 // 프론트 - 백 쿠키공유
@@ -26,6 +27,8 @@ const AxiosType: TypeAxios = axios;
 export type addPostRequestData = { content: string };
 
 export type errorMessage = { message: string };
+
+export type articleId = { articleId: number };
 
 export type reportArticle = {
   articlereporterId: number;
@@ -242,7 +245,7 @@ export const editPost = createAsyncThunk<IArticle, IUpdateComment>(
 );
 
 // 댓글 업데이트
-export const deletePost = createAsyncThunk<IArticle, IUpdateComment>(
+export const deletePost = createAsyncThunk<IArticle, articleId>(
   'article/deletePost',
   async (data, { rejectWithValue }) => {
     console.log(data);

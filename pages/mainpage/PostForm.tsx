@@ -29,21 +29,21 @@ function PostForm() {
     const [tagList, setTagList] = useState<string[]>([])
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
-    
-    const imageStorageFunction = (e:ChangeEvent<HTMLInputElement>)=>{
-        if(e.target.files?.length){
+
+    const imageStorageFunction = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.length) {
             for (let i = 0; i < e.target.files.length; i++) {
                 const element = e.target.files[i];
-                setImageStorage(file =>[...file, element])
+                setImageStorage(file => [...file, element])
                 console.log(element.name);
                 let reader = new FileReader();
                 reader.readAsDataURL(element)
-                reader.onload = (f)=>{
-                    setImgList(v=>[...v, f.target!.result as string])
+                reader.onload = (f) => {
+                    setImgList(v => [...v, f.target!.result as string])
                 }
             }
         }
-        e.target.files=null
+        e.target.files = null
     }
 
     useEffect(() => {
@@ -54,7 +54,7 @@ function PostForm() {
         }
     }, [addPostDone]);
 
-    const onSubmit = useCallback(async(e: React.MouseEvent<HTMLButtonElement>) => {
+    const onSubmit = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const refresh: any = router.reload
         const result = new FormData;
@@ -72,7 +72,6 @@ function PostForm() {
             for (let i = 0; i < imgStorage.length; i++) {
                 result.append("articleImages", imgStorage[i])
                 console.log(imgStorage[i].name);
-                
             }
         }
         dispatch(addPost(result));
@@ -210,13 +209,13 @@ function PostForm() {
                                 multiple
                                 hidden
                                 ref={imageInput}
-                                onChange={async(e)=>{
+                                onChange={async (e) => {
                                     imageStorageFunction(e)
                                 }}
                             />
                             <div className='flex'>
                                 {
-                                    imgl.map((v, i)=>{
+                                    imgl.map((v, i) => {
                                         return <img src={v} key={i} width="75px" height="75px" ></img>
                                     })
                                 }

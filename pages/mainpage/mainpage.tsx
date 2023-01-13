@@ -37,7 +37,7 @@ function mainLayout({ children }: {
                     {children}
                 </div>
                 <div className="slg:w-80 md:w-64 relative order-2 md:order-3">
-                    <div className={channelToggle ? 'hidden md:flex sticky top-14 w-52 slg:w-64' : 'sticky md:hidden'}>
+                    <div className={channelToggle ? 'hidden sticky md:block top-14 w-52 slg:w-64' : 'sticky block md:hidden top-14'}>
                         <Channel />
                     </div>
                 </div>

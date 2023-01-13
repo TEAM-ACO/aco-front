@@ -79,9 +79,7 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
     const onDeleteArticle = useCallback(() => {
         const refresh: any = router.reload
         dispatch(deletePost({ articleId: post.articleId }))
-        if (deletePostDone) {
-            refresh(window.location.pathname)
-        }
+        refresh(window.location.pathname)
     }, [deletePostDone])
 
     return (

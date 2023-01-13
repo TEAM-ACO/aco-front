@@ -44,16 +44,16 @@ const AdminArticle = () => {
                     <Table.HeadCell className="!p-4">
                     </Table.HeadCell>
                     <Table.HeadCell>
-                        Article Contents
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        usermail
+                        num
                     </Table.HeadCell>
                     <Table.HeadCell>
                         menu
                     </Table.HeadCell>
                     <Table.HeadCell>
-                        num
+                        Member email
+                    </Table.HeadCell>
+                    <Table.HeadCell className='truncate'>
+                        Article Contents
                     </Table.HeadCell>
                     <Table.HeadCell>
                         Reported

@@ -30,16 +30,16 @@ const AdminArticleComponent = ({ content }: ContentProps) => {
                 <Table.Cell className="!p-4">
                 </Table.Cell>
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {content.articleContext}
-                </Table.Cell>
-                <Table.Cell>
-                    {memberEmail}
+                    {content.articleId}
                 </Table.Cell>
                 <Table.Cell>
                     {content.menu}
                 </Table.Cell>
                 <Table.Cell>
-                    {content.articleId}
+                    {memberEmail}
+                </Table.Cell>
+                <Table.Cell>
+                    {content.articleContext}
                 </Table.Cell>
                 <Table.Cell>
                     {content.reported}

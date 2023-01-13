@@ -6,6 +6,7 @@ import { addPost } from '@actions/post';
 import { useCookies } from 'react-cookie';
 import Select from 'react-select';
 import { useRouter } from 'next/router';
+import _remove from 'lodash'
 
 const options = [
     { value: "Diary", label: 'Diary' },
@@ -24,13 +25,14 @@ function PostForm() {
     // const [imgl, setImgList] = useState<HTMLImageElement[]>([]);
     const [imgl, setImgList] = useState<string[]>([]);
     const imageInput = useRef() as React.RefObject<HTMLInputElement>;
+    const imageDeleteInput = useRef<HTMLImageElement | null>(null);
     const [text, setText] = useState<string>('')
     const [tagItem, setTagItem] = useState<string>('')
     const [tagList, setTagList] = useState<string[]>([])
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
 
-    const imageStorageFunction = (e: ChangeEvent<HTMLInputElement>) => {
+    const imageStorageFunction = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
             for (let i = 0; i < e.target.files.length; i++) {
                 const element = e.target.files[i];
@@ -44,15 +46,7 @@ function PostForm() {
             }
         }
         e.target.files = null
-    }
-
-    useEffect(() => {
-        if (addPostDone) {
-            setText('');
-            setTagList([]);
-            setTagItem('');
-        }
-    }, [addPostDone]);
+    }, [imgStorage, imgl])
 
     const onSubmit = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -115,28 +109,23 @@ function PostForm() {
     }, [tagItem, tagList])
 
     const onClickImageUpload = useCallback(() => {
+        if (imgStorage.length > 5 && imgl.length > 5) {
+            alert('이미지는 5개까지 등록할 수 있습니다.')
+            return
+        }
         if (!imageInput.current) {
             return;
         }
         imageInput.current.click();
     }, [imageInput.current]);
 
-    // const onUploadImage = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    //     if (!e.target.files) {
-    //         return;
-    //     }
-    //     if (imageList.length >= 10) {
-    //         alert('이미지는 10개까지 등록할 수 있습니다.')
-    //         return
-    //     }
-    //     let updatedImageList = [...imageList]
-    //     if (updatedImageList.includes(e.target.files[0].name)) {
-    //         return
-    //     }
-    //     updatedImageList.push(e.target.files[0].name)
-    //     setImageList(updatedImageList)
-    //     console.log(imageList);
-    // }, [imageList])
+    useEffect(() => {
+        if (addPostDone) {
+            setText('');
+            setTagList([]);
+            setTagItem('');
+        }
+    }, [addPostDone]);
 
     return (
         <div className='w-full'>
@@ -216,7 +205,27 @@ function PostForm() {
                             <div className='flex'>
                                 {
                                     imgl.map((v, i) => {
-                                        return <img src={v} key={i} width="75px" height="75px" ></img>
+                                        const deleteImage = () => {
+                                            imgl.splice(i, 1)
+                                            imgStorage.splice(i, 1)
+                                            setImgList(v => [...imgl])
+                                            setImageStorage(imgStorage)
+                                        }
+                                        return (
+                                            <div className='flex'>
+                                                <img src={v} key={i} data-index={i}
+                                                    width="75px" height="75px" ref={imageDeleteInput} />
+                                                <div className='absolute bg-gray-200 m-1 px-1 '>
+                                                    <button
+                                                        type="button"
+                                                        onClick={deleteImage}
+                                                        className='flex justify-center items-center text-sm font-medium shadow-md text-purple-500 
+                                                    focus:outline-none border border-gray-200 hover:text-indigo-900 focus:z-10 
+                                                    dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 
+                                                    dark:hover:text-white dark:hover:bg-gray-700'>X</button>
+                                                </div>
+                                            </div>
+                                        )
                                     })
                                 }
                             </div>
@@ -235,18 +244,6 @@ function PostForm() {
                                 </svg>
                                 <span className="sr-only">Upload image</span>
                             </button>
-                            <div>
-                                {/* {articleImage.map((v: any) => {
-                                    return (
-                                        <div key={v} style={{ display: 'inline-block' }}>
-                                            <img src={'http://localhost:3075/' + v} style={{ width: '200px' }} alt={v} />
-                                            <div>
-                                                <button>제거</button>
-                                            </div>
-                                        </div>
-                                    )
-                                })} */}
-                            </div>
                         </div>
                     </div>
                 </div>

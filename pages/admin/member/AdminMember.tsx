@@ -24,13 +24,13 @@ const AdminMemberComponent = ({ content }: ContentProps) => {
                 <Table.Cell className="!p-4">
                 </Table.Cell>
                 <Table.Cell className="truncate whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {content.email}
+                    {content.memberId}
                 </Table.Cell>
                 <Table.Cell>
                     {content.nickname}
                 </Table.Cell>
                 <Table.Cell>
-                    {content.memberId}
+                    {content.email}
                 </Table.Cell>
                 <Table.Cell>
                     <button

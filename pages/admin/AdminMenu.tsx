@@ -45,7 +45,7 @@ const AdminMenu = ({ children }: {
                     <li className="mr-2">
                         <Link href="/admin/reportmember/1"
                             className={`inline-block p-4 rounded-t-lg 
-                            ${router.route === "/admin/reportmember[pid]" ? "text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500"
+                            ${router.route === "/admin/reportmember/[pid]" ? "text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500"
                                     : "hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"}`}>
                             멤버 신고 관리</Link>
                     </li>

@@ -46,7 +46,7 @@ const AdminReportArticle = () => {
                         num
                     </Table.HeadCell>
                     <Table.HeadCell>
-                        articleReportContext
+                        Context
                     </Table.HeadCell>
                     <Table.HeadCell>
                         articleId

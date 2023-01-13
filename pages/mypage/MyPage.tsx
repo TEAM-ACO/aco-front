@@ -53,7 +53,7 @@ const MyPageForm = () => {
 
     const onPasswordSubmit = useCallback(() => {
         dispatch(changePassword({ memberId: cookies.user.num, cpassword: currentPassword, upassword: rePassword }));
-    }, [password]);
+    }, [currentPassword, password, rePassword]);
 
     useEffect(() => {
         setTimeout(() => {

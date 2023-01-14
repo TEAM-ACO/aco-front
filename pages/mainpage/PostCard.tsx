@@ -57,7 +57,7 @@ const PostCard = ({ post }: PostProps) => {
     const onFavoriteToggle = useCallback(() => {
         dispatch(likePost({ article: { articleId: post.articleId }, liker: cookies.user.num }))
         setFavorite((prev) => !prev)
-    }, [])
+    }, [favorite])
 
     const onMenu = useCallback(() => {
         router.push(`/category/${post.menu.toLowerCase()}`)
@@ -99,7 +99,7 @@ const PostCard = ({ post }: PostProps) => {
                                 contextModify={contextModify} setContextModify={setContextModify} />
                         </div>
                         {contextModify ?
-                            <PostModifyForm key={post.articleId} post={post} />
+                            <PostModifyForm key={post.articleId} post={post} contextModify={contextModify} />
                             :
                             <div>
                                 <div className='text-gray-500 text-xs items-center mb-3 flex justify-between'>

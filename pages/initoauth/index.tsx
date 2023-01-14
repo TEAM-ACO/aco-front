@@ -1,47 +1,39 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import * as Yup from 'yup';
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@store/config';
 import { useRouter } from 'next/navigation';
 import { useCookies } from "react-cookie"
 import { Spinner } from 'flowbite-react';
 import useInput from '@hooks/useInput';
-import { signup } from '@actions/signup';
+import { changeForgotPassword, changeNickname } from '@actions/user';
 
 const InitOauth = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const { signupDone, signupError, signupLoading } = useAppSelector((state) => state.signup);
+    const [cookies2, setCookie2, removeCookie2] = useCookies(['refresh']);
+    const [cookies3, setCookie3, removeCookie3] = useCookies(['access']);
+    const { changeForgotPasswordDone, changeForgotPasswordLoading } = useAppSelector((state) => state.user);
+    const [action, setAction] = useState<boolean>(false)
 
     const [nickname, onChangeNickname] = useInput('');
-    const [name, onChangeName] = useInput('');
     const [password, onChangePassword] = useInput('');
     const [rePassword, onChangeRePassword] = useInput('');
 
     const [signUpError, setSignUpError] = useState<boolean>(false);
-
-    useEffect(() => {
-        // if (action) {
-        //     // Done 넣기
-        //     if (signupDone) {
-        //         alert('회원가입이 완료되었습니다.')
-        //         router.replace('/');
-        //     }
-        //     if (signupError) {
-        //         alert(JSON.stringify(signupError, null, 4));
-        //     }
-        //     action.setSubmitting(false);
-        //     setAction(null);
-        // }
-    }, [signupDone, signupError]);
 
     const onSubmit = useCallback((e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (password !== rePassword) {
             return setSignUpError(true);
         }
-        dispatch(signup({ email: cookies.user.id, name, nickname, password }))
+        dispatch(changeNickname({ memberId: cookies.user.num, nickname: nickname }))
+        dispatch(changeForgotPassword({ email: cookies.user.id, upassword: password }))
+        setAction(true)
+        setTimeout(() => {
+            router.replace('/mainpage')
+            setAction(false)
+        }, 2000)
         setSignUpError(false)
     }, [nickname, password, rePassword])
 
@@ -64,13 +56,6 @@ const InitOauth = () => {
                                         required
                                     />
                                     <input
-                                        type="text"
-                                        className="form-input py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
-                                        placeholder='이름을 입력해주세요.'
-                                        value={name} onChange={onChangeName}
-                                        required
-                                    />
-                                    <input
                                         type="password"
                                         className="form-input py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
                                         placeholder='비밀번호를 입력해주세요.'
@@ -88,11 +73,13 @@ const InitOauth = () => {
                                     <button
                                         type="submit"
                                         className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
-                                        {signupLoading ?
+                                        {changeForgotPasswordLoading ?
                                             <Spinner />
                                             : '가입하기'
                                         }
                                     </button>
+                                    {action && <p className='text-xs pb-1 px-4 text-red-500 font-medium'>
+                                        회원가입이 완료되었습니다. 메인페이지로 이동합니다.</p>}
                                 </div>
                             </div>
                         </div>

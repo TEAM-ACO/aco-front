@@ -1,11 +1,10 @@
 "use client"
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import useInput from '@hooks/useInput'
 import { useAppDispatch } from '@store/config'
 import { signup, emailAuthRequest, authnumVerifyRequest } from '@actions/signup'
-import { KAKAO_AUTH_URL } from 'util/kakao'
 
 const BGcolor = {
     google: {

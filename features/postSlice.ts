@@ -203,10 +203,9 @@ const postSlice = createSlice({
         state.uploadImagesDone = false;
         state.uploadImagesError = null;
       })
-      .addCase(uploadImages.fulfilled, (state: IArticleState, action) => {
+      .addCase(uploadImages.fulfilled, (state: IArticleState) => {
         state.uploadImagesLoading = false;
         state.uploadImagesDone = true;
-        state.imagePaths = _concat(state.imagePaths, action.payload);
       })
       .addCase(uploadImages.rejected, (state: IArticleState, action) => {
         state.uploadImagesLoading = false;

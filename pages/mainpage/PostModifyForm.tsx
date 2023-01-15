@@ -80,9 +80,8 @@ function PostModifyForm({ post, contextModify }: PostProps) {
                 console.log(imgStorage[i].name);
             }
         }
-        console.log(imgStorage)
         dispatch(editPost(result));
-        // refresh(window.location.pathname)
+        refresh(window.location.pathname)
     }, [text, tagList, imgData])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {

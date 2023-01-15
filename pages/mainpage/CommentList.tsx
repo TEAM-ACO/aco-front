@@ -7,11 +7,12 @@ import { useRouter } from 'next/router';
 import ReComments from './ReCommentForm';
 import { useAppDispatch, useAppSelector } from '@store/config';
 import { deleteComment } from '@actions/post';
-import { AnyAction } from '@reduxjs/toolkit';
+import { IUpdateComment } from '@typings/db';
 
 type CommentProps = {
     comment: IReply
     commentListUpdate: any
+    // Dispatch<SetStateAction<IUpdateComment>>
 }
 
 function CommentList({ comment, commentListUpdate }: CommentProps) {

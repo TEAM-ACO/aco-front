@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { Client, over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import { useCookies } from "react-cookie"
-import Error from 'next/error';
-import { Toast } from 'flowbite-react';
 
 type IUserData = {
     username: string;
@@ -26,9 +24,10 @@ const ChatRoom = () => {
         connected: false,
         message: ''
     });
-    useEffect(() => {
-        console.log(userData);
-    }, [userData]);
+
+    const inputFocus = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+    const chatFocus = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+    const prChatFocus = React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
     const connect = () => {
         let Sock = new SockJS('http://127.0.0.1:3075/api/ws');
@@ -91,6 +90,7 @@ const ChatRoom = () => {
     }
     const sendValue = () => {
         if (userData.message === '') {
+            chatFocus.current.focus()
             setChatError(true)
             return
         }
@@ -100,11 +100,13 @@ const ChatRoom = () => {
                 message: userData.message,
                 status: "MESSAGE"
             };
-            console.log(chatMessage);
+            // console.log(chatMessage);
             stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
             setUserData({ ...userData, "message": "" });
+            chatFocus.current.focus()
             setChatError(false)
         }
+        chatFocus.current.focus()
         setChatError(false)
     }
 
@@ -121,6 +123,11 @@ const ChatRoom = () => {
     }, [userData.message])
 
     const sendPrivateValue = () => {
+        if (userData.message === '') {
+            prChatFocus.current.focus()
+            setChatError(true)
+            return
+        }
         if (stompClient) {
             var chatMessage = {
                 senderName: userData.username,
@@ -135,7 +142,9 @@ const ChatRoom = () => {
             }
             stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
             setUserData({ ...userData, "message": "" });
+            prChatFocus.current.focus()
         }
+        prChatFocus.current.focus()
     }
 
     const handleUsername = useCallback((event: any) => {
@@ -143,14 +152,22 @@ const ChatRoom = () => {
         setUserData({ ...userData, "username": value });
     }, [userData.username])
 
-    const registerUser = () => {
-        if (userData.username === '') {
+    const registerUser = useCallback(() => {
+        if (userData.username === '' || userData.username.match(/\s/g)) {
+            chatFocus.current.focus()
             setConnectError(true)
             return
         }
         connect();
         setConnectError(false)
-    }
+    }, [userData.username])
+
+    const registerUserEnter = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.key === 'Enter') {
+            registerUser()
+        }
+    }, [userData.username])
+
     return (
         <div className="relative">
             {userData.connected ?
@@ -183,6 +200,7 @@ const ChatRoom = () => {
                                 placeholder="채팅을 입력해주세요."
                                 value={userData.message}
                                 onChange={handleMessage}
+                                ref={chatFocus}
                                 onKeyDown={onKeyPress} />
                             <button
                                 type="button"
@@ -220,6 +238,7 @@ const ChatRoom = () => {
                                 placeholder="채팅을 입력해주세요."
                                 value={userData.message}
                                 onChange={handleMessage}
+                                ref={prChatFocus}
                                 onKeyDown={onKeyPressPr} />
                             <button
                                 type="button"
@@ -253,10 +272,12 @@ const ChatRoom = () => {
                                 placeholder="채팅ID를 입력해주세요."
                                 value={userData.username}
                                 onChange={handleUsername}
+                                onKeyDown={registerUserEnter}
+                                ref={inputFocus}
                             />
                             {connectError &&
                                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                                    채팅ID를 입력해주세요.</p>
+                                    채팅ID가 올바르지 않습니다.</p>
                             }
                         </div>
                         <button

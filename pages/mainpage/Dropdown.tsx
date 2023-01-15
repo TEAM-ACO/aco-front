@@ -21,7 +21,6 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
     const [onReportModal, setOnReportModal] = useState<boolean>(false);
     const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
     const [isReported, setIsReported] = useState<Boolean>(false)
-    const [memberCheck, setMemberCheck] = useState<Boolean>(false)
     const selectBox = useRef<DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>>()
     const dispatch = useAppDispatch();
     const reportTests: string[] = ["부적절한 콘텐츠입니다", "성적인 콘텐츠입니다.", "진실을 오도하고 있습니다",
@@ -65,7 +64,7 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
                     setIsReported(true)
                     setTimeout(onReportModalClose, 3000)
                 case 2:
-                //예외모달필요
+                    alert('에러로 인해 신고가 완료되지 않았습니다. 잠시후에 다시 시도해주세요.')
                 default:
                     break;
             }

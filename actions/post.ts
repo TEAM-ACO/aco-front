@@ -162,9 +162,10 @@ export const reportMember = createAsyncThunk<IArticle, IReportMember>(
 export const likePost = createAsyncThunk<IArticle, ILikePost>('article/likePost', async (data, { rejectWithValue }) => {
   console.log(data);
   try {
-    const response = await axios.post(`/api/article/like`, data);
+    const response = await axios.post(`/api/like`, data);
     return response.data;
   } catch (error) {
+    console.error(error);
     return rejectWithValue((error as AxiosError).response?.data);
   }
 });

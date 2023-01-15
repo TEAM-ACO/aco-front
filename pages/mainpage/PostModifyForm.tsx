@@ -7,7 +7,7 @@ import { useCookies } from 'react-cookie';
 import Select from 'react-select';
 import { useRouter } from 'next/router';
 import { IArticle } from '@features/postSlice';
-import _find from 'lodash'
+import _remove from 'lodash'
 
 const options = [
     { value: "Diary", label: 'Diary' },
@@ -17,24 +17,22 @@ const options = [
 
 type PostProps = {
     post: IArticle
+    contextModify: boolean
 }
 
 // 기본 이미지 넣기
-function PostModifyForm({ post }: PostProps) {
+function PostModifyForm({ post, contextModify }: PostProps) {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const [selectedOption, setSelectedOption] = useState<any>(post.menu == 'Diary' ? options[0] :
         post.menu == 'Tip' ? options[1] : options[2]);
+    const [imgStorage, setImageStorage] = useState<File[]>([]);
+    const [imgl, setImgList] = useState<string[]>([]);
+    const imageDeleteInput = useRef<HTMLImageElement | null>(null);
+    const imageDataDeleteInput = useRef<HTMLImageElement | null>(null);
+    const [imgData, setImgData] = useState<string[]>([...post.articleImagesNames]);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { addPostDone, addPostLoading, addPostError } = useAppSelector((state) => state.post);
-
-    useEffect(() => {
-        if (addPostDone) {
-            setText('');
-            setTagList([]);
-            setTagItem('');
-        }
-    }, [addPostDone]);
 
     const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
     const [text, setText] = useState<string>(post.articleContext)
@@ -43,7 +41,23 @@ function PostModifyForm({ post }: PostProps) {
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
 
-    const onSubmit = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    const imageStorageFunction = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.length) {
+            for (let i = 0; i < e.target.files.length; i++) {
+                const element = e.target.files[i];
+                setImageStorage(file => [...file, element])
+                console.log(element.name);
+                let reader = new FileReader();
+                reader.readAsDataURL(element)
+                reader.onload = (f) => {
+                    setImgList(v => [...v, f.target!.result as string])
+                }
+            }
+        }
+        e.target.files = null
+    }, [imgStorage, imgl])
+
+    const onSubmit = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const refresh: any = router.reload
         const result = new FormData;
@@ -52,25 +66,22 @@ function PostModifyForm({ post }: PostProps) {
             return
         }
         setTextError(false)
+        result.set("articleId", post.articleId)
         result.set("articleContext", text)
         result.set("menu", selectedOption.value)
         result.set("memberId", cookies.user.num)
         result.set("tags", tagList.join(", "))
-        result.set("articleId", (post.articleId) as any)
+        result.set("articleImagesNames", imgData)
 
-        if (imageInput.current.files) {
-            for (let i = 0; i < imageInput.current.files.length; i++) {
-                result.append("articleImagesNames", imageInput.current.files[i])
+        if (imgStorage) {
+            for (let i = 0; i < imgStorage.length; i++) {
+                result.append("articleImages", imgStorage[i])
+                console.log(imgStorage[i].name);
             }
         }
         dispatch(editPost(result));
-        // dispatch(editPost({
-        //     articleId: post.articleId, articleImagesNames: post.articleImagesNames,
-        //     tags: post.tags, articleContext: post.articleContext, name: post.member.nickname,
-        //     menu: post.menu
-        // }))
         // refresh(window.location.pathname)
-    }, [text, tagList])
+    }, [text, tagList, imgData])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);
@@ -109,11 +120,23 @@ function PostModifyForm({ post }: PostProps) {
     }, [tagItem, tagList])
 
     const onClickImageUpload = useCallback(() => {
+        if (imgData.length + imgStorage.length > 5 && imgData.length + imgl.length > 5) {
+            alert('이미지는 5개까지 등록할 수 있습니다.')
+            return
+        }
         if (!imageInput.current) {
             return;
         }
         imageInput.current.click();
     }, [imageInput.current]);
+
+    useEffect(() => {
+        if (addPostDone) {
+            setText('');
+            setTagList([]);
+            setTagItem('');
+        }
+    }, [addPostDone]);
 
 
     return (
@@ -187,7 +210,60 @@ function PostModifyForm({ post }: PostProps) {
                                 multiple
                                 hidden
                                 ref={imageInput}
+                                onChange={async (e) => {
+                                    imageStorageFunction(e)
+                                }}
                             />
+                            <div className='flex'>
+                                {
+                                    imgData.map((v, i: number) => {
+                                        const deleteImageData = async () => {
+                                            imgData.splice(i, 1)
+                                            setImgData(v => [...imgData])
+                                        }
+                                        return (
+                                            <div className='flex'>
+                                                <img src={`/api/image/images/${imgData[i]}`} key={i}
+                                                    width="75px" height="75px" ref={imageDataDeleteInput} />
+                                                <div className='absolute bg-gray-200 m-1 px-1 '>
+                                                    <button
+                                                        type="button"
+                                                        onClick={deleteImageData}
+                                                        className='flex justify-center items-center text-sm font-medium shadow-md text-purple-500 
+                                                    focus:outline-none border border-gray-200 hover:text-indigo-900 focus:z-10 
+                                                    dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 
+                                                    dark:hover:text-white dark:hover:bg-gray-700'>X</button>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                                {
+                                    imgl.map((v, i) => {
+                                        const deleteImage = async () => {
+                                            imgl.splice(i, 1)
+                                            imgStorage.splice(i, 1)
+                                            setImgList(v => [...imgl])
+                                            setImageStorage(imgStorage)
+                                        }
+                                        return (
+                                            <div className='flex'>
+                                                <img src={v} key={i} data-index={i}
+                                                    width="75px" height="75px" ref={imageDeleteInput} />
+                                                <div className='absolute bg-gray-200 m-1 px-1 '>
+                                                    <button
+                                                        type="button"
+                                                        onClick={deleteImage}
+                                                        className='flex justify-center items-center text-sm font-medium shadow-md text-purple-500 
+                                                    focus:outline-none border border-gray-200 hover:text-indigo-900 focus:z-10 
+                                                    dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 
+                                                    dark:hover:text-white dark:hover:bg-gray-700'>X</button>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
                             <button
                                 className="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
                                 onClick={onClickImageUpload}

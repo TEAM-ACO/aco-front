@@ -12,6 +12,8 @@ const MyPageForm = () => {
     const { changeNicknameLoading, changeNicknameDone, changeNicknameError,
         changePasswordDone, changePasswordError, changePasswordLoading
     } = useAppSelector((state) => state.user);
+    const [myNickname, setMyNickname] = useState('')
+    const [userLink, setUserLink] = useState('')
 
     // 닉네임 변경
     const [nickname, setNickname] = useState(cookies.user?.username);
@@ -43,11 +45,10 @@ const MyPageForm = () => {
     }, [rePassword]);
 
     const onImageSubmit = useCallback(() => {
-        console.log(imageInput.current.files)
+        console.log(imageInput.current.files[0].name)
         const result = new FormData;
         result.set("memberId", cookies.user.num)
-        result.set("userimg", imageInput.current.files[0])
-        result.set("file", '1')
+        result.set("userimg", imageInput.current.files[0].name)
         dispatch(uploadImages(result))
     }, [imageInput.current])
 
@@ -81,6 +82,15 @@ const MyPageForm = () => {
             }
         }
     }, [changePasswordDone, changePasswordError]);
+
+    useEffect(() => {
+        if (cookies.user) {
+            setUserLink(cookies.user.num)
+            setTimeout(() => {
+                setMyNickname(cookies.user.username.toUpperCase())
+            }, 300)
+        }
+    })
 
     return (
         <section className="bg-white dark:bg-gray-900">
@@ -171,14 +181,21 @@ const MyPageForm = () => {
                         </button>
                     </div>
                     <div className="sm:col-span-2">
-                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Upload image</label>
-                        <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-primary-600 dark:hover:bg-primary-700 dark:placeholder-blue-400"
-                            aria-describedby="user_avatar_help" id="user_avatar" type="file"
-                            ref={imageInput} />
-                        <div className="mt-1 text-sm text-gray-500 dark:text-gray-300"
-                            id="user_avatar_help">
-                            프로필에 올릴 이미지를 선택해주세요</div>
+                        <div className="mb-3 inline-flex overflow-hidden relative justify-center items-center mx-auto w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600">
+                            <span className="font-medium text-gray-600 dark:text-gray-300">
+                                {myNickname[0]}{myNickname[1]}</span>
+                            {/* <img src={`http://localhost:15251/api/image/images/${articleImages}`} /> */}
+                        </div>
+                        <div className='mb-3 '>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Upload image</label>
+                            <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-primary-600 dark:hover:bg-primary-700 dark:placeholder-blue-400"
+                                aria-describedby="user_avatar_help" id="user_avatar" type="file"
+                                ref={imageInput} />
+                            <div className="mt-1 text-sm text-gray-500 dark:text-gray-300"
+                                id="user_avatar_help">
+                                프로필에 올릴 이미지를 선택해주세요</div>
+                        </div>
                     </div>
                 </div>
                 <div className="flex items-center space-x-4">

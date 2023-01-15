@@ -310,7 +310,7 @@ const postSlice = createSlice({
         state.updateCommentDone = true;
         state.mainPosts = _concat(
           state.mainPosts.map((v: IArticle) => {
-            if (v.articleId == action.payload[action.payload.length - 1].article.articleId) {
+            if (v.articleId == action.payload[action.payload.length - 1]?.article.articleId) {
               let tmp = v;
               tmp.replys = action.payload;
               return tmp;

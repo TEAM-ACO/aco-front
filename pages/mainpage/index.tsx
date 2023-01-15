@@ -27,11 +27,15 @@ function mainpage() {
     // })
 
     useEffect(() => {
+        mainPostsLoad()
+    }, [inView, hasMorePosts, loadPostsLoading]);
+
+    const mainPostsLoad = useCallback(() => {
         if (inView && hasMorePosts && !loadPostsLoading) {
             dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 10 }));
             loadMore()
         }
-    }, [inView, hasMorePosts, loadPostsLoading]);
+    }, [inView, hasMorePosts, loadPostsLoading])
 
     const loadMore = useCallback(() => {
         setRequestPage(prev => prev + 1);
@@ -41,7 +45,7 @@ function mainpage() {
         <div>
             <Mainpage>
                 <div className="ml-auto mr-auto">
-                    <PostForm />
+                    <PostForm mainPostsLoad={mainPostsLoad} />
                     {mainPosts.map((post: IArticle) => {
                         return (
                             <PostCard key={post.articleId} post={post} />

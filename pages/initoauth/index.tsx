@@ -11,8 +11,6 @@ const InitOauth = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const [cookies2, setCookie2, removeCookie2] = useCookies(['refresh']);
-    const [cookies3, setCookie3, removeCookie3] = useCookies(['access']);
     const { changeForgotPasswordDone, changeForgotPasswordLoading } = useAppSelector((state) => state.user);
     const [action, setAction] = useState<boolean>(false)
 

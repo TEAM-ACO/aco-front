@@ -86,3 +86,9 @@ export interface ChangePassRequest {
   cpassword: string;
   upassword: string;
 }
+
+export interface IDeleteComment {
+  replyId: number;
+  member: { memberId: number };
+  article: { articleId: number };
+}

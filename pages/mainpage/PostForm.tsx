@@ -70,7 +70,7 @@ function PostForm() {
             }
         }
         dispatch(addPost(result));
-        refresh(window.location.pathname)
+        // refresh(window.location.pathname)
     }, [text, tagList])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {

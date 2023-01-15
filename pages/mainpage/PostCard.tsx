@@ -12,7 +12,6 @@ import PostCardContent from './PostCardContent';
 import PostImage from './PostImage';
 import { likePost, updateComment } from '@actions/post';
 import { useRouter } from 'next/router';
-import ReactTextareaAutosize from 'react-textarea-autosize';
 import PostModifyForm from './PostModifyForm';
 
 type PostProps = {
@@ -23,10 +22,9 @@ const PostCard = ({ post }: PostProps) => {
     const date = dayjs(post.date).format("YY-MM-DD");
     const router = useRouter();
     const dispatch = useAppDispatch();
+    const { mainPosts } = useAppSelector((state) => state.post)
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const { loadPostsDone } = useAppSelector((state) => state.post);
     const [contextModify, setContextModify] = useState<boolean>(false);
-    const [text, setText] = useState<string>('')
     const [favorite, setFavorite] = useState<boolean>(false);
     const [requestPage, setRequestPage] = useState<number>(0);
     const [requestComment, setRequestComment] = useState<number>(5);
@@ -62,6 +60,13 @@ const PostCard = ({ post }: PostProps) => {
     const onMenu = useCallback(() => {
         router.push(`/category/${post.menu.toLowerCase()}`)
     }, [])
+
+    const commentListUpdate = useCallback(() => {
+        dispatch(updateComment({
+            article: { articleId: post.articleId },
+            requestedPageNumber: requestPage, requestedPageSize: post.replys[post.replys.length - 1]?.totalCount
+        }))
+    }, [requestPage, requestComment, mainPosts])
 
     return (
         <>
@@ -145,11 +150,9 @@ const PostCard = ({ post }: PostProps) => {
                                         {`${post.replys[post.replys.length - 1]?.totalCount || 0}개의 댓글`}
                                     </div>
                                     <div className='mt-2'>
-                                        {/* 전체 댓글 수 보내달라고 할 것 */}
                                         {post.replys.map((cmt: IReply) => (
-                                            <CommentList key={cmt.replyId} comment={cmt} />
+                                            <CommentList key={cmt.replyId} comment={cmt} commentListUpdate={commentListUpdate} />
                                         ))}
-                                        {/* 총 댓글 개수는 여기서 뽑아야할것같아영 paging할때 총개수도 넘기도록 만들어놨어영*/}
                                     </div>
                                     <div className='ml-6 py-2 mt-3'>
                                         {allCount - post.replys.length >= 5 ?

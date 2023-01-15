@@ -41,7 +41,7 @@ function PostModifyForm({ post, contextModify }: PostProps) {
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
 
-    const imageStorageFunction = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const imageStorageFunction = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
             for (let i = 0; i < e.target.files.length; i++) {
                 const element = e.target.files[i];
@@ -66,6 +66,7 @@ function PostModifyForm({ post, contextModify }: PostProps) {
             return
         }
         setTextError(false)
+        console.log(imgData)
         result.set("articleId", post.articleId)
         result.set("articleContext", text)
         result.set("menu", selectedOption.value)
@@ -79,13 +80,14 @@ function PostModifyForm({ post, contextModify }: PostProps) {
                 console.log(imgStorage[i].name);
             }
         }
+        console.log(imgStorage)
         dispatch(editPost(result));
         // refresh(window.location.pathname)
     }, [text, tagList, imgData])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);
-    }, []);
+    }, [text]);
 
     const onChangehashText = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setTagItem(e.target.value);

@@ -1,11 +1,13 @@
 import _concat from 'lodash/concat';
-import _find from 'lodash/concat';
+import _find from 'lodash/find';
+import _filter from 'lodash/filter';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import {
   addComment,
   addPost,
+  deleteComment,
   deletePost,
   editPost,
   likePost,
@@ -18,7 +20,6 @@ import {
   uploadImages,
 } from '@actions/post';
 import { ArticleLoadPosts } from '@typings/db';
-import _filter from 'lodash/concat';
 
 export interface IArticle {
   articleId: number;
@@ -103,6 +104,9 @@ export interface IArticleState {
   deletePostLoading: boolean;
   deletePostDone: boolean;
   deletePostError: unknown | null;
+  deleteCommentLoading: boolean;
+  deleteCommentDone: boolean;
+  deleteCommentError: unknown | null;
 }
 
 export const initialState: IArticleState = {
@@ -152,6 +156,9 @@ export const initialState: IArticleState = {
   deletePostLoading: false, // post 삭제
   deletePostDone: false,
   deletePostError: null,
+  deleteCommentLoading: false, // comment 삭제
+  deleteCommentDone: false,
+  deleteCommentError: null,
 };
 
 const postSlice = createSlice({
@@ -303,7 +310,6 @@ const postSlice = createSlice({
         state.updateCommentDone = true;
         state.mainPosts = _concat(
           state.mainPosts.map((v: IArticle) => {
-            console.log(state.mainPosts);
             if (v.articleId == action.payload[action.payload.length - 1].article.articleId) {
               let tmp = v;
               tmp.replys = action.payload;
@@ -361,6 +367,20 @@ const postSlice = createSlice({
       .addCase(deletePost.rejected, (state: IArticleState, action) => {
         state.deletePostLoading = false;
         state.deletePostError = action.error.message;
+      })
+      // deleteComment
+      .addCase(deleteComment.pending, (state: IArticleState) => {
+        state.deleteCommentLoading = true;
+        state.deleteCommentDone = false;
+        state.deleteCommentError = null;
+      })
+      .addCase(deleteComment.fulfilled, (state: IArticleState) => {
+        state.deleteCommentLoading = false;
+        state.deleteCommentDone = true;
+      })
+      .addCase(deleteComment.rejected, (state: IArticleState, action) => {
+        state.deleteCommentLoading = false;
+        state.deleteCommentError = action.error.message;
       }),
 });
 

@@ -1,19 +1,25 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, Dispatch, SetStateAction } from 'react'
 import { useCookies } from "react-cookie"
-import { Avatar, Modal, Button } from 'flowbite-react'
+import { Avatar, Modal, Button, Spinner } from 'flowbite-react'
 import dayjs from 'dayjs';
 import { IReply } from '@features/postSlice';
 import { useRouter } from 'next/router';
 import ReComments from './ReCommentForm';
+import { useAppDispatch, useAppSelector } from '@store/config';
+import { deleteComment } from '@actions/post';
+import { AnyAction } from '@reduxjs/toolkit';
 
 type CommentProps = {
     comment: IReply
+    commentListUpdate: any
 }
 
-function CommentList({ comment }: CommentProps) {
+function CommentList({ comment, commentListUpdate }: CommentProps) {
+    const dispatch = useAppDispatch();
     const router = useRouter();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const date = dayjs(comment.date).format("YY-MM-DD");
+    const { deleteCommentLoading, deleteCommentDone, mainPosts } = useAppSelector((state) => state.post)
 
     const [commentReport, setCommentReport] = useState<boolean>(false);
     const [commentDelete, setCommentDelete] = useState<boolean>(false);
@@ -25,16 +31,28 @@ function CommentList({ comment }: CommentProps) {
 
     const onRereplyModalOpen = useCallback(() => {
         setCommentReport((prev) => !prev)
-    }, [])
+    }, [commentReport])
 
     const onDeleteOpen = useCallback(() => {
         setOnDeleteModal((prev) => !prev)
-    }, [])
+    }, [onDeleteModal])
 
     const onDeleteClose = useCallback(() => {
         setOnDeleteModal((prev) => !prev)
         setCommentDelete(false)
-    }, [])
+    }, [onDeleteModal, commentDelete])
+
+    const onCommentDelete = useCallback(() => {
+        dispatch(deleteComment({
+            replyId: comment.replyId,
+            member: { memberId: comment.member.memberId }, article: { articleId: comment.article.articleId }
+        }))
+        setOnDeleteModal(false)
+        setCommentDelete(false)
+        setTimeout(() => {
+            commentListUpdate()
+        }, 0)
+    }, [onDeleteModal, commentDelete])
 
     return (
         <div>
@@ -101,9 +119,12 @@ function CommentList({ comment }: CommentProps) {
                             <div className="flex justify-center gap-4">
                                 <Button
                                     color="failure"
-                                // onClick={onClick}
+                                    onClick={onCommentDelete}
                                 >
-                                    삭제하기
+                                    {deleteCommentLoading ?
+                                        <Spinner /> :
+                                        '삭제하기'
+                                    }
                                 </Button>
                                 <Button
                                     color="gray"

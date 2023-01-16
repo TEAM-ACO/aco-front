@@ -1,34 +1,28 @@
-import { Table } from 'flowbite-react'
 import React from 'react'
+import { Table } from 'flowbite-react'
 
-const AdminGraph = () => {
+const RecentMember = ({ content }) => {
+    console.log(content)
     return (
         <Table.Body className="divide-y">
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                 <Table.Cell className="!p-4">
                 </Table.Cell>
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    CodeMaster_B-HS@hanmail.net
+                    {content.memberId}
                 </Table.Cell>
                 <Table.Cell>
-                    B-HS
+                    {content.email}
                 </Table.Cell>
                 <Table.Cell>
-                    변현석
+                    {content.nickname}
                 </Table.Cell>
                 <Table.Cell>
-                    컨텐츠1
-                </Table.Cell>
-                <Table.Cell>
-                    <button
-                        className="font-medium text-red-600 hover:underline dark:text-red-500"
-                    >
-                        삭제
-                    </button>
+                    {content.joindate}
                 </Table.Cell>
             </Table.Row>
         </Table.Body>
     )
 }
 
-export default AdminGraph
+export default RecentMember

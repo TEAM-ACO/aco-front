@@ -53,7 +53,7 @@ const PostCard = ({ post }: PostProps) => {
     }, [requestPage, requestComment])
 
     const onFavoriteToggle = useCallback(() => {
-        dispatch(likePost({ article: { articleId: post.articleId }, liker: cookies.user.num }))
+        dispatch(likePost({ article: { articleId: post.articleId }, liker: Number(cookies.user.num) }))
         setFavorite((prev) => !prev)
     }, [favorite])
 

@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 import backendURL from '../config/url';
-import { ChangeNicknameRequest, ChangePassRequest, TypeAxios } from '@typings/db';
-import { IForgotPass } from '@features/userSlice';
+import { ChangeNicknameRequest, ChangePassRequest, IWithdraw, TypeAxios } from '@typings/db';
+import { IForgotPass, IUser } from '@features/userSlice';
 import { signupRequestData } from './signup';
 
 const AxiosType: TypeAxios = axios;
@@ -148,10 +148,22 @@ export const findpassAuthRequest = createAsyncThunk<findpassAuthRequestData, fin
 );
 
 export const changeForgotPassword = createAsyncThunk<any, IForgotPass>(
-  'user/changeForgotPassword',
+  'member/changeForgotPassword',
   async (data, { rejectWithValue }) => {
     try {
       const response = await AxiosType.post('/api/setting/changefindpassword', data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
+
+export const userWithdraw = createAsyncThunk<IUser, IWithdraw>(
+  'member/userWithdraw',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/api/member/resign', data);
       return response.data;
     } catch (error) {
       return rejectWithValue((error as AxiosError).response?.data);

@@ -8,7 +8,6 @@ import Link from 'next/link';
 const header = () => {
     const router = useRouter();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const [headerCookie, setHeaderCookie] = useState<boolean>()
 
     const [myNickname, setMyNickname] = useState<string>('')
     const [userLink, setUserLink] = useState<string>('')
@@ -26,25 +25,15 @@ const header = () => {
     useEffect(() => {
         if (cookies.user) {
             setUserLink(cookies.user.num)
-            setMyNickname(cookies.user.username.toUpperCase())
-            // setTimeout(() => {
-            //     setMyNickname(cookies.user.username.toUpperCase())
-            // }, 100)
+            setTimeout(() => {
+                setMyNickname(cookies.user.username.toUpperCase())
+            }, 100)
         }
-    }, [cookies])
-
-    useEffect(() => {
-        if (cookies.user === undefined) {
-            setHeaderCookie(true)
-            return
-        } else {
-            setHeaderCookie(false)
-        }
-    }, [headerCookie])
+    }, [cookies.user])
 
     return (
         <>
-            {!userLink || router.route !== '/mainpage' ?
+            {!userLink ?
                 <Navbar
                     className='pr-0 md:pr-10'
                     fluid={true}

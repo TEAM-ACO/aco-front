@@ -92,3 +92,8 @@ export interface IDeleteComment {
   member: { memberId: number };
   article: { articleId: number };
 }
+
+export interface IWithdraw {
+  memberId: string;
+  password: string;
+}

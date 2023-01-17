@@ -11,6 +11,7 @@ import {
   loadUser,
   login,
   logout,
+  userWithdraw,
 } from '@actions/user';
 import _remove from 'lodash';
 import { ChangeNicknameRequest, ChangePassRequest } from '@typings/db';
@@ -70,6 +71,9 @@ export interface IUserState {
   changeForgotPasswordLoading: boolean; // 비밀번호 찾기 비번 변경
   changeForgotPasswordDone: boolean;
   changeForgotPasswordError: unknown | null;
+  userWithdrawLoading: boolean; // 회원탈퇴
+  userWithdrawDone: boolean;
+  userWithdrawError: unknown | null;
 }
 
 // api연결되면 data안에 넣어 한곳에서 받을 수 있도록합니다.
@@ -121,6 +125,10 @@ const initialState: IUserState = {
   changeForgotPasswordLoading: false, // 비밀번호 찾기 비번 변경
   changeForgotPasswordDone: false,
   changeForgotPasswordError: null,
+
+  userWithdrawLoading: false, // 회원탈퇴
+  userWithdrawDone: false,
+  userWithdrawError: null,
 };
 
 const userSlice = createSlice({
@@ -294,6 +302,20 @@ const userSlice = createSlice({
       .addCase(changeForgotPassword.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.changeForgotPasswordLoading = false;
         state.changeForgotPasswordError = action.payload;
+      })
+      // userWithdraw
+      .addCase(userWithdraw.pending, (state: IUserState) => {
+        state.userWithdrawLoading = true;
+        state.userWithdrawDone = false;
+        state.userWithdrawError = null;
+      })
+      .addCase(userWithdraw.fulfilled, (state: IUserState) => {
+        state.userWithdrawLoading = false;
+        state.userWithdrawDone = true;
+      })
+      .addCase(userWithdraw.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
+        state.userWithdrawLoading = false;
+        state.userWithdrawError = action.payload;
       }),
 });
 

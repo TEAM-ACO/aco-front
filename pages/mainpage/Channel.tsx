@@ -17,9 +17,9 @@ function Channel() {
                                 </button>
                             </div>
                             <p className="mb-3 text-sm text-blue-900 dark:text-blue-400">
-                                Preview the new Flowbite dashboard navigation! You can turn the new navigation off for a limited time in your profile.
+                                칫솔, 볼펜, 고무장갑, 인공눈물 등 부피가 작은 것들은 재활용이 안되기 때문에 일반쓰레기로 버려야합니다.
                             </p>
-                            <a className="text-sm text-blue-900 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300" href="#">Turn new navigation off</a>
+                            {/* <a className="text-sm text-blue-900 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300" href="#">Turn new navigation off</a> */}
                         </div>
                         {/* 유저 이미지 */}
                         <div className="p-5 mb-4 bg-gray-50 rounded-lg border border-gray-100 dark:bg-gray-800 dark:border-gray-700">

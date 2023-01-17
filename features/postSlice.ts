@@ -189,9 +189,10 @@ const postSlice = createSlice({
         state.addPostDone = false;
         state.addPostError = null;
       })
-      .addCase(addPost.fulfilled, (state: IArticleState) => {
+      .addCase(addPost.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
         state.addPostLoading = false;
         state.addPostDone = true;
+        state.mainPosts.unshift(action.payload);
       })
       .addCase(addPost.rejected, (state: IArticleState, action) => {
         state.addPostLoading = false;
@@ -264,10 +265,10 @@ const postSlice = createSlice({
         state.likePostError = null;
       })
       .addCase(likePost.fulfilled, (state: any, action: PayloadAction<any>) => {
-        const post: any = _find(state.mainPosts, { articleId: action.payload.articleId });
+        // const post: any = _find(state.mainPosts, { articleId: action.payload.articleId });
         state.likePostLoading = false;
         state.likePostDone = true;
-        post.Liker = action.payload.memberId;
+        // post.Liker = action.payload.memberId;
       })
       .addCase(likePost.rejected, (state: IArticleState, action) => {
         state.likePostLoading = false;

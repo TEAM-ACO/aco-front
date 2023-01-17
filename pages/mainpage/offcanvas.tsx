@@ -32,11 +32,14 @@ function OffCanvas() {
                         <div className="ml-4 w-1/4">
                             <div className="inline-flex overflow-hidden relative justify-center items-center mx-auto w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600">
                                 <span className="font-medium text-gray-600 dark:text-gray-300">
-                                    {myNickname[0]}{myNickname[1]}</span>
+                                    {myNickname[0]}{myNickname[1]}
+                                </span>
                             </div>
                         </div>
                         <div className="ml-6 w-2/4">
-                            <span className="font-semibold text-white">{myNickname}</span>
+                            <span className="font-semibold text-white">
+                                {myNickname}
+                            </span>
                             <button className="mt-2 text-sm bg-green-500 text-white px-4 py-2 rounded-md border border-blue-500 hover:bg-white hover:text-green-500"
                             >
                                 <Link href='/mypage'>

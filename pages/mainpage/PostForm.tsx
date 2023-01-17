@@ -24,7 +24,7 @@ function PostForm({ mainPostsLoad }: Props) {
     const dispatch = useAppDispatch();
     const [selectedOption, setSelectedOption] = useState<any>(options[0]);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const { addPostDone, addPostLoading, addPostError } = useAppSelector((state) => state.post);
+    const { addPostDone, addPostLoading, addPostError, mainPosts } = useAppSelector((state) => state.post);
     const [imgStorage, setImageStorage] = useState<File[]>([]);
     // const [imgl, setImgList] = useState<HTMLImageElement[]>([]);
     const [imgl, setImgList] = useState<string[]>([]);
@@ -72,9 +72,11 @@ function PostForm({ mainPostsLoad }: Props) {
                 console.log(imgStorage[i].name);
             }
         }
-        dispatch(addPost(result));
-        refresh(window.location.pathname)
-    }, [text, tagList])
+        dispatch(addPost(result)).then(mainPostsLoad())
+        // setTimeout(() => {
+        //     refresh()
+        // }, 0)
+    }, [text, tagList, mainPosts])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);

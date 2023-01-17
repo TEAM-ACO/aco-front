@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { useCookies } from "react-cookie"
 import { IArticle, IReply } from '@features/postSlice';
 import { useAppDispatch, useAppSelector } from '@store/config';
@@ -53,7 +53,7 @@ const PostCard = ({ post }: PostProps) => {
     }, [requestPage, requestComment])
 
     const onFavoriteToggle = useCallback(() => {
-        dispatch(likePost({ article: { articleId: post.articleId }, liker: Number(cookies.user.num) }))
+        dispatch(likePost({ article: { articleId: Number(post.articleId) }, liker: Number(cookies.user.num) }))
         setFavorite((prev) => !prev)
     }, [favorite])
 
@@ -67,6 +67,20 @@ const PostCard = ({ post }: PostProps) => {
             requestedPageNumber: requestPage, requestedPageSize: post.replys[post.replys.length - 1]?.totalCount
         }))
     }, [requestPage, requestComment, mainPosts])
+
+    useEffect(() => {
+        if (post.likes === 1) {
+            setFavorite(true)
+        } else if (post.likes === 0) {
+            setFavorite(false)
+        }
+    }, [favorite])
+
+    useEffect(() => {
+        if (!cookies.user) {
+            router.replace('/')
+        }
+    })
 
     return (
         <>

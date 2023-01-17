@@ -17,7 +17,6 @@ function Home() {
     return (
         <>
             <Head>
-                {/* <script src="https://developers.kakao.com/sdk/js/kakao.js"></script> */}
                 Project ACO
             </Head>
             <RootLayout>

@@ -38,25 +38,6 @@ const userid = () => {
         setTimeout(() => {
             setOnReportModal(false)
         }, 3000)
-        // const data: any = {
-        //     memberId: Number(id),
-        //     articleReportContext: reportTests[selectBox.current?.value as unknown as number]
-        // }
-        // console.log(data);
-        // dispatch(reportMember({ ...data })).then(res => {
-        //     switch (res.payload) {
-        //         case 1:
-        //             onReportModalClose()
-        //             break;
-        //         case -1:
-        //             setIsReported(true)
-        //             setTimeout(onReportModalClose, 3000)
-        //         case 2:
-        //         //예외모달필요
-        //         default:
-        //             break;
-        //     }
-        // })
     }, [userReport])
 
     const onUserModalOpen = useCallback(() => {
@@ -93,7 +74,7 @@ const userid = () => {
                             <div className='flex items-center gap-2'>
                                 <div className='w-10'>
                                     <Avatar
-                                        img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                        img={`http://localhost:15251/api/image/user/${mainPosts[0]?.member.memberId}`}
                                         rounded={true}
                                     />
                                 </div>

@@ -106,7 +106,7 @@ const PostCard = ({ post }: PostProps) => {
                                     onClick={userinfo}
                                     className='flex justify-start items-center'>
                                     <Avatar
-                                        img="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                                        img={`http://localhost:15251/api/image/user/${post.member.memberId}`}
                                         rounded={true}
                                     />
                                     <p className='ml-2'>

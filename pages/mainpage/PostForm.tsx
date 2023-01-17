@@ -70,7 +70,6 @@ function PostForm({ mainPostsLoad }: Props) {
             for (let i = 0; i < imgStorage.length; i++) {
                 result.append("articleImages", imgStorage[i])
                 console.log(imgStorage[i].name);
-
             }
         }
         dispatch(addPost(result)).then(mainPostsLoad())

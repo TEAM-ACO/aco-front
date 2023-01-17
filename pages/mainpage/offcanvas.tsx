@@ -5,6 +5,8 @@ import Link from 'next/link';
 
 function OffCanvas() {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    // const [cookies2, setCookie2, removeCookie2] = useCookies(['refresh']);
+    // const [cookies3, setCookie3, removeCookie3] = useCookies(['access']);
     const router = useRouter();
 
     const [myNickname, setMyNickname] = useState('')
@@ -12,8 +14,10 @@ function OffCanvas() {
 
     const onLogOut = useCallback(() => {
         removeCookie('user')
+        // removeCookie2('refresh')
+        // removeCookie3('access')
         router.replace('/');
-    }, [])
+    }, [cookies.user])
 
     useEffect(() => {
         if (cookies.user) {
@@ -22,7 +26,7 @@ function OffCanvas() {
                 setMyNickname(cookies.user.username.toUpperCase())
             }, 300)
         }
-    })
+    }, [])
 
     return (
         <div className='relative z-10'>
@@ -31,9 +35,10 @@ function OffCanvas() {
                     <div className="flex flex-wrap mt-8">
                         <div className="ml-4 w-1/4">
                             <div className="inline-flex overflow-hidden relative justify-center items-center mx-auto w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600">
-                                <span className="font-medium text-gray-600 dark:text-gray-300">
+                                {/* <span className="font-medium text-gray-600 dark:text-gray-300">
                                     {myNickname[0]}{myNickname[1]}
-                                </span>
+                                </span> */}
+                                <img className='h-16 object-cover' src={`http://localhost:15251/api/image/user/${userLink}`} />
                             </div>
                         </div>
                         <div className="ml-6 w-2/4">

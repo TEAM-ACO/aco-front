@@ -95,12 +95,14 @@ const header = () => {
                         </button>
                     </div>
                     <div className={`${buttonToggle ? "w-full md:block md:w-auto" : "w-full md:block md:w-auto hidden"}`}>
-                        <div className='md:hidden'>
-                            <div className="mt-3 inline-flex overflow-hidden relative justify-center items-center mx-auto w-12 h-12 bg-gray-100 rounded-full dark:bg-gray-600">
-                                <span className="font-medium text-gray-600 dark:text-gray-300">
-                                    {myNickname[0]}{myNickname[1]}</span>
+                        <div className='mt-3 inline-flex md:hidden'>
+                            <div className="flex overflow-hidden relative items-center mx-auto w-12 h-12 bg-gray-100 rounded-full dark:bg-gray-600">
+                                {/* <span className="font-medium text-gray-600 dark:text-gray-300">
+                                    {myNickname[0]}{myNickname[1]}
+                                </span> */}
+                                <img className='h-12 object-cover' src={`http://localhost:15251/api/image/user/${userLink}`} />
                             </div>
-                            <Link href="/mypage" className="ml-3 font-medium text-sm">{myNickname}</Link>
+                            <Link href="/mypage" className="ml-3 flex items-center font-medium text-sm">{myNickname}</Link>
                         </div>
                         <ul className="mt-4 flex flex-col md:mt-0 md:flex-row md:text-sm md:font-medium">
                             <Navbar.Link

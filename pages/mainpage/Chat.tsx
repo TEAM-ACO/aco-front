@@ -16,10 +16,10 @@ const Chat = () => {
             <div className='flex flex-col justify-between bg-gray-50 h-screen90'>
                 <div className="h-full px-6 py-4 flex flex-col justify-end">
                     <div className='py-2 flex justify-start items-center'>
-                        <Avatar
-                            img="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                        {/* <Avatar
+                            img={`http://localhost:15251/api/image/user/${}`}
                             rounded={true}
-                        />
+                        /> */}
                         <span>닉네임:</span>
                         채팅입니다.
                     </div>
@@ -29,10 +29,10 @@ const Chat = () => {
                         채팅입니다.
                     </div>
                     <div className='py-2 flex justify-start items-center'>
-                        <Avatar
-                            img="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                        {/* <Avatar
+                            img={`http://localhost:15251/api/image/user/${}`}
                             rounded={true}
-                        />
+                        /> */}
                         <span>닉네임:</span>
                         채팅입니다.
                     </div>

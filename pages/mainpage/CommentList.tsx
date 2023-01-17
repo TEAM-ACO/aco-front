@@ -65,7 +65,7 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
                     <button className='pr-2' onClick={userinfo}>
                         <div className='w-10'>
                             <Avatar
-                                img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                img={`http://localhost:15251/api/image/user/${comment.member.memberId}`}
                                 rounded={true}
                             />
                         </div>

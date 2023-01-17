@@ -37,6 +37,7 @@ const MyPageForm = () => {
     const [onWithdrawModal, setOnWithdrawModal] = useState<boolean>(false);
     const [withdrawPassword, setWithdrawPassword] = useState('');
     const [isWithdraw, setIsWithdraw] = useState<Boolean>(false)
+    const [imageError, setImageError] = useState<Boolean>(false)
     const refresh: any = router.reload
 
     const onChangeCurrentPassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,15 +53,24 @@ const MyPageForm = () => {
     }, [rePassword]);
 
     const onImageSubmit = useCallback(() => {
-        console.log(imageInput.current.files[0].name)
+        if (imageInput.current.files[0] === undefined) {
+            setImageError(true)
+            return
+        }
+        console.log(imageInput.current.files[0])
         const result = new FormData;
         result.set("memberId", cookies.user.num)
         result.set("userimg", imageInput.current.files[0].name)
+        result.append('file', imageInput.current.files[0])
         dispatch(uploadImages(result))
-        refresh(window.location.pathname)
+        setImageError(false)
+        refresh()
     }, [imageInput.current])
 
     const onPasswordSubmit = useCallback(() => {
+        if (password !== rePassword) {
+            alert('비밀번호가 올바르지 않습니다')
+        }
         dispatch(changePassword({ memberId: cookies.user.num, cpassword: currentPassword, upassword: rePassword }));
     }, [currentPassword, password, rePassword]);
 
@@ -220,7 +230,7 @@ const MyPageForm = () => {
                         <div className="mb-3 inline-flex overflow-hidden relative justify-center items-center mx-auto w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600">
                             <span className="font-medium text-gray-600 dark:text-gray-300">
                                 {/* {myNickname[0]}{myNickname[1]} */}
-                                <img src={`http://localhost:15251/api/image/user/${userLink}`} />
+                                <img className='h-12 object-cover' src={`http://localhost:15251/api/image/user/${userLink}`} />
                             </span>
                         </div>
                         <div className='mb-3 '>
@@ -233,6 +243,7 @@ const MyPageForm = () => {
                                 id="user_avatar_help">
                                 프로필에 올릴 이미지를 선택해주세요</div>
                         </div>
+                        {imageError && <p className='text-red-500 font-medium'>이미지가 존재하지 않습니다.</p>}
                     </div>
                 </div>
                 <div className="flex items-center space-x-4">

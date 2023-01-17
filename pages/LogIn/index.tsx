@@ -40,7 +40,6 @@ const LogIn = () => {
     const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
         const refresh: any = router.refresh
         e.preventDefault();
-        console.log(email, password)
         if (!email) {
             return setLogInError(true);
         }

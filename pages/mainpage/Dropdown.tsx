@@ -3,7 +3,7 @@ import { useCookies } from "react-cookie"
 import { Modal, Button, Spinner } from 'flowbite-react';
 import { deletePost, editPost, reportArticle, reportPost } from '../../actions/post';
 import { useAppDispatch, useAppSelector } from '@store/config'
-import { IArticle } from '@features/postSlice';
+import { IArticle, deletePostToMe } from '@features/postSlice';
 import { useRouter } from 'next/router';
 
 type PostProps = {
@@ -76,9 +76,9 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
     }, [contextModify])
 
     const onDeleteArticle = useCallback(() => {
-        const refresh: any = router.reload
         dispatch(deletePost({ articleId: post.articleId }))
-        refresh()
+        dispatch(deletePostToMe({ articleId: post.articleId }))
+        setOnDeleteModal(false)
     }, [deletePostDone])
 
     return (

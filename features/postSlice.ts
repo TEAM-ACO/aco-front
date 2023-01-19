@@ -1,6 +1,4 @@
 import _concat from 'lodash/concat';
-import _find from 'lodash/find';
-import _filter from 'lodash/filter';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
@@ -108,7 +106,7 @@ export interface IArticleState {
   deleteCommentLoading: boolean;
   deleteCommentDone: boolean;
   deleteCommentError: unknown | null;
-  value: any;
+  reqPage: any;
 }
 
 export const initialState: IArticleState = {
@@ -162,16 +160,16 @@ export const initialState: IArticleState = {
   deleteCommentLoading: false, // comment 삭제
   deleteCommentDone: false,
   deleteCommentError: null,
-  value: null,
+  reqPage: null,
 };
 
 const postSlice = createSlice({
   name: 'article',
   initialState,
   reducers: {
-    // loadConnect(state, action) {
-    //   state.value =
-    // }
+    deletePostToMe(state, action) {
+      state.mainPosts = state.mainPosts.filter((v) => v.articleId !== action.payload.articleId);
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -189,7 +187,7 @@ const postSlice = createSlice({
       })
       .addCase(loadPosts.rejected, (state: IArticleState, action: PayloadAction<unknown | null>) => {
         state.loadPostsLoading = false;
-        state.loadPostsError = action.payload;
+        state.loadPostsError = '포스트 로딩에 실패하였습니다.';
       })
       // addPost
       .addCase(addPost.pending, (state: IArticleState) => {
@@ -200,11 +198,10 @@ const postSlice = createSlice({
       .addCase(addPost.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
         state.addPostLoading = false;
         state.addPostDone = true;
-        console.log(action);
       })
-      .addCase(addPost.rejected, (state: IArticleState, action) => {
+      .addCase(addPost.rejected, (state: IArticleState) => {
         state.addPostLoading = false;
-        state.addPostError = action.error.message;
+        state.addPostError = 'addPost 실패';
       })
       // uploadImages
       .addCase(uploadImages.pending, (state: IArticleState) => {
@@ -226,7 +223,7 @@ const postSlice = createSlice({
         state.reportMemberDone = false;
         state.reportMemberError = null;
       })
-      .addCase(reportMember.fulfilled, (state: IArticleState, action) => {
+      .addCase(reportMember.fulfilled, (state: IArticleState) => {
         state.reportMemberLoading = false;
         state.reportMemberDone = true;
       })
@@ -272,11 +269,9 @@ const postSlice = createSlice({
         state.likePostDone = false;
         state.likePostError = null;
       })
-      .addCase(likePost.fulfilled, (state: any, action: PayloadAction<any>) => {
-        // const post: any = _find(state.mainPosts, { articleId: action.payload.articleId });
+      .addCase(likePost.fulfilled, (state: any) => {
         state.likePostLoading = false;
         state.likePostDone = true;
-        // post.Liker = action.payload.memberId;
       })
       .addCase(likePost.rejected, (state: IArticleState, action) => {
         state.likePostLoading = false;
@@ -368,9 +363,10 @@ const postSlice = createSlice({
         state.deletePostDone = false;
         state.deletePostError = null;
       })
-      .addCase(deletePost.fulfilled, (state: IArticleState) => {
+      .addCase(deletePost.fulfilled, (state: IArticleState, action) => {
         state.deletePostLoading = false;
         state.deletePostDone = true;
+        state.mainPosts = state.mainPosts.filter((v) => v.articleId !== action.payload.articleId);
       })
       .addCase(deletePost.rejected, (state: IArticleState, action) => {
         state.deletePostLoading = false;
@@ -392,4 +388,5 @@ const postSlice = createSlice({
       }),
 });
 
+export const { deletePostToMe } = postSlice.actions;
 export default postSlice;

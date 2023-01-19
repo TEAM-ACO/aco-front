@@ -251,7 +251,7 @@ export const editPost = createAsyncThunk<IArticle, IArticle>('article/editPost',
 export const deletePost = createAsyncThunk<IArticle, articleId>(
   'article/deletePost',
   async (data, { rejectWithValue }) => {
-    console.log(data);
+    // console.log(data);
     try {
       const response = await axios.post(`/api/article/delete`, data);
       return response.data;

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useRef, ChangeEvent } from 'react'
+import React, { useCallback, useEffect, useState, useRef, ChangeEvent, Dispatch, SetStateAction } from 'react'
 import { useAppSelector, useAppDispatch } from '@store/config'
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { Spinner } from 'flowbite-react';
@@ -14,8 +14,13 @@ const options = [
     { value: 'Question', label: 'Question' },
 ];
 
+type Props = {
+    reqPage: number
+    setReqPage: Dispatch<SetStateAction<number>>
+}
+
 // 기본 이미지 넣기
-function PostForm() {
+function PostForm({ reqPage, setReqPage }: Props) {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const [selectedOption, setSelectedOption] = useState<any>(options[0]);

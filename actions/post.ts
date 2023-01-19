@@ -231,7 +231,7 @@ export const loadMenu = createAsyncThunk<IArticle, IMenu | undefined>(
 );
 
 // 게시글 수정
-export const editPost = createAsyncThunk<IArticle, IArticle>('article/editPost', async (data, { rejectWithValue }) => {
+export const editPost = createAsyncThunk<IArticle, FormData>('article/editPost', async (data:FormData, { rejectWithValue }) => {
   console.log(data);
   try {
     const response = await axios.post(`/api/article/modify`, data, {

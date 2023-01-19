@@ -20,7 +20,7 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
     const router = useRouter();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const date = dayjs(comment.date).format("YY-MM-DD");
-    const { deleteCommentLoading, deleteCommentDone, mainPosts } = useAppSelector((state) => state.post)
+    const { deleteCommentLoading } = useAppSelector((state) => state.post)
 
     const [commentReport, setCommentReport] = useState<boolean>(false);
     const [commentDelete, setCommentDelete] = useState<boolean>(false);

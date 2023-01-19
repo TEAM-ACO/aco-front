@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState, useRef, ChangeEvent } from 're
 import { useAppSelector, useAppDispatch } from '@store/config'
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { Spinner } from 'flowbite-react';
-import { addPost } from '@actions/post';
+import { addPost, loadPosts } from '@actions/post';
 import { useCookies } from 'react-cookie';
 import Select from 'react-select';
 import { useRouter } from 'next/router';
@@ -14,17 +14,13 @@ const options = [
     { value: 'Question', label: 'Question' },
 ];
 
-type Props = {
-    mainPostsLoad: any
-}
-
 // 기본 이미지 넣기
-function PostForm({ mainPostsLoad }: Props) {
+function PostForm() {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const [selectedOption, setSelectedOption] = useState<any>(options[0]);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const { addPostDone, addPostLoading, addPostError, mainPosts } = useAppSelector((state) => state.post);
+    const { addPostDone, addPostLoading, mainPosts } = useAppSelector((state) => state.post);
     const [imgStorage, setImageStorage] = useState<File[]>([]);
     // const [imgl, setImgList] = useState<HTMLImageElement[]>([]);
     const [imgl, setImgList] = useState<string[]>([]);
@@ -35,6 +31,7 @@ function PostForm({ mainPostsLoad }: Props) {
     const [tagList, setTagList] = useState<string[]>([])
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
+    const [requestPage, setRequestPage] = useState<number>(0);
 
     const imageStorageFunction = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
@@ -72,10 +69,10 @@ function PostForm({ mainPostsLoad }: Props) {
                 console.log(imgStorage[i].name);
             }
         }
-        dispatch(addPost(result)).then(mainPostsLoad())
-        // setTimeout(() => {
-        //     refresh()
-        // }, 0)
+        dispatch(addPost(result))
+        setTimeout(() => {
+            // refresh()
+        }, 0)
     }, [text, tagList, mainPosts])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {

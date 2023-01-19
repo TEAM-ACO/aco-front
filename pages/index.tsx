@@ -16,10 +16,10 @@ function Home() {
     })
     return (
         <>
-            <Head>
-                Project ACO
-            </Head>
             <RootLayout>
+                <Head>
+                    Project ACO
+                </Head>
                 <div className='h-screen90 flex items-center justify-center text-center'>
                     <Main />
                 </div>

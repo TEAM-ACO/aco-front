@@ -22,7 +22,6 @@ const PostCard = ({ post }: PostProps) => {
     const date = dayjs(post.date).format("YY-MM-DD");
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const { mainPosts } = useAppSelector((state) => state.post)
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [contextModify, setContextModify] = useState<boolean>(false);
     const [favorite, setFavorite] = useState<boolean>(false);
@@ -66,7 +65,7 @@ const PostCard = ({ post }: PostProps) => {
             article: { articleId: post.articleId },
             requestedPageNumber: requestPage, requestedPageSize: post.replys[post.replys.length - 1]?.totalCount
         }))
-    }, [requestPage, requestComment, mainPosts])
+    }, [requestPage, requestComment])
 
     useEffect(() => {
         if (post.likes === 1) {

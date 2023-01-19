@@ -16,6 +16,7 @@ import {
   TypeAxios,
   IReportMember,
   IDeleteComment,
+  IUploadImages,
 } from '@typings/db';
 import { signupRequestData } from './signup';
 
@@ -48,16 +49,19 @@ export const addPost = createAsyncThunk<FormData, any>('article/addPost', async 
   }
 });
 
-export const uploadImages = createAsyncThunk('article/uploadImages', async (data, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(`/api/setting/changeuserimg`, data, {
-      headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
-    });
-    return response.data;
-  } catch (error) {
-    return rejectWithValue((error as AxiosError).response?.data);
-  }
-});
+export const uploadImages = createAsyncThunk<FormData, any>(
+  'article/uploadImages',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`/api/setting/changeuserimg`, data, {
+        headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
 
 export const loadPosts = createAsyncThunk<ArticleLoadPosts, IPageNumber | undefined>(
   'article/loadPosts',

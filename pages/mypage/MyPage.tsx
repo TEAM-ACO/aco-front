@@ -11,7 +11,7 @@ const MyPageForm = () => {
     const dispatch = useAppDispatch();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { userWithdrawLoading } = useAppSelector((state) => state.user)
-    const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
+    const imageInput = useRef<any>();
     const { changeNicknameLoading, changeNicknameDone, changeNicknameError,
         changePasswordDone, changePasswordError, changePasswordLoading
     } = useAppSelector((state) => state.user);
@@ -230,7 +230,7 @@ const MyPageForm = () => {
                         <div className="mb-3 inline-flex overflow-hidden relative justify-center items-center mx-auto w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600">
                             <span className="font-medium text-gray-600 dark:text-gray-300">
                                 {/* {myNickname[0]}{myNickname[1]} */}
-                                <img className='h-12 object-cover' src={`http://localhost:15251/api/image/user/${userLink}`} />
+                                <img className='h-16 object-cover' src={`http://localhost:15251/api/image/user/${userLink}`} />
                             </span>
                         </div>
                         <div className='mb-3 '>

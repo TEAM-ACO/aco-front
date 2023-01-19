@@ -4,9 +4,12 @@ import { Navbar } from "flowbite-react";
 import SearchForm from '@pages/SearchForm';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useAppDispatch } from '@store/config';
+import { loadMenu, loadUserPosts } from '@actions/post';
 
 const header = () => {
     const router = useRouter();
+    const dispatch = useAppDispatch();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
     const [myNickname, setMyNickname] = useState<string>('')
@@ -117,23 +120,31 @@ const header = () => {
                                 마이페이지
                             </Navbar.Link>
                             <Navbar.Link href={`/user/${userLink}`} className="md:hidden px-0 mx-0"
-                            // active={`${router.route === `/user/${userLink}` ? true : false}` as any}
-                            >
+                                onClick={() => {
+                                    dispatch(loadUserPosts({ memberId: userLink, requestedPageNumber: 0, requestedPageSize: 10 }))
+                                    // active={`${router.route === `/user/${userLink}` ? true : false}` as any}
+                                }}>
                                 내가 쓴 게시글
                             </Navbar.Link>
                             <Navbar.Link href="/category/diary" className="md:hidden px-0 mx-0"
-                            // active={`${router.route === '/category/diary' ? true : false}` as any}
-                            >
+                                // active={`${router.route === '/category/diary' ? true : false}` as any}
+                                onClick={() => {
+                                    dispatch(loadMenu({ num: 0, menu: "Diary", requestedPageNumber: 0, requestedPageSize: 10 }))
+                                }}>
                                 다이어리
                             </Navbar.Link>
                             <Navbar.Link href="/category/tip" className="md:hidden px-0 mx-0"
-                            // active={`${router.route === '/category/tip' ? true : false}` as any}
-                            >
+                                // active={`${router.route === '/category/tip' ? true : false}` as any}
+                                onClick={() => {
+                                    dispatch(loadMenu({ num: 1, menu: "Tip", requestedPageNumber: 0, requestedPageSize: 10 }))
+                                }}>
                                 팁
                             </Navbar.Link>
                             <Navbar.Link href="/category/question" className="md:hidden px-0 mx-0"
-                            // active={`${router.route === '/category/question' ? true : false}` as any}
-                            >
+                                // active={`${router.route === '/category/question' ? true : false}` as any}
+                                onClick={() => {
+                                    dispatch(loadMenu({ num: 2, menu: "Question", requestedPageNumber: 0, requestedPageSize: 10 }))
+                                }}>
                                 질문
                             </Navbar.Link>
                             <Navbar.Link href="/admin" className="md:hidden px-0 mx-0"

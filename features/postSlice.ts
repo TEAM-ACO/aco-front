@@ -59,6 +59,7 @@ export interface IReply {
 
 export interface IArticleState {
   mainPosts: IArticle[];
+  singlePosts: IArticle[];
   hasMorePosts: boolean;
   loadUserPostsLoading: boolean;
   loadUserPostsDone: boolean;
@@ -107,10 +108,12 @@ export interface IArticleState {
   deleteCommentLoading: boolean;
   deleteCommentDone: boolean;
   deleteCommentError: unknown | null;
+  value: any;
 }
 
 export const initialState: IArticleState = {
   mainPosts: [],
+  singlePosts: [],
   hasMorePosts: true,
   loadUserPostsLoading: false, // 개인 post 로드
   loadUserPostsDone: false,
@@ -159,12 +162,17 @@ export const initialState: IArticleState = {
   deleteCommentLoading: false, // comment 삭제
   deleteCommentDone: false,
   deleteCommentError: null,
+  value: null,
 };
 
 const postSlice = createSlice({
   name: 'article',
   initialState,
-  reducers: {},
+  reducers: {
+    // loadConnect(state, action) {
+    //   state.value =
+    // }
+  },
   extraReducers: (builder) =>
     builder
       // loadPosts
@@ -192,7 +200,7 @@ const postSlice = createSlice({
       .addCase(addPost.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
         state.addPostLoading = false;
         state.addPostDone = true;
-        state.mainPosts.unshift(action.payload);
+        console.log(action);
       })
       .addCase(addPost.rejected, (state: IArticleState, action) => {
         state.addPostLoading = false;
@@ -251,7 +259,7 @@ const postSlice = createSlice({
       .addCase(loadUserPosts.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
         state.loadUserPostsLoading = false;
         state.loadUserPostsDone = true;
-        state.mainPosts = _concat(state.mainPosts, action.payload);
+        state.singlePosts = _concat(state.singlePosts, action.payload);
         state.hasMorePosts = action.payload.length === 10;
       })
       .addCase(loadUserPosts.rejected, (state: IArticleState, action) => {

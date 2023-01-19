@@ -1,13 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
+
 import { useCookies } from 'react-cookie';
 import Link from 'next/link';
+import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
+import { loadMenu, loadUserPosts } from '@actions/post';
+import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
 
 function OffCanvas() {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     // const [cookies2, setCookie2, removeCookie2] = useCookies(['refresh']);
     // const [cookies3, setCookie3, removeCookie3] = useCookies(['access']);
+    const dispatch = useAppDispatch();
     const router = useRouter();
+    const { singlePosts, mainPosts } = useAppSelector((state) => state.post);
 
     const [myNickname, setMyNickname] = useState('')
     const [userLink, setUserLink] = useState('')
@@ -20,13 +26,15 @@ function OffCanvas() {
     }, [cookies.user])
 
     useEffect(() => {
+        if (!router.isReady) return;
+        console.log(mainPosts)
         if (cookies.user) {
             setUserLink(cookies.user.num)
             setTimeout(() => {
                 setMyNickname(cookies.user.username.toUpperCase())
             }, 300)
         }
-    }, [])
+    }, [mainPosts, singlePosts])
 
     return (
         <div className='relative z-10'>
@@ -65,7 +73,10 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <Link href={`/user/${userLink}`}>
+                                <Link href="/user/[id]" as={`/user/${userLink}`}
+                                    onClick={() => {
+                                        dispatch(loadUserPosts({ memberId: userLink, requestedPageNumber: 0, requestedPageSize: 10 }))
+                                    }}>
                                     <span className="ml-2">내가 쓴 게시글</span>
                                 </Link>
                             </li>
@@ -79,7 +90,10 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <Link href="/category/diary">
+                                <Link href="/category/diary"
+                                    onClick={() => {
+                                        dispatch(loadMenu({ num: 0, menu: "Diary", requestedPageNumber: 0, requestedPageSize: 10 }))
+                                    }}>
                                     <span className="ml-2">다이어리</span>
                                 </Link>
                             </li>
@@ -93,7 +107,10 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <Link href="/category/tip">
+                                <Link href="/category/tip"
+                                    onClick={() => {
+                                        dispatch(loadMenu({ num: 1, menu: "Tip", requestedPageNumber: 0, requestedPageSize: 10 }))
+                                    }}>
                                     <span className="ml-2">팁</span>
                                 </Link>
                             </li>
@@ -107,7 +124,10 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <Link href="/category/question">
+                                <Link href="/category/question"
+                                    onClick={() => {
+                                        dispatch(loadMenu({ num: 2, menu: "Question", requestedPageNumber: 0, requestedPageSize: 10 }))
+                                    }}>
                                     <span className="ml-2">질문</span>
                                 </Link>
                             </li>
@@ -156,5 +176,12 @@ function OffCanvas() {
         </div>
     )
 }
+
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
+
+    await store.dispatch(loadMenu());
+
+    return { props: {} }
+})
 
 export default OffCanvas;

@@ -97,3 +97,10 @@ export interface IWithdraw {
   memberId: string;
   password: string;
 }
+
+export interface IUploadImages {
+  memberId: string;
+  userimg: string;
+  file?: string;
+  Blob: Blob;
+}

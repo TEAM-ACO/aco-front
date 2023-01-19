@@ -1,13 +1,13 @@
 "use client"
 import Link from 'next/link'
 import React, { useCallback, useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+
 import useInput from '@hooks/useInput'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import { login } from '@actions/user'
 import { Spinner } from 'flowbite-react'
 import { useCookies } from "react-cookie"
-import { KAKAO_AUTH_URL } from 'util/kakao'
+import { useRouter } from 'next/router'
 
 const BGcolor = {
     google: {
@@ -38,7 +38,7 @@ const LogIn = () => {
     }, [cookies.user])
 
     const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-        const refresh: any = router.refresh
+        const refresh: any = router.reload
         e.preventDefault();
         if (!email) {
             return setLogInError(true);
@@ -50,11 +50,11 @@ const LogIn = () => {
         dispatch(login({ email, password }));
 
         router.replace('/mainpage')
-        setTimeout(() => {
-            refresh('/mainpage')
-        }, 300)
+        // setTimeout(() => {
+        //     refresh('/mainpage')
+        // }, 0)
     },
-        [email, password],
+        [email, password, router],
     );
 
     return (

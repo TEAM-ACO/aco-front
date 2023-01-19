@@ -1,9 +1,13 @@
+import Head from 'next/head';
 import Link from 'next/link';
 import React from 'react'
 
 const Checked = () => {
     return (
         <div>
+            <Head>
+                Project ACO
+            </Head>
             <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
                 Advanced the Ecology</h1>
             <p className="mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">

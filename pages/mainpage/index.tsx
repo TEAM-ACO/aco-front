@@ -20,16 +20,10 @@ function mainpage() {
     const [ref, inView] = useInView();
     const [requestPage, setRequestPage] = useState<number>(0);
 
-    // useEffect(() => {
-    //     if (!cookies.user) {
-    //         router.replace('/')
-    //     }
-    // })
-
     useEffect(() => {
         if (inView && hasMorePosts && !loadPostsLoading) {
             dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 10 }));
-            loadMore()
+            loadMore();
         }
     }, [inView, hasMorePosts, loadPostsLoading]);
 
@@ -41,7 +35,7 @@ function mainpage() {
         <div>
             <Mainpage>
                 <div className="ml-auto mr-auto">
-                    <PostForm />
+                    <PostForm reqPage={requestPage} setReqPage={setRequestPage} />
                     {mainPosts.map((post: IArticle) => {
                         return (
                             <PostCard key={post.articleId} post={post} />

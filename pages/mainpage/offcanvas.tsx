@@ -27,7 +27,6 @@ function OffCanvas() {
 
     useEffect(() => {
         if (!router.isReady) return;
-        console.log(mainPosts)
         if (cookies.user) {
             setUserLink(cookies.user.num)
             setTimeout(() => {
@@ -43,9 +42,6 @@ function OffCanvas() {
                     <div className="flex flex-wrap mt-8">
                         <div className="ml-4 w-1/4">
                             <div className="inline-flex overflow-hidden relative justify-center items-center mx-auto w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600">
-                                {/* <span className="font-medium text-gray-600 dark:text-gray-300">
-                                    {myNickname[0]}{myNickname[1]}
-                                </span> */}
                                 <img className='h-16 object-cover' src={`http://localhost:15251/api/image/user/${userLink}`} />
                             </div>
                         </div>
@@ -63,8 +59,10 @@ function OffCanvas() {
                     </div>
                     <div className="mt-8 mb-4">
                         <ul className="ml-4">
-                            <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
-                                <span>
+                            <li className={router.route === '/user/[id]' && router.query.id == userLink ?
+                                `${'mb-2 px-4 py-3 flex flex-row text-black bg-gray-300 font-bold rounded-lg'}` :
+                                "mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg"
+                            }>                                <span>
                                     <svg className="fill-current h-5 w-5" viewBox="0 0 24 24">
                                         <path
                                             d="M12 4a4 4 0 014 4 4 4 0 01-4 4 4 4 0 01-4-4 4 4 0
@@ -74,13 +72,23 @@ function OffCanvas() {
                                     </svg>
                                 </span>
                                 <Link href="/user/[id]" as={`/user/${userLink}`}
+                                    className={router.route === '/user/[id]' && router.query.id == userLink ?
+                                        "pointer-events-none" :
+                                        ""
+                                    }
                                     onClick={() => {
-                                        dispatch(loadUserPosts({ memberId: userLink, requestedPageNumber: 0, requestedPageSize: 10 }))
+                                        // 여기에도 무한스크롤 가능하게
+                                        dispatch(loadUserPosts(
+                                            { memberId: userLink, requestedPageNumber: 0, requestedPageSize: 10 }
+                                        ))
                                     }}>
                                     <span className="ml-2">내가 쓴 게시글</span>
                                 </Link>
                             </li>
-                            <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
+                            <li className={router.route === '/category/diary' ?
+                                `${'mb-2 px-4 py-3 flex flex-row text-black bg-gray-300 font-bold rounded-lg'}` :
+                                "mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg"
+                            }>
                                 <span>
                                     <svg className="fill-current h-5 w-5 " viewBox="0 0 24 24">
                                         <path
@@ -91,13 +99,17 @@ function OffCanvas() {
                                     </svg>
                                 </span>
                                 <Link href="/category/diary"
-                                    onClick={() => {
-                                        dispatch(loadMenu({ num: 0, menu: "Diary", requestedPageNumber: 0, requestedPageSize: 10 }))
-                                    }}>
+                                    className={router.route === '/category/diary' ?
+                                        "pointer-events-none" :
+                                        ""
+                                    }>
                                     <span className="ml-2">다이어리</span>
                                 </Link>
                             </li>
-                            <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
+                            <li className={router.route === '/category/tip' ?
+                                `${'mb-2 px-4 py-3 flex flex-row text-black bg-gray-300 font-bold rounded-lg'}` :
+                                "mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg"
+                            }>
                                 <span>
                                     <svg className="fill-current h-5 w-5 " viewBox="0 0 24 24">
                                         <path
@@ -108,13 +120,17 @@ function OffCanvas() {
                                     </svg>
                                 </span>
                                 <Link href="/category/tip"
-                                    onClick={() => {
-                                        dispatch(loadMenu({ num: 1, menu: "Tip", requestedPageNumber: 0, requestedPageSize: 10 }))
-                                    }}>
+                                    className={router.route === '/category/tip' ?
+                                        "pointer-events-none" :
+                                        ""
+                                    }>
                                     <span className="ml-2">팁</span>
                                 </Link>
                             </li>
-                            <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
+                            <li className={router.route === '/category/question' ?
+                                `${'mb-2 px-4 py-3 flex flex-row text-black bg-gray-300 font-bold rounded-lg'}` :
+                                "mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg"
+                            }>
                                 <span>
                                     <svg className="fill-current h-5 w-5 " viewBox="0 0 24 24">
                                         <path
@@ -125,9 +141,10 @@ function OffCanvas() {
                                     </svg>
                                 </span>
                                 <Link href="/category/question"
-                                    onClick={() => {
-                                        dispatch(loadMenu({ num: 2, menu: "Question", requestedPageNumber: 0, requestedPageSize: 10 }))
-                                    }}>
+                                    className={router.route === '/category/question' ?
+                                        "pointer-events-none" :
+                                        ""
+                                    }>
                                     <span className="ml-2">질문</span>
                                 </Link>
                             </li>

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, Dispatch, SetStateAction } from 'react'
 import { useCookies } from "react-cookie"
 import { IArticle, IReply } from '@features/postSlice';
 import { useAppDispatch, useAppSelector } from '@store/config';

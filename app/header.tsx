@@ -100,59 +100,49 @@ const header = () => {
                     <div className={`${buttonToggle ? "w-full md:block md:w-auto" : "w-full md:block md:w-auto hidden"}`}>
                         <div className='mt-3 inline-flex md:hidden'>
                             <div className="flex overflow-hidden relative items-center mx-auto w-12 h-12 bg-gray-100 rounded-full dark:bg-gray-600">
-                                {/* <span className="font-medium text-gray-600 dark:text-gray-300">
-                                    {myNickname[0]}{myNickname[1]}
-                                </span> */}
                                 <img className='h-12 object-cover' src={`http://localhost:15251/api/image/user/${userLink}`} />
                             </div>
                             <Link href="/mypage" className="ml-3 flex items-center font-medium text-sm">{myNickname}</Link>
                         </div>
                         <ul className="mt-4 flex flex-col md:mt-0 md:flex-row md:text-sm md:font-medium">
-                            <Navbar.Link
-                                href="/mainpage"
-                            // active={`${router.route === '/mainpage' ? false : true}` as any}
-                            >
+                            <Navbar.Link href="/mainpage" className={`
+                            ${router.route === '/mainpage' ?
+                                    "bg-gray-100 md:bg-white" : ''}`}>
                                 Home
                             </Navbar.Link>
-                            <Navbar.Link href="/mypage" className="md:hidden px-0 mx-0"
-                            // active={`${router.route === '/mypage' ? true : false}` as any}
-                            >
+                            <Navbar.Link href="/mypage" className={`
+                            ${router.route === '/mypage' ? "md:hidden px-0 mx-0 bg-gray-100"
+                                    : "md:hidden px-0 mx-0"}`}>
                                 마이페이지
                             </Navbar.Link>
-                            <Navbar.Link href={`/user/${userLink}`} className="md:hidden px-0 mx-0"
+                            <Navbar.Link href={`/user/${userLink}`} className={`
+                            ${router.route === '/user/[id]' && router.query.id == userLink ?
+                                    "md:hidden px-0 mx-0 bg-gray-100" : "md:hidden px-0 mx-0"}`}
                                 onClick={() => {
                                     dispatch(loadUserPosts({ memberId: userLink, requestedPageNumber: 0, requestedPageSize: 10 }))
-                                    // active={`${router.route === `/user/${userLink}` ? true : false}` as any}
-                                }}>
+                                }}
+                            >
                                 내가 쓴 게시글
                             </Navbar.Link>
-                            <Navbar.Link href="/category/diary" className="md:hidden px-0 mx-0"
-                                // active={`${router.route === '/category/diary' ? true : false}` as any}
-                                onClick={() => {
-                                    dispatch(loadMenu({ num: 0, menu: "Diary", requestedPageNumber: 0, requestedPageSize: 10 }))
-                                }}>
+                            <Navbar.Link href="/category/diary" className={`
+                            ${router.route === '/category/diary' ?
+                                    "md:hidden px-0 mx-0 bg-gray-100" : "md:hidden px-0 mx-0"}`}>
                                 다이어리
                             </Navbar.Link>
-                            <Navbar.Link href="/category/tip" className="md:hidden px-0 mx-0"
-                                // active={`${router.route === '/category/tip' ? true : false}` as any}
-                                onClick={() => {
-                                    dispatch(loadMenu({ num: 1, menu: "Tip", requestedPageNumber: 0, requestedPageSize: 10 }))
-                                }}>
+                            <Navbar.Link href="/category/tip" className={`
+                            ${router.route === '/category/tip' ?
+                                    "md:hidden px-0 mx-0 bg-gray-100" : 'md:hidden px-0 mx-0'}`}>
                                 팁
                             </Navbar.Link>
-                            <Navbar.Link href="/category/question" className="md:hidden px-0 mx-0"
-                                // active={`${router.route === '/category/question' ? true : false}` as any}
-                                onClick={() => {
-                                    dispatch(loadMenu({ num: 2, menu: "Question", requestedPageNumber: 0, requestedPageSize: 10 }))
-                                }}>
-                                질문
+                            <Navbar.Link href="/category/question" className={`
+                            ${router.route === '/category/question' ?
+                                    "md:hidden px-0 mx-0 bg-gray-100" : 'md:hidden px-0 mx-0'}`}>                                질문
                             </Navbar.Link>
                             <Navbar.Link href="/admin" className="md:hidden px-0 mx-0"
-                            // active={`${router.route === '/admin' ? true : false}` as any}
                             >
                                 관리자페이지
                             </Navbar.Link>
-                            <Navbar.Link href="/" className="md:ml-3 md:hidden" onClick={onLogOut} active={true}>
+                            <Navbar.Link href="/" className="md:ml-3 md:hidden" onClick={onLogOut}>
                                 로그아웃
                             </Navbar.Link>
                         </ul>

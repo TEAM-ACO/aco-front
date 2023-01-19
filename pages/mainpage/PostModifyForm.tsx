@@ -41,7 +41,7 @@ function PostModifyForm({ post, contextModify }: PostProps) {
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
 
-    const imageStorageFunction = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const imageStorageFunction = useCallback( async(e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
             for (let i = 0; i < e.target.files.length; i++) {
                 const element = e.target.files[i];
@@ -54,7 +54,7 @@ function PostModifyForm({ post, contextModify }: PostProps) {
                 }
             }
         }
-        e.target.files = null
+        // e.target.files = null
     }, [imgStorage, imgl])
 
     const onSubmit = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -66,23 +66,24 @@ function PostModifyForm({ post, contextModify }: PostProps) {
             return
         }
         setTextError(false)
-        console.log(imgData)
-        result.set("articleId", post.articleId)
+        result.set("articleId", post.articleId.toString())
         result.set("articleContext", text)
         result.set("menu", selectedOption.value)
         result.set("memberId", cookies.user.num)
         result.set("tags", tagList.join(", "))
-        result.set("articleImagesNames", imgData)
-
-        if (imgStorage) {
+        result.set("articleImagesNames", imgData.join(", "))
+        console.log(imgStorage);
+        
+        if (imgStorage.length>0) {
             for (let i = 0; i < imgStorage.length; i++) {
                 result.append("articleImages", imgStorage[i])
                 console.log(imgStorage[i].name);
             }
         }
+        
         dispatch(editPost(result));
         refresh(window.location.pathname)
-    }, [text, tagList, imgData])
+    }, [text, tagList, imgData, imgStorage])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);
@@ -219,8 +220,10 @@ function PostModifyForm({ post, contextModify }: PostProps) {
                                 {
                                     imgData.map((v, i: number) => {
                                         const deleteImageData = async () => {
+                                            
                                             imgData.splice(i, 1)
                                             setImgData(v => [...imgData])
+                                            console.log(imgData);
                                         }
                                         return (
                                             <div className='flex'>
@@ -245,7 +248,7 @@ function PostModifyForm({ post, contextModify }: PostProps) {
                                             imgl.splice(i, 1)
                                             imgStorage.splice(i, 1)
                                             setImgList(v => [...imgl])
-                                            setImageStorage(imgStorage)
+                                            setImageStorage(v=>[...v, ...imgStorage])
                                         }
                                         return (
                                             <div className='flex'>

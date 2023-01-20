@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { useCookies } from "react-cookie"
-import { IArticle, IReply } from '@features/postSlice';
+import { IArticle, IReply, userRequestPage } from '@features/postSlice';
 import { useAppDispatch } from '@store/config';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import dayjs from 'dayjs';
-import { Avatar, Carousel } from 'flowbite-react';
+import { Avatar, Carousel, Tooltip } from 'flowbite-react';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import Dropdown from './Dropdown';
@@ -30,6 +30,7 @@ const PostCard = ({ post }: PostProps) => {
     const [requestComment, setRequestComment] = useState<number>(5);
 
     const userinfo = useCallback(() => {
+        dispatch(userRequestPage({ reqPage: 0 }))
         router.push(`/user/${post.member.memberId}`)
     }, [])
 
@@ -122,11 +123,19 @@ const PostCard = ({ post }: PostProps) => {
                             :
                             <div>
                                 <div className='text-gray-500 text-xs items-center mb-3 flex justify-between'>
-                                    <p>
+                                    <p className='flex'>
                                         카테고리:&nbsp;
-                                        <button onClick={onMenu}>
-                                            {post.menu}
-                                        </button>
+                                        {router.asPath.split('/')[2] === post.menu.toLowerCase() ?
+                                            <Tooltip content="현재 카테고리">
+                                                <button>
+                                                    {post.menu}
+                                                </button>
+                                            </Tooltip>
+                                            :
+                                            <button onClick={onMenu}>
+                                                {post.menu}
+                                            </button>
+                                        }
                                     </p>
                                     <div>
                                         {date}

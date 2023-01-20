@@ -107,7 +107,8 @@ export interface IArticleState {
   deleteCommentLoading: boolean;
   deleteCommentDone: boolean;
   deleteCommentError: unknown | null;
-  reqPage: any;
+  reqPage: number;
+  searchValue: number;
 }
 
 export const initialState: IArticleState = {
@@ -161,7 +162,8 @@ export const initialState: IArticleState = {
   deleteCommentLoading: false, // comment 삭제
   deleteCommentDone: false,
   deleteCommentError: null,
-  reqPage: null,
+  reqPage: 0,
+  searchValue: 0,
 };
 
 const postSlice = createSlice({
@@ -177,6 +179,12 @@ const postSlice = createSlice({
     },
     deletePostToMe(state, action) {
       state.mainPosts = state.mainPosts.filter((v) => v.articleId !== action.payload.articleId);
+    },
+    userRequestPage(state, action) {
+      state.reqPage = action.payload.reqPage + 1;
+    },
+    searchRequestPage(state, action) {
+      state.searchValue = action.payload.searchValue + 1;
     },
   },
   extraReducers: (builder) =>
@@ -397,5 +405,5 @@ const postSlice = createSlice({
       }),
 });
 
-export const { addPostToMe, deletePostToMe, editPostToMe } = postSlice.actions;
+export const { addPostToMe, deletePostToMe, editPostToMe, userRequestPage, searchRequestPage } = postSlice.actions;
 export default postSlice;

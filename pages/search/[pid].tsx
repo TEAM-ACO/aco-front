@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import { loadPosts, searchPosts } from '@actions/post';
 import Mainpage from '../mainpage/mainpage';
 import PostForm from '../mainpage/PostForm';
-import { IArticle } from '@features/postSlice';
+import { IArticle, searchRequestPage } from '@features/postSlice';
 import PostCard from '../mainpage/PostCard';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -15,22 +15,21 @@ function PostList() {
     const router = useRouter()
     const { pid } = router.query
     // singlePosts 만들기
-    const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
+    const { mainPosts, loadPostsLoading, hasMorePosts, searchValue } = useAppSelector((state) => state.post);
     const [requestPage, setRequestPage] = useState<number>(0);
 
     const [ref, inView] = useInView();
 
     const loadMore = useCallback(() => {
-        setRequestPage(prev => prev + 1);
+        dispatch(searchRequestPage({ searchValue }))
     }, [requestPage])
 
     useEffect(() => {
-        console.log(pid)
         if (pid === undefined) {
             return
         }
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(searchPosts({ keywords: pid, requestedPageNumber: requestPage, requestedPageSize: 10 }));
+            dispatch(searchPosts({ keywords: pid, requestedPageNumber: searchValue, requestedPageSize: 10 }));
             loadMore()
         }
     }, [inView, hasMorePosts, loadPostsLoading, pid]);

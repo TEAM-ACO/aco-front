@@ -6,7 +6,7 @@ import { GetServerSideProps } from 'next';
 import { useCookies } from "react-cookie"
 
 import PostCard from '@pages/mainpage/PostCard';
-import { IArticle } from '@features/postSlice';
+import { IArticle, userRequestPage } from '@features/postSlice';
 import PostForm from '@pages/mainpage/PostForm';
 import Mainpage from '@pages/mainpage/mainpage';
 import { loadUserPosts, reportMember } from '@actions/post';
@@ -17,7 +17,7 @@ const userid = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { id } = router.query;
-    const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
+    const { mainPosts, loadPostsLoading, hasMorePosts, reqPage } = useAppSelector((state) => state.post);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
     const [ref, inView] = useInView();
@@ -51,18 +51,19 @@ const userid = () => {
     }, [userReport, onReportModal])
 
     const loadMore = useCallback(() => {
-        setRequestPage(prev => prev + 1);
-    }, [requestPage])
+        dispatch(userRequestPage({ reqPage }))
+        // setRequestPage(prev => prev + 1);
+    }, [reqPage])
+
+    // console.log('req' + reqPage, 'requestPage' + requestPage)
 
     useEffect(() => {
         if (!router.isReady) return;
         if (id === undefined) {
             return
         }
-        console.log(router.pathname)
-        console.log(inView, hasMorePosts, !loadPostsLoading)
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(loadUserPosts({ memberId: id, requestedPageNumber: requestPage, requestedPageSize: 10 }));
+            dispatch(loadUserPosts({ memberId: id, requestedPageNumber: reqPage, requestedPageSize: 10 }));
             loadMore();
         }
     }, [inView, hasMorePosts, loadPostsLoading, id]);

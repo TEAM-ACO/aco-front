@@ -7,6 +7,7 @@ import { useCookies } from 'react-cookie';
 import Select from 'react-select';
 import { useRouter } from 'next/router';
 import _remove from 'lodash'
+import { addPostToMe } from '@features/postSlice';
 
 const options = [
     { value: "Diary", label: 'Diary' },
@@ -29,6 +30,7 @@ function PostForm({ reqPage, setReqPage }: Props) {
     const [imgStorage, setImageStorage] = useState<File[]>([]);
     // const [imgl, setImgList] = useState<HTMLImageElement[]>([]);
     const [imgl, setImgList] = useState<string[]>([]);
+    const [reducerImgl, setReducerImgl] = useState<string[]>([]);
     const imageInput = useRef() as React.RefObject<HTMLInputElement>;
     const imageDeleteInput = useRef<HTMLImageElement | null>(null);
     const [text, setText] = useState<string>('')
@@ -43,7 +45,7 @@ function PostForm({ reqPage, setReqPage }: Props) {
             for (let i = 0; i < e.target.files.length; i++) {
                 const element = e.target.files[i];
                 setImageStorage(file => [...file, element])
-                console.log(element.name);
+                // console.log(element.name);
                 let reader = new FileReader();
                 reader.readAsDataURL(element)
                 reader.onload = (f) => {
@@ -71,10 +73,19 @@ function PostForm({ reqPage, setReqPage }: Props) {
         if (imgStorage) {
             for (let i = 0; i < imgStorage.length; i++) {
                 result.append("articleImages", imgStorage[i])
-                console.log(imgStorage[i].name);
+                // console.log(imgStorage[i].name);
+                // setReducerImgl(imgStorage[i].name)
             }
         }
         dispatch(addPost(result))
+        dispatch(addPostToMe({
+            articleContext: text, menu: selectedOption.value,
+            tags: tagList, articleImagesNames: ['basic.png'], replys: [],
+            member: {
+                memberId: cookies.user.num, email: cookies.user.id, nickname: cookies.user.username,
+            },
+            articleId: (mainPosts[0]?.articleId) + 1
+        }))
         setTimeout(() => {
             // refresh()
         }, 0)

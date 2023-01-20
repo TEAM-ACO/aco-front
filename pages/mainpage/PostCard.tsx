@@ -13,6 +13,7 @@ import PostImage from './PostImage';
 import { likePost, updateComment } from '@actions/post';
 import { useRouter } from 'next/router';
 import PostModifyForm from './PostModifyForm';
+import CommentMore from './CommentMore';
 
 type PostProps = {
     post: IArticle
@@ -27,7 +28,7 @@ const PostCard = ({ post }: PostProps) => {
     const [favorite, setFavorite] = useState<boolean>(false);
     const [requestPage, setRequestPage] = useState<number>(0);
     const [requestComment, setRequestComment] = useState<number>(5);
-    const [allCount, setAllCount] = useState(post.replys[post.replys.length - 1]?.totalCount || 0)
+    const [allCount, setAllCount] = useState(0)
 
     const userinfo = useCallback(() => {
         router.push(`/user/${post.member.memberId}`)
@@ -81,6 +82,13 @@ const PostCard = ({ post }: PostProps) => {
         }
     })
 
+    // useEffect(() => {
+    //     if (!router.isReady) return;
+    //     setAllCount(post.replys[post.replys.length - 1]?.totalCount || 0)
+    //     console.log(post.replys)
+    //     console.log(allCount)
+    // }, [allCount])
+
     return (
         <>
             <section className="px-6 py-4">
@@ -117,7 +125,8 @@ const PostCard = ({ post }: PostProps) => {
                                 contextModify={contextModify} setContextModify={setContextModify} />
                         </div>
                         {contextModify ?
-                            <PostModifyForm key={post.articleId} post={post} contextModify={contextModify} />
+                            <PostModifyForm key={post.articleId} post={post}
+                                contextModify={contextModify} setContextModify={setContextModify} />
                             :
                             <div>
                                 <div className='text-gray-500 text-xs items-center mb-3 flex justify-between'>
@@ -167,14 +176,15 @@ const PostCard = ({ post }: PostProps) => {
                                             <CommentList key={cmt.replyId} comment={cmt} commentListUpdate={commentListUpdate} />
                                         ))}
                                     </div>
-                                    <div className='ml-6 py-2 mt-3'>
+                                    <CommentMore replys={post.replys} onCommentViewMore={onCommentViewMore} />
+                                    {/* <div className='ml-6 py-2 mt-3'>
                                         {allCount - post.replys.length >= 5 ?
                                             <Button onClick={onCommentViewMore}>
                                                 댓글 더 보기
                                             </Button>
                                             : <></>
                                         }
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </>

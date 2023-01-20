@@ -1,4 +1,5 @@
 import _concat from 'lodash/concat';
+import _find from 'lodash/find';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
@@ -167,6 +168,13 @@ const postSlice = createSlice({
   name: 'article',
   initialState,
   reducers: {
+    addPostToMe(state, action) {
+      state.mainPosts.unshift(action.payload);
+    },
+    editPostToMe(state, action) {
+      const post = state.mainPosts.findIndex((v) => v.articleId === action.payload.articleId);
+      state.mainPosts[post] = action.payload;
+    },
     deletePostToMe(state, action) {
       state.mainPosts = state.mainPosts.filter((v) => v.articleId !== action.payload.articleId);
     },
@@ -256,7 +264,7 @@ const postSlice = createSlice({
       .addCase(loadUserPosts.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
         state.loadUserPostsLoading = false;
         state.loadUserPostsDone = true;
-        state.singlePosts = _concat(state.singlePosts, action.payload);
+        state.mainPosts = _concat(state.mainPosts, action.payload);
         state.hasMorePosts = action.payload.length === 10;
       })
       .addCase(loadUserPosts.rejected, (state: IArticleState, action) => {
@@ -349,7 +357,8 @@ const postSlice = createSlice({
         state.editPostDone = false;
         state.editPostError = null;
       })
-      .addCase(editPost.fulfilled, (state: IArticleState) => {
+      .addCase(editPost.fulfilled, (state: IArticleState, action: PayloadAction<IArticle>) => {
+        const post = _find(state.mainPosts, { articleId: action.payload });
         state.editPostLoading = false;
         state.editPostDone = true;
       })
@@ -388,5 +397,5 @@ const postSlice = createSlice({
       }),
 });
 
-export const { deletePostToMe } = postSlice.actions;
+export const { addPostToMe, deletePostToMe, editPostToMe } = postSlice.actions;
 export default postSlice;

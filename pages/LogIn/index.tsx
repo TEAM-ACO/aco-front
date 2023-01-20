@@ -28,17 +28,10 @@ const LogIn = () => {
 
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
-
     const [logInError, setLogInError] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (cookies.user) {
-            router.replace('/mainpage')
-        }
-    }, [cookies.user])
+    const refresh: any = router.reload
 
     const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-        const refresh: any = router.reload
         e.preventDefault();
         if (!email) {
             return setLogInError(true);
@@ -48,14 +41,24 @@ const LogIn = () => {
         }
         setLogInError(false);
         dispatch(login({ email, password }));
-
-        router.replace('/mainpage')
-        // setTimeout(() => {
-        //     refresh('/mainpage')
-        // }, 0)
     },
         [email, password, router],
     );
+
+    useEffect(() => {
+        if (loginDone) {
+            router.replace('/mainpage')
+            setTimeout(() => {
+                refresh('/mainpage')
+            }, 0)
+        }
+    }, [loginDone])
+
+    useEffect(() => {
+        if (cookies.user) {
+            router.replace('/mainpage')
+        }
+    }, [cookies.user])
 
     return (
         <>

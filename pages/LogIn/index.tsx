@@ -8,6 +8,7 @@ import { login } from '@actions/user'
 import { Spinner } from 'flowbite-react'
 import { useCookies } from "react-cookie"
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 const BGcolor = {
     google: {
@@ -62,6 +63,9 @@ const LogIn = () => {
 
     return (
         <>
+            <Head>
+                <title>로그인 | Project ACO</title>
+            </Head>
             <section className="h-screen">
                 <div className="container px-6 py-12 h-full">
                     <div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
@@ -94,15 +98,12 @@ const LogIn = () => {
                                 </div>
                                 {logInError && <p>이메일 혹은 비밀번호가 일치하지 않습니다.</p>}
                                 <div className="flex justify-between items-center mb-6">
-                                    <div className="form-group form-check">
-                                        <input
-                                            type="checkbox"
-                                            className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                            id="exampleCheck3"
-                                        />
-                                        <label className="form-check-label inline-block text-gray-800" htmlFor="exampleCheck2"
-                                        >아이디 기억하기</label>
-                                    </div>
+                                    <p>아이디가 없다면?
+                                        <Link
+                                            href="/SignUp"
+                                            className="ml-2 text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 duration-200 transition ease-in-out"
+                                        >회원가입</Link>
+                                    </p>
                                     <Link
                                         href="/forgotpass"
                                         className="text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 duration-200 transition ease-in-out"

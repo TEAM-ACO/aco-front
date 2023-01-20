@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useEffect, Dispatch, SetStateAction } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { useCookies } from "react-cookie"
 import { IArticle, IReply } from '@features/postSlice';
-import { useAppDispatch, useAppSelector } from '@store/config';
+import { useAppDispatch } from '@store/config';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import dayjs from 'dayjs';
-import { Avatar, Button, Carousel } from 'flowbite-react';
+import { Avatar, Carousel } from 'flowbite-react';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import Dropdown from './Dropdown';
@@ -28,7 +28,6 @@ const PostCard = ({ post }: PostProps) => {
     const [favorite, setFavorite] = useState<boolean>(false);
     const [requestPage, setRequestPage] = useState<number>(0);
     const [requestComment, setRequestComment] = useState<number>(5);
-    const [allCount, setAllCount] = useState(0)
 
     const userinfo = useCallback(() => {
         router.push(`/user/${post.member.memberId}`)
@@ -81,13 +80,6 @@ const PostCard = ({ post }: PostProps) => {
             router.replace('/')
         }
     })
-
-    // useEffect(() => {
-    //     if (!router.isReady) return;
-    //     setAllCount(post.replys[post.replys.length - 1]?.totalCount || 0)
-    //     console.log(post.replys)
-    //     console.log(allCount)
-    // }, [allCount])
 
     return (
         <>
@@ -177,14 +169,6 @@ const PostCard = ({ post }: PostProps) => {
                                         ))}
                                     </div>
                                     <CommentMore replys={post.replys} onCommentViewMore={onCommentViewMore} />
-                                    {/* <div className='ml-6 py-2 mt-3'>
-                                        {allCount - post.replys.length >= 5 ?
-                                            <Button onClick={onCommentViewMore}>
-                                                댓글 더 보기
-                                            </Button>
-                                            : <></>
-                                        }
-                                    </div> */}
                                 </div>
                             </div>
                         </>

@@ -11,6 +11,7 @@ import PostForm from '@pages/mainpage/PostForm';
 import Mainpage from '@pages/mainpage/mainpage';
 import { loadUserPosts, reportMember } from '@actions/post';
 import { Avatar, Button, Modal } from 'flowbite-react';
+import Head from 'next/head';
 
 const userid = () => {
     const dispatch = useAppDispatch();
@@ -68,6 +69,9 @@ const userid = () => {
 
     return (
         <div>
+            <Head>
+                <title>{mainPosts[0]?.member.nickname}님의 페이지입니다. | Project ACO</title>
+            </Head>
             <Mainpage>
                 <div className="ml-auto mr-auto">
                     <h2 id="accordion-collapse-heading-1" className='px-6'>

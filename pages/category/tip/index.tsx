@@ -7,6 +7,7 @@ import PostForm from '../../mainpage/PostForm';
 import { IArticle } from '@features/postSlice';
 import PostCard from '../../mainpage/PostCard';
 import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 
 const Tip = () => {
     const dispatch = useAppDispatch();
@@ -27,6 +28,9 @@ const Tip = () => {
     }, [inView, hasMorePosts, loadPostsLoading]);
     return (
         <div>
+            <Head>
+                <title>ACO 팁 | Project ACO</title>
+            </Head>
             <Mainpage>
                 <div className="ml-auto mr-auto">
                     <PostForm />

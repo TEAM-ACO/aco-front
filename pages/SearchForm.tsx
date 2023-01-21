@@ -3,19 +3,14 @@ import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@store/config';
 import { searchPosts } from '@actions/post';
 import { useInView } from 'react-intersection-observer';
+import { searchRequestPage } from '@features/postSlice';
 
 const SearchForm = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const { loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
+    const { } = useAppSelector((state) => state.post);
     const [searchInput, setSearchInput] = useState('');
-    const [requestPage, setRequestPage] = useState<number>(0);
-
-    const [ref, inView] = useInView();
-
-    const loadMore = useCallback(() => {
-        setRequestPage(prev => prev + 1);
-    }, [requestPage])
+    // const [requestPage, setRequestPage] = useState<number>(0);
 
     const onChangeSearchInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchInput(e.target.value);
@@ -27,10 +22,9 @@ const SearchForm = () => {
             return
         }
         // 검색시 url이동
+        dispatch(searchRequestPage({ searchValue: 0 }))
         router.push(`/search/${searchInput}`);
-        dispatch(searchPosts({ keywords: searchInput, requestedPageNumber: requestPage, requestedPageSize: 10 }))
-        loadMore()
-    }, [searchInput, inView, hasMorePosts, loadPostsLoading]);
+    }, [searchInput]);
 
     return (
         <div>

@@ -2,7 +2,7 @@ import React, { useState, useCallback, Dispatch, SetStateAction } from 'react'
 import { useCookies } from "react-cookie"
 import { Avatar, Modal, Button, Spinner } from 'flowbite-react'
 import dayjs from 'dayjs';
-import { IReply } from '@features/postSlice';
+import { IReply, userRequestPage } from '@features/postSlice';
 import { useRouter } from 'next/router';
 import ReComments from './ReCommentForm';
 import { useAppDispatch, useAppSelector } from '@store/config';
@@ -27,6 +27,7 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
     const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
 
     const userinfo = useCallback(() => {
+        dispatch(userRequestPage({ reqPage: 0 }))
         router.push(`/user/${comment.member.memberId}`)
     }, [])
 

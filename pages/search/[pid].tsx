@@ -8,6 +8,7 @@ import { IArticle } from '@features/postSlice';
 import PostCard from '../mainpage/PostCard';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Head from 'next/head';
 
 function PostList() {
     const dispatch = useAppDispatch();
@@ -34,29 +35,29 @@ function PostList() {
         }
     }, [inView, hasMorePosts, loadPostsLoading, pid]);
     return (
-        <div>
-            <Mainpage>
-                <div className="ml-auto mr-auto">
-                    <PostForm />
-                    {mainPosts.map((post: IArticle) => {
-                        return (
-                            <PostCard key={post.articleId} post={post} />
-                        )
-                    })}
-                </div>
-                <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 5 }} />
-            </Mainpage>
-        </div>
+        <>
+            <Head>
+                <title>{pid} | Project ACO</title>
+            </Head>
+            <div>
+                <Mainpage>
+                    <div className="ml-auto mr-auto">
+                        <PostForm />
+                        {mainPosts.map((post: IArticle) => {
+                            return (
+                                <PostCard key={post.articleId} post={post} />
+                            )
+                        })}
+                    </div>
+                    <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 5 }} />
+                </Mainpage>
+            </div>
+        </>
     )
 }
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
-    console.log(req, params)
-    // const cookie = req ? req.headers.cookie : '';
-    // axios.defaults.headers.Cookie = '';
-    // if (req && cookie) {
-    //     axios.defaults.headers.Cookie = cookie
-    // }
+
     store.dispatch(searchPosts({ keywords: params?.pid } as any))
     return {
         props: {},

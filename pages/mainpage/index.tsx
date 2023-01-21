@@ -11,6 +11,7 @@ import { useCookies } from "react-cookie"
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 function mainpage() {
     const dispatch = useAppDispatch();
@@ -33,9 +34,12 @@ function mainpage() {
 
     return (
         <div>
+            <Head>
+                <title>ACO 메인페이지 | Project ACO</title>
+            </Head>
             <Mainpage>
                 <div className="ml-auto mr-auto">
-                    <PostForm reqPage={requestPage} setReqPage={setRequestPage} />
+                    <PostForm />
                     {mainPosts.map((post: IArticle) => {
                         return (
                             <PostCard key={post.articleId} post={post} />

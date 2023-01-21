@@ -15,13 +15,13 @@ const options = [
     { value: 'Question', label: 'Question' },
 ];
 
-type Props = {
-    reqPage: number
-    setReqPage: Dispatch<SetStateAction<number>>
-}
+// type Props = {
+//     reqPage: number
+//     setReqPage: Dispatch<SetStateAction<number>>
+// }
 
 // 기본 이미지 넣기
-function PostForm({ reqPage, setReqPage }: Props) {
+function PostForm() {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const [selectedOption, setSelectedOption] = useState<any>(options[0]);

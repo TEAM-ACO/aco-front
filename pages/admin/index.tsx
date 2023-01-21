@@ -7,6 +7,7 @@ import Select, { ActionMeta, SingleValue } from 'react-select';
 import VisitorInfo from './VisitorInfo';
 import RecentMember from './RecentMember'
 import RecentArticle from './RecentArticle'
+import Head from 'next/head'
 
 const options = [
     { value: 1, label: '1주일' },
@@ -41,81 +42,86 @@ const Visitant = () => {
     // 최근 가입자 카테고리 (맨 밑)
 
     return (
-        <AdminMenu>
-            <Select
-                instanceId="long-value-select"
-                defaultValue={selectedOption}
-                onChange={setSelectedOption}
-                options={options}
-            />
-            <Table hoverable={true}>
-                <Table.Head>
-                    <Table.HeadCell className="!p-4">
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        articleid
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        article context
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        menu
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        member
-                    </Table.HeadCell>
-                </Table.Head>
-                {/* {adminContent.map((content) => {
+        <>
+            <Head>
+                <title>관리자페이지 | Project ACO</title>
+            </Head>
+            <AdminMenu>
+                <Select
+                    instanceId="long-value-select"
+                    defaultValue={selectedOption}
+                    onChange={setSelectedOption}
+                    options={options}
+                />
+                <Table hoverable={true}>
+                    <Table.Head>
+                        <Table.HeadCell className="!p-4">
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            articleid
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            article context
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            menu
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            member
+                        </Table.HeadCell>
+                    </Table.Head>
+                    {/* {adminContent.map((content) => {
                     return (
                         <RecentArticle key={content.memberId} content={content} />
                     )
                 })
                 } */}
-            </Table>
-            <Table hoverable={true}>
-                <Table.Head>
-                    <Table.HeadCell className="!p-4">
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        visitors
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        day of visitor
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        prevlink with sum
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        visited article
-                    </Table.HeadCell>
-                </Table.Head>
-                {/* <VisitorInfo content={adminContent[0]} /> */}
-            </Table>
-            <Table hoverable={true}>
-                <Table.Head>
-                    <Table.HeadCell className="!p-4">
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        memberid
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        email
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        nickname
-                    </Table.HeadCell>
-                    <Table.HeadCell>
-                        joindate
-                    </Table.HeadCell>
-                </Table.Head>
-                {/* {member.map((content) => {
+                </Table>
+                <Table hoverable={true}>
+                    <Table.Head>
+                        <Table.HeadCell className="!p-4">
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            visitors
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            day of visitor
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            prevlink with sum
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            visited article
+                        </Table.HeadCell>
+                    </Table.Head>
+                    {/* <VisitorInfo content={adminContent[0]} /> */}
+                </Table>
+                <Table hoverable={true}>
+                    <Table.Head>
+                        <Table.HeadCell className="!p-4">
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            memberid
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            email
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            nickname
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            joindate
+                        </Table.HeadCell>
+                    </Table.Head>
+                    {/* {member.map((content) => {
                     return (
                         <RecentMember key={content.memberId} content={content} />
                     )
                 })
                 } */}
-            </Table>
-        </AdminMenu>
+                </Table>
+            </AdminMenu>
+        </>
     )
 }
 

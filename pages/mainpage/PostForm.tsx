@@ -2,23 +2,17 @@ import React, { useCallback, useEffect, useState, useRef, ChangeEvent, Dispatch,
 import { useAppSelector, useAppDispatch } from '@store/config'
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { Spinner } from 'flowbite-react';
-import { addPost, loadPosts } from '@actions/post';
+import { addPost } from '@actions/post';
 import { useCookies } from 'react-cookie';
 import Select from 'react-select';
 import { useRouter } from 'next/router';
-import _remove from 'lodash'
-import { addPostToMe } from '@features/postSlice';
+import { mainRequestPage } from '@features/postSlice';
 
 const options = [
     { value: "Diary", label: 'Diary' },
     { value: 'Tip', label: 'Tip' },
     { value: 'Question', label: 'Question' },
 ];
-
-// type Props = {
-//     reqPage: number
-//     setReqPage: Dispatch<SetStateAction<number>>
-// }
 
 // 기본 이미지 넣기
 function PostForm() {
@@ -28,9 +22,7 @@ function PostForm() {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { addPostDone, addPostLoading, mainPosts } = useAppSelector((state) => state.post);
     const [imgStorage, setImageStorage] = useState<File[]>([]);
-    // const [imgl, setImgList] = useState<HTMLImageElement[]>([]);
     const [imgl, setImgList] = useState<string[]>([]);
-    const [reducerImgl, setReducerImgl] = useState<string[]>([]);
     const imageInput = useRef() as React.RefObject<HTMLInputElement>;
     const imageDeleteInput = useRef<HTMLImageElement | null>(null);
     const [text, setText] = useState<string>('')
@@ -58,7 +50,6 @@ function PostForm() {
 
     const onSubmit = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        const refresh: any = router.reload
         const result = new FormData;
         if (!text || !text.trim()) {
             setTextError(true)
@@ -74,20 +65,14 @@ function PostForm() {
             for (let i = 0; i < imgStorage.length; i++) {
                 result.append("articleImages", imgStorage[i])
                 // console.log(imgStorage[i].name);
-                // setReducerImgl(imgStorage[i].name)
             }
         }
+        dispatch(mainRequestPage({ mainReqPage: 0 }))
         dispatch(addPost(result))
-        dispatch(addPostToMe({
-            articleContext: text, menu: selectedOption.value,
-            tags: tagList, articleImagesNames: ['basic.png'], replys: [],
-            member: {
-                memberId: cookies.user.num, email: cookies.user.id, nickname: cookies.user.username,
-            },
-            articleId: (mainPosts[0]?.articleId) + 1
-        }))
         setTimeout(() => {
-            // refresh()
+            setImgList([])
+            setImageStorage([])
+            router.push(`${router.asPath}`)
         }, 0)
     }, [text, tagList, mainPosts])
 
@@ -99,8 +84,9 @@ function PostForm() {
         setTagItem(e.target.value);
     }, [])
 
-    const onKeyPress = useCallback((e: React.KeyboardEvent<HTMLElement> | any) => {
-        if (e.target.value.length !== 0 && e.key === 'Enter') {
+    const onKeyPress = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+        const target = e.target as HTMLInputElement
+        if (target.value.length !== 0 && e.key === 'Enter') {
             submitTagItem();
         }
     }, [tagItem, tagList])
@@ -128,7 +114,7 @@ function PostForm() {
     }, [tagItem, tagList])
 
     const onClickImageUpload = useCallback(() => {
-        if (imgStorage.length > 5 && imgl.length > 5) {
+        if (imgStorage.length > 5 || imgl.length > 5) {
             alert('이미지는 5개까지 등록할 수 있습니다.')
             return
         }

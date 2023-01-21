@@ -1,14 +1,15 @@
 import { useAppDispatch } from '@store/config';
-import React, { useCallback, useState } from 'react'
+import React, { SetStateAction, Dispatch, useCallback, useState } from 'react'
 import { IReply } from '@features/postSlice';
 import { useCookies } from "react-cookie"
 import { addComment } from '@actions/post';
 
 export type cmt = {
     comment: IReply
+    setBigComment: Dispatch<SetStateAction<boolean>>
 }
 
-function ReComments({ comment }: cmt) {
+function ReComments({ comment, setBigComment }: cmt) {
     const dispatch = useAppDispatch();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [commentText, setCommentText] = useState('');
@@ -23,6 +24,7 @@ function ReComments({ comment }: cmt) {
             replyGroup: (comment.totalCount),
             replySort: 1,
         }))
+        setBigComment(false)
         setCommentText('')
     }, [commentText]);
 

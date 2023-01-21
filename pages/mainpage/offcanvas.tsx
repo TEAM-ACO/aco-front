@@ -71,7 +71,7 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <Link href="/user/[id]" as={`/user/${userLink}`}
+                                <a href={`/user/${userLink}`}
                                     className={router.route === '/user/[id]' && router.query.id == userLink ?
                                         "pointer-events-none" :
                                         ""
@@ -83,7 +83,7 @@ function OffCanvas() {
                                         ))
                                     }}>
                                     <span className="ml-2">내가 쓴 게시글</span>
-                                </Link>
+                                </a>
                             </li>
                             <li className={router.route === '/category/diary' ?
                                 `${'mb-2 px-4 py-3 flex flex-row text-black bg-gray-300 font-bold rounded-lg'}` :

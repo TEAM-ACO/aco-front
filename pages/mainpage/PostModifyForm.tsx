@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react'
+import React, { useCallback, useEffect, useState, useRef, Dispatch, SetStateAction } from 'react'
 import { useAppSelector, useAppDispatch } from '@store/config'
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { Spinner } from 'flowbite-react';
-import { addPost, editPost } from '@actions/post';
+import { editPost, loadPosts } from '@actions/post';
 import { useCookies } from 'react-cookie';
 import Select from 'react-select';
 import { useRouter } from 'next/router';
-import { IArticle } from '@features/postSlice';
+import { IArticle, addPostToMe, editPostToMe } from '@features/postSlice';
 import _remove from 'lodash'
 
 const options = [
@@ -18,10 +18,11 @@ const options = [
 type PostProps = {
     post: IArticle
     contextModify: boolean
+    setContextModify: Dispatch<SetStateAction<boolean>>
 }
 
 // 기본 이미지 넣기
-function PostModifyForm({ post, contextModify }: PostProps) {
+function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const [selectedOption, setSelectedOption] = useState<any>(post.menu == 'Diary' ? options[0] :
@@ -32,7 +33,7 @@ function PostModifyForm({ post, contextModify }: PostProps) {
     const imageDataDeleteInput = useRef<HTMLImageElement | null>(null);
     const [imgData, setImgData] = useState<string[]>([...post.articleImagesNames]);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const { addPostDone, addPostLoading, addPostError } = useAppSelector((state) => state.post);
+    const { editPostLoading, editPostDone, mainPosts } = useAppSelector((state) => state.post);
 
     const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
     const [text, setText] = useState<string>(post.articleContext)
@@ -41,12 +42,12 @@ function PostModifyForm({ post, contextModify }: PostProps) {
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
 
-    const imageStorageFunction = useCallback( async(e: React.ChangeEvent<HTMLInputElement>) => {
+    const imageStorageFunction = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
             for (let i = 0; i < e.target.files.length; i++) {
                 const element = e.target.files[i];
                 setImageStorage(file => [...file, element])
-                console.log(element.name);
+                // console.log(element.name);
                 let reader = new FileReader();
                 reader.readAsDataURL(element)
                 reader.onload = (f) => {
@@ -72,18 +73,32 @@ function PostModifyForm({ post, contextModify }: PostProps) {
         result.set("memberId", cookies.user.num)
         result.set("tags", tagList.join(", "))
         result.set("articleImagesNames", imgData.join(", "))
-        console.log(imgStorage);
-        
-        if (imgStorage.length>0) {
+
+        if (imgStorage.length > 0) {
             for (let i = 0; i < imgStorage.length; i++) {
                 result.append("articleImages", imgStorage[i])
                 console.log(imgStorage[i].name);
+                console.log(imgStorage[i]);
             }
         }
-        
+
         dispatch(editPost(result));
-        refresh(window.location.pathname)
-    }, [text, tagList, imgData, imgStorage])
+        dispatch(editPostToMe({
+            articleContext: text, menu: selectedOption.value,
+            tags: tagList, articleImagesNames: imgData, replys: post.replys,
+            member: {
+                memberId: post.member.memberId, email: post.member.email, nickname: post.member.nickname,
+            },
+            articleId: post.articleId
+        }))
+        console.log(selectedOption.value)
+        console.log(imgData)
+        // refresh()
+        setText('');
+        setTagList([]);
+        setTagItem('');
+        setContextModify(false)
+    }, [text, tagList, tagItem, imgData, imgStorage])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);
@@ -131,14 +146,6 @@ function PostModifyForm({ post, contextModify }: PostProps) {
         }
         imageInput.current.click();
     }, [imageInput.current]);
-
-    useEffect(() => {
-        if (addPostDone) {
-            setText('');
-            setTagList([]);
-            setTagItem('');
-        }
-    }, [addPostDone]);
 
 
     return (
@@ -200,7 +207,7 @@ function PostModifyForm({ post, contextModify }: PostProps) {
                             className="ml-2 inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
                             onClick={onSubmit}
                         >
-                            {addPostLoading ?
+                            {editPostLoading ?
                                 <Spinner aria-label="Default status example" /> :
                                 '수정하기'
                             }
@@ -220,7 +227,7 @@ function PostModifyForm({ post, contextModify }: PostProps) {
                                 {
                                     imgData.map((v, i: number) => {
                                         const deleteImageData = async () => {
-                                            
+
                                             imgData.splice(i, 1)
                                             setImgData(v => [...imgData])
                                             console.log(imgData);
@@ -248,7 +255,7 @@ function PostModifyForm({ post, contextModify }: PostProps) {
                                             imgl.splice(i, 1)
                                             imgStorage.splice(i, 1)
                                             setImgList(v => [...imgl])
-                                            setImageStorage(v=>[...v, ...imgStorage])
+                                            setImageStorage(v => [...v, ...imgStorage])
                                         }
                                         return (
                                             <div className='flex'>

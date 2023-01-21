@@ -138,7 +138,7 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
                     </Modal.Body>
                 </Modal>
             </div>
-            <div className={commentReport ? 'flex' : 'hidden'}>
+            <div className={commentReport ? 'block' : 'hidden'}>
                 <ReComments comment={comment} />
             </div>
         </div>

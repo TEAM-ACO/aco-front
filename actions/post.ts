@@ -235,17 +235,20 @@ export const loadMenu = createAsyncThunk<IArticle, IMenu | undefined>(
 );
 
 // 게시글 수정
-export const editPost = createAsyncThunk<IArticle, FormData>('article/editPost', async (data:FormData, { rejectWithValue }) => {
-  console.log(data);
-  try {
-    const response = await axios.post(`/api/article/modify`, data, {
-      headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
-    });
-    return response.data;
-  } catch (error) {
-    return rejectWithValue((error as AxiosError).response?.data);
-  }
-});
+export const editPost = createAsyncThunk<IArticle, FormData>(
+  'article/editPost',
+  async (data: FormData, { rejectWithValue }) => {
+    console.log(data);
+    try {
+      const response = await axios.post(`/api/article/modify`, data, {
+        headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
 
 // 게시글 삭제
 export const deletePost = createAsyncThunk<IArticle, articleId>(

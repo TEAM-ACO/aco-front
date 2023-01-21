@@ -16,7 +16,7 @@ const userid = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { id } = router.query;
-    const { singlePosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
+    const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
     const [ref, inView] = useInView();
@@ -77,18 +77,18 @@ const userid = () => {
                             <div className='flex items-center gap-2'>
                                 <div className='w-10'>
                                     <Avatar
-                                        img={`http://localhost:15251/api/image/user/${singlePosts[0]?.member.memberId}`}
+                                        img={`http://localhost:15251/api/image/user/${mainPosts[0]?.member.memberId}`}
                                         rounded={true}
                                     />
                                 </div>
-                                <span>{singlePosts[0]?.member.nickname}님의 게시글입니다.</span>
+                                <span>{mainPosts[0]?.member.nickname}님의 게시글입니다.</span>
                             </div>
                             <button className='hover:text-red-500'
                                 onClick={onUserModalOpen}>신고하기</button>
                         </div>
                     </h2>
                     {/* <PostForm /> */}
-                    {singlePosts.map((post: IArticle) => {
+                    {mainPosts.map((post: IArticle) => {
                         return (
                             <PostCard key={post.articleId} post={post} />
                         )

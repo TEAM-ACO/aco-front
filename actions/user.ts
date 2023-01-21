@@ -11,36 +11,21 @@ axios.defaults.baseURL = backendURL;
 axios.defaults.withCredentials = true;
 
 export type LogInRequestData = { email: string; password: string };
-export type LogInErrorData = any; // 에러 메세지 어떻게 보낼건지에 따라 바꿈
 
 export type findPasswordEmailRequestData = { email: string };
 
 export type findpassAuthRequestData = { email: string; authNum?: number };
 
-// createSlice의 name이 member입니다.
-export const loadMyInfo = createAsyncThunk('member/loadMyInfo', async () => {
-  const response = await axios.post('/api/setting/getmember');
-  return response.data;
-});
-
-export const loadUser = createAsyncThunk('member/loadUser', async (data, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(`/api/setting/getmember`);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue((error as AxiosError).response?.data);
-  }
-});
-
+// 로그인
 export const login = createAsyncThunk<LogInRequestData, LogInRequestData>(
   'member/login',
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post('/api/member/login', data);
       return response.data;
-    } catch (error: LogInErrorData) {
+    } catch (error) {
       console.error(error);
-      return rejectWithValue(error.response.data);
+      return rejectWithValue((error as AxiosError).response?.data);
     }
   },
 );
@@ -60,11 +45,11 @@ export const googleLogin = createAsyncThunk<LogInRequestData, LogInRequestData>(
   'member/googlelogin',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.get('/api/oauth/chrome');
+      const response = await axios.post('/api/oauth/chrome', data);
       return response.data;
-    } catch (error: LogInErrorData) {
+    } catch (error) {
       console.error(error);
-      return rejectWithValue(error.response.data);
+      return rejectWithValue((error as AxiosError).response?.data);
     }
   },
 );
@@ -76,9 +61,9 @@ export const kakaoLogin = createAsyncThunk<LogInRequestData, signupRequestData>(
     try {
       const response = await axios.post('/api/oauth/kakao', data);
       return response.data;
-    } catch (error: LogInErrorData) {
+    } catch (error) {
       console.error(error);
-      return rejectWithValue(error.response.data);
+      return rejectWithValue((error as AxiosError).response?.data);
     }
   },
 );

@@ -7,8 +7,6 @@ import {
   findpassAuthRequest,
   googleLogin,
   kakaoLogin,
-  loadMyInfo,
-  loadUser,
   login,
   logout,
   userWithdraw,
@@ -38,9 +36,6 @@ export interface IUserState {
   me: any; // reponse받으면 me 입력
   auth: number | null;
   userInfo: IMe | null; // 유저 정보
-  loadMyInfoLoading: boolean; // 로그인 정보 조회
-  loadMyInfoDone: boolean;
-  loadMyInfoError: unknown | null;
   loadUserLoading: boolean; // 유저 정보 조회
   loadUserDone: boolean;
   loadUserError: unknown | null;
@@ -81,10 +76,6 @@ const initialState: IUserState = {
   me: null, // 내 정보
   userInfo: null, // 유저 정보
   auth: null,
-
-  loadMyInfoLoading: false, // 로그인 정보 조회
-  loadMyInfoDone: false,
-  loadMyInfoError: null,
 
   loadUserLoading: false, // 유저 정보 조회
   loadUserDone: false,
@@ -138,37 +129,6 @@ const userSlice = createSlice({
   // 동기는 reducers에 비동기는 extraReducers에 작성합니다.
   extraReducers: (builder) =>
     builder
-      // 로그인 유지하려면 서버사이드 렌더링을 해결해야 됨.
-      // loadMyInfo
-      .addCase(loadMyInfo.pending, (state: IUserState) => {
-        state.loadMyInfoLoading = true;
-        state.loadMyInfoDone = false;
-        state.loadMyInfoError = null;
-      })
-      .addCase(loadMyInfo.fulfilled, (state: IUserState, action) => {
-        state.loadMyInfoLoading = false;
-        state.loadMyInfoDone = true;
-        state.me = action.payload;
-      })
-      .addCase(loadMyInfo.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
-        state.loadMyInfoLoading = false;
-        state.loadMyInfoError = action.payload;
-      })
-      // loadUser
-      .addCase(loadUser.pending, (state: IUserState) => {
-        state.loadUserLoading = true;
-        state.loadUserDone = false;
-        state.loadUserError = null;
-      })
-      .addCase(loadUser.fulfilled, (state: IUserState, action: PayloadAction<IMe>) => {
-        state.loadUserLoading = false;
-        state.loadUserDone = true;
-        state.userInfo = action.payload;
-      })
-      .addCase(loadUser.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
-        state.loadUserLoading = false;
-        state.loadUserError = action.payload;
-      })
       // login
       .addCase(login.pending, (state: IUserState) => {
         state.loginLoading = true;

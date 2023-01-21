@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react'
+import React, { useEffect, useState, useCallback, useRef, RefObject } from 'react'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import { changeNickname, changePassword, userWithdraw } from '@actions/user';
 import { uploadImages } from '@actions/post';

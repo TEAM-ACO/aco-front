@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useState, useRef, Dispatch, SetStateAction } from 'react'
+import React, { useCallback, useState, useRef, Dispatch, SetStateAction } from 'react'
 import { useAppSelector, useAppDispatch } from '@store/config'
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { Spinner } from 'flowbite-react';
-import { editPost, loadPosts } from '@actions/post';
+import { editPost } from '@actions/post';
 import { useCookies } from 'react-cookie';
 import Select from 'react-select';
 import { useRouter } from 'next/router';
-import { IArticle, addPostToMe, editPostToMe } from '@features/postSlice';
+import { IArticle, editPostToMe } from '@features/postSlice';
 import _remove from 'lodash'
 
 const options = [
@@ -33,7 +33,7 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
     const imageDataDeleteInput = useRef<HTMLImageElement | null>(null);
     const [imgData, setImgData] = useState<string[]>([...post.articleImagesNames]);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const { editPostLoading, editPostDone, mainPosts } = useAppSelector((state) => state.post);
+    const { editPostLoading } = useAppSelector((state) => state.post);
 
     const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
     const [text, setText] = useState<string>(post.articleContext)
@@ -47,7 +47,6 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
             for (let i = 0; i < e.target.files.length; i++) {
                 const element = e.target.files[i];
                 setImageStorage(file => [...file, element])
-                // console.log(element.name);
                 let reader = new FileReader();
                 reader.readAsDataURL(element)
                 reader.onload = (f) => {
@@ -77,26 +76,26 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
         if (imgStorage.length > 0) {
             for (let i = 0; i < imgStorage.length; i++) {
                 result.append("articleImages", imgStorage[i])
-                console.log(imgStorage[i].name);
-                console.log(imgStorage[i]);
             }
         }
 
         dispatch(editPost(result));
-        dispatch(editPostToMe({
+        // 이미지 안나오는 문제 때문에 새로고침으로 구동
+        /*dispatch(editPostToMe({
             articleContext: text, menu: selectedOption.value,
-            tags: tagList, articleImagesNames: imgData, replys: post.replys,
+            tags: tagList, articleImagesNames: [...imgData, imgl], replys: post.replys,
             member: {
                 memberId: post.member.memberId, email: post.member.email, nickname: post.member.nickname,
             },
             articleId: post.articleId
-        }))
-        console.log(selectedOption.value)
-        console.log(imgData)
-        // refresh()
+        }))*/
+        refresh()
         setText('');
         setTagList([]);
         setTagItem('');
+        setImgList([])
+        setImageStorage([])
+        setImgData([...post.articleImagesNames])
         setContextModify(false)
     }, [text, tagList, tagItem, imgData, imgStorage])
 
@@ -108,8 +107,9 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
         setTagItem(e.target.value);
     }, [])
 
-    const onKeyPress = useCallback((e: React.KeyboardEvent<HTMLElement> | any) => {
-        if (e.target.value.length !== 0 && e.key === 'Enter') {
+    const onKeyPress = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+        const target = e.target as HTMLInputElement
+        if (target.value.length !== 0 && e.key === 'Enter') {
             submitTagItem();
         }
     }, [tagItem, tagList])
@@ -130,14 +130,15 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
         setTagItem('')
     }, [tagItem, tagList])
 
-    const deleteTagItem = useCallback((e: React.MouseEvent<HTMLButtonElement> | any) => {
-        const deleteTagItem = e.target.parentElement.firstChild.innerText
+    const deleteTagItem = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+        const target = e.target as any
+        const deleteTagItem = target.parentElement.firstChild.innerText
         const filteredTagList = tagList.filter(tagItem => tagItem !== deleteTagItem)
         setTagList(filteredTagList)
     }, [tagItem, tagList])
 
     const onClickImageUpload = useCallback(() => {
-        if (imgData.length + imgStorage.length > 5 && imgData.length + imgl.length > 5) {
+        if (imgData.length + imgl.length >= 5) {
             alert('이미지는 5개까지 등록할 수 있습니다.')
             return
         }
@@ -145,7 +146,7 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
             return;
         }
         imageInput.current.click();
-    }, [imageInput.current]);
+    }, [imageInput.current, imgData, imgl]);
 
 
     return (

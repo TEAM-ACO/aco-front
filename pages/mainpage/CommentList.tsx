@@ -22,7 +22,7 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
     const date = dayjs(comment.date).format("YY-MM-DD");
     const { deleteCommentLoading } = useAppSelector((state) => state.post)
 
-    const [commentReport, setCommentReport] = useState<boolean>(false);
+    const [bigComment, setBigComment] = useState<boolean>(false);
     const [commentDelete, setCommentDelete] = useState<boolean>(false);
     const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
 
@@ -32,8 +32,8 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
     }, [])
 
     const onRereplyModalOpen = useCallback(() => {
-        setCommentReport((prev) => !prev)
-    }, [commentReport])
+        setBigComment((prev) => !prev)
+    }, [bigComment])
 
     const onDeleteOpen = useCallback(() => {
         setOnDeleteModal((prev) => !prev)
@@ -85,7 +85,7 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
                     </time>
                     {comment.replySort === 0 &&
                         <button onClick={onRereplyModalOpen} className="sm:order-last mr-3">
-                            {commentReport ? '취소' : '답글'}
+                            {bigComment ? '취소' : '답글'}
                         </button>
                     }
                     {comment.member.memberId === cookies.user?.num &&
@@ -139,8 +139,8 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
                     </Modal.Body>
                 </Modal>
             </div>
-            <div className={commentReport ? 'block' : 'hidden'}>
-                <ReComments comment={comment} />
+            <div className={bigComment ? 'block' : 'hidden'}>
+                <ReComments comment={comment} setBigComment={setBigComment} />
             </div>
         </div>
     )

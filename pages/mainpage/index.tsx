@@ -5,9 +5,8 @@ import { useInView } from 'react-intersection-observer';
 import PostCard from './PostCard';
 import PostForm from './PostForm';
 import Mainpage from './mainpage';
-import { IArticle } from '@features/postSlice';
+import { IArticle, mainRequestPage } from '@features/postSlice';
 import { loadPosts } from '@actions/post';
-import { useCookies } from "react-cookie"
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
@@ -16,21 +15,21 @@ import Head from 'next/head';
 function mainpage() {
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
+    const { mainPosts, loadPostsLoading, hasMorePosts, mainReqPage } = useAppSelector((state) => state.post);
     const [ref, inView] = useInView();
     const [requestPage, setRequestPage] = useState<number>(0);
 
     useEffect(() => {
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(loadPosts({ requestedPageNumber: requestPage, requestedPageSize: 10 }));
+            dispatch(loadPosts({ requestedPageNumber: mainReqPage, requestedPageSize: 10 }));
             loadMore();
         }
     }, [inView, hasMorePosts, loadPostsLoading]);
 
     const loadMore = useCallback(() => {
-        setRequestPage(prev => prev + 1);
-    }, [requestPage])
+        // setRequestPage(prev => prev + 1);
+        dispatch(mainRequestPage({ mainReqPage }))
+    }, [mainReqPage])
 
     return (
         <div>
@@ -54,14 +53,7 @@ function mainpage() {
 
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-    console.log('getServerSideProps start');
-    console.log(req.headers);
 
-    const cookie = req ? req.headers.cookie : '';
-    axios.defaults.headers.Cookie = '';
-    if (req && cookie) { //cookie => cookis.user
-        axios.defaults.headers.Cookie = cookie;
-    }
     await store.dispatch(loadPosts());
 
     return { props: { message: 'Success SSR' } }

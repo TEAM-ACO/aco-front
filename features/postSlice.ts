@@ -108,6 +108,7 @@ export interface IArticleState {
   deleteCommentDone: boolean;
   deleteCommentError: unknown | null;
   reqPage: number;
+  mainReqPage: number;
   searchValue: number;
 }
 
@@ -163,6 +164,7 @@ export const initialState: IArticleState = {
   deleteCommentDone: false,
   deleteCommentError: null,
   reqPage: 0,
+  mainReqPage: 0,
   searchValue: 0,
 };
 
@@ -170,15 +172,15 @@ const postSlice = createSlice({
   name: 'article',
   initialState,
   reducers: {
-    addPostToMe(state, action) {
-      state.mainPosts.unshift(action.payload);
-    },
     editPostToMe(state, action) {
       const post = state.mainPosts.findIndex((v) => v.articleId === action.payload.articleId);
       state.mainPosts[post] = action.payload;
     },
     deletePostToMe(state, action) {
       state.mainPosts = state.mainPosts.filter((v) => v.articleId !== action.payload.articleId);
+    },
+    mainRequestPage(state, action) {
+      state.mainReqPage = action.payload.mainReqPage + 1;
     },
     userRequestPage(state, action) {
       state.reqPage = action.payload.reqPage + 1;
@@ -405,5 +407,5 @@ const postSlice = createSlice({
       }),
 });
 
-export const { addPostToMe, deletePostToMe, editPostToMe, userRequestPage, searchRequestPage } = postSlice.actions;
+export const { deletePostToMe, editPostToMe, mainRequestPage, userRequestPage, searchRequestPage } = postSlice.actions;
 export default postSlice;

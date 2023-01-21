@@ -5,7 +5,7 @@ import SearchForm from '@pages/SearchForm';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAppDispatch } from '@store/config';
-import { loadMenu, loadUserPosts } from '@actions/post';
+import { loadUserPosts } from '@actions/post';
 
 const header = () => {
     const router = useRouter();

@@ -104,3 +104,7 @@ export interface IUploadImages {
   file?: string;
   Blob: Blob;
 }
+
+export interface IRandomTip {
+  ranTip: string | null;
+}

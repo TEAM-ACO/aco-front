@@ -13,6 +13,7 @@ import {
   loadMenu,
   loadPosts,
   loadUserPosts,
+  randomTip,
   reportMember,
   searchPosts,
   updateComment,
@@ -107,6 +108,10 @@ export interface IArticleState {
   deleteCommentLoading: boolean;
   deleteCommentDone: boolean;
   deleteCommentError: unknown | null;
+  randomTipLoading: boolean;
+  randomTipDone: boolean;
+  randomTipError: unknown | null;
+  ranTip: string;
   reqPage: number;
   mainReqPage: number;
   searchValue: number;
@@ -163,6 +168,10 @@ export const initialState: IArticleState = {
   deleteCommentLoading: false, // comment 삭제
   deleteCommentDone: false,
   deleteCommentError: null,
+  randomTipLoading: false, // randomTip
+  randomTipDone: false,
+  randomTipError: null,
+  ranTip: '',
   reqPage: 0,
   mainReqPage: 0,
   searchValue: 0,
@@ -404,6 +413,21 @@ const postSlice = createSlice({
       .addCase(deleteComment.rejected, (state: IArticleState, action) => {
         state.deleteCommentLoading = false;
         state.deleteCommentError = action.error.message;
+      })
+      // randomTip
+      .addCase(randomTip.pending, (state: IArticleState) => {
+        state.randomTipLoading = true;
+        state.randomTipDone = false;
+        state.randomTipError = null;
+      })
+      .addCase(randomTip.fulfilled, (state: IArticleState, action: any) => {
+        state.randomTipLoading = false;
+        state.randomTipDone = true;
+        state.ranTip = action.payload;
+      })
+      .addCase(randomTip.rejected, (state: IArticleState, action) => {
+        state.randomTipLoading = false;
+        state.randomTipError = action.error.message;
       }),
 });
 

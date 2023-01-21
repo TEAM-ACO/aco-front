@@ -1,6 +1,5 @@
-import userSlice from '@features/userSlice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { backendURL } from '../config/url';
 import { IArticle } from '@features/postSlice';
 import {
@@ -16,9 +15,8 @@ import {
   TypeAxios,
   IReportMember,
   IDeleteComment,
-  IUploadImages,
+  IRandomTip,
 } from '@typings/db';
-import { signupRequestData } from './signup';
 
 axios.defaults.baseURL = backendURL;
 // 프론트 - 백 쿠키공유
@@ -278,12 +276,12 @@ export const deleteComment = createAsyncThunk<IArticle, IDeleteComment>(
   },
 );
 
-// if (response.data) {
-//   const result = await axios.post(`/api/article/reply/${data.article.articleId}`, {
-//     requestedPageNumber: 0,
-//     requestedPageSize: 5,
-//   });
-//   return { articleId: data.article.articleId, replys: result.data };
-// } else {
-//   return [] as any;
-// }
+// Tip랜덤 생성
+export const randomTip = createAsyncThunk<IRandomTip>('article/randomTip', async (data, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`api/article/random`);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue((error as AxiosError).response?.data);
+  }
+});

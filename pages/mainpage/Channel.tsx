@@ -1,7 +1,19 @@
+import { randomTip } from '@actions/post';
+import { useAppDispatch, useAppSelector } from '@store/config'
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/router';
+import React, { useLayoutEffect } from 'react'
 
 function Channel() {
+    const router = useRouter();
+    const dispatch = useAppDispatch();
+    const { ranTip } = useAppSelector((state) => state.post)
+
+    useLayoutEffect(() => {
+        if (!router.isReady) return
+        dispatch(randomTip())
+    }, [])
+
     return (
         <div className="z-50 relative">
             <div className='slg:pr-4 bg-white'>
@@ -16,9 +28,8 @@ function Channel() {
                                 </button>
                             </div>
                             <p className="mb-3 text-sm text-blue-900 dark:text-blue-400">
-                                칫솔, 볼펜, 고무장갑, 인공눈물 등 부피가 작은 것들은 재활용이 안되기 때문에 일반쓰레기로 버려야합니다.
+                                {ranTip}
                             </p>
-                            {/* <a className="text-sm text-blue-900 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300" href="#">Turn new navigation off</a> */}
                         </div>
                         {/* 유저 이미지 */}
                         <div className="p-5 mb-4 bg-gray-50 rounded-lg border border-gray-100 dark:bg-gray-800 dark:border-gray-700">

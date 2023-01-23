@@ -28,21 +28,12 @@ const Visitant = () => {
     const { adminContent } = useAppSelector((state) => state.admin)
     const [selectedOption, setSelectedOption] = useState<IOptions | any>(options[0]);
 
-    const [member, setMember] = useState()
-
     // 주 선택하고 버튼 만들기
     useEffect(() => {
         dispatch(adminVisitant({ week: selectedOption.value }))
     }, [selectedOption.value])
-    // dispatch를 다른 컴포넌트에 ㄱ
 
-    // useEffect(() => {
-    //     setMember(adminContent[0]?.recentArticle[0].articleId)
-    // })
-
-    // 최근 게시글 (내용, 메뉴, member 이런거 정도만)
-    // 방문자 (이번주, 오늘, 아이디, 방문 게시글)
-    // 최근 가입자 카테고리 (맨 밑)
+    // chart 의논
 
     return (
         <>

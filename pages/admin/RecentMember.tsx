@@ -1,8 +1,12 @@
 import React from 'react'
 import { Table } from 'flowbite-react'
+import { IRecentMemberContent } from '@typings/db'
 
-const RecentMember = ({ content }) => {
-    console.log(content)
+type contentProps = {
+    content: IRecentMemberContent
+}
+
+const RecentMember = ({ content }: contentProps) => {
     return (
         <Table.Body className="divide-y">
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">

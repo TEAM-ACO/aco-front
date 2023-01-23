@@ -13,7 +13,7 @@ function OffCanvas() {
     // const [cookies3, setCookie3, removeCookie3] = useCookies(['access']);
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const { singlePosts, mainPosts } = useAppSelector((state) => state.post);
+    const { mainPosts } = useAppSelector((state) => state.post);
 
     const [myNickname, setMyNickname] = useState('')
     const [userLink, setUserLink] = useState('')
@@ -33,7 +33,7 @@ function OffCanvas() {
                 setMyNickname(cookies.user.username.toUpperCase())
             }, 300)
         }
-    }, [mainPosts, singlePosts])
+    }, [mainPosts])
 
     return (
         <div className='relative z-10'>
@@ -158,9 +158,9 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <Link href="/admin">
-                                    <span className="ml-2">Admin임시</span>
-                                </Link>
+                                <a href="/admin">
+                                    <span className="ml-2">관리자페이지</span>
+                                </a>
                             </li>
                             <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
                                 <span>

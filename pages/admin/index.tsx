@@ -8,6 +8,7 @@ import VisitorInfo from './VisitorInfo';
 import RecentMember from './RecentMember'
 import RecentArticle from './RecentArticle'
 import Head from 'next/head'
+import { IRecentArticleContent, IRecentMemberContent } from '@typings/db'
 
 const options = [
     { value: 1, label: '1주일' },
@@ -27,19 +28,12 @@ const Visitant = () => {
     const { adminContent } = useAppSelector((state) => state.admin)
     const [selectedOption, setSelectedOption] = useState<IOptions | any>(options[0]);
 
-    const [member, setMember] = useState('')
-
+    // 주 선택하고 버튼 만들기
     useEffect(() => {
         dispatch(adminVisitant({ week: selectedOption.value }))
-    }, [selectedOption])
+    }, [selectedOption.value])
 
-    // useEffect(() => {
-    //     setMember(adminContent[0]?.recentArticle[0].articleId)
-    // })
-
-    // 최근 게시글 (내용, 메뉴, member 이런거 정도만)
-    // 방문자 (이번주, 오늘, 아이디, 방문 게시글)
-    // 최근 가입자 카테고리 (맨 밑)
+    // chart 의논
 
     return (
         <>
@@ -53,31 +47,7 @@ const Visitant = () => {
                     onChange={setSelectedOption}
                     options={options}
                 />
-                <Table hoverable={true}>
-                    <Table.Head>
-                        <Table.HeadCell className="!p-4">
-                        </Table.HeadCell>
-                        <Table.HeadCell>
-                            articleid
-                        </Table.HeadCell>
-                        <Table.HeadCell>
-                            article context
-                        </Table.HeadCell>
-                        <Table.HeadCell>
-                            menu
-                        </Table.HeadCell>
-                        <Table.HeadCell>
-                            member
-                        </Table.HeadCell>
-                    </Table.Head>
-                    {/* {adminContent.map((content) => {
-                    return (
-                        <RecentArticle key={content.memberId} content={content} />
-                    )
-                })
-                } */}
-                </Table>
-                <Table hoverable={true}>
+                {/* <Table hoverable={true}>
                     <Table.Head>
                         <Table.HeadCell className="!p-4">
                         </Table.HeadCell>
@@ -94,8 +64,8 @@ const Visitant = () => {
                             visited article
                         </Table.HeadCell>
                     </Table.Head>
-                    {/* <VisitorInfo content={adminContent[0]} /> */}
-                </Table>
+                </Table> */}
+                <VisitorInfo select={selectedOption.value} />
                 <Table hoverable={true}>
                     <Table.Head>
                         <Table.HeadCell className="!p-4">
@@ -113,12 +83,36 @@ const Visitant = () => {
                             joindate
                         </Table.HeadCell>
                     </Table.Head>
-                    {/* {member.map((content) => {
-                    return (
-                        <RecentMember key={content.memberId} content={content} />
-                    )
-                })
-                } */}
+                    {adminContent[0]?.map((content: IRecentMemberContent) => {
+                        return (
+                            <RecentMember key={content.memberId} content={content} />
+                        )
+                    })
+                    }
+                </Table>
+                <Table hoverable={true}>
+                    <Table.Head>
+                        <Table.HeadCell className="!p-4">
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            articleid
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            article context
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            menu
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            member
+                        </Table.HeadCell>
+                    </Table.Head>
+                    {adminContent[1]?.map((content: IRecentArticleContent) => {
+                        return (
+                            <RecentArticle key={content.articleId} content={content} />
+                        )
+                    })
+                    }
                 </Table>
             </AdminMenu>
         </>

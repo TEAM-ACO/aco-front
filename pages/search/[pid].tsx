@@ -14,7 +14,6 @@ function PostList() {
     const dispatch = useAppDispatch();
     const router = useRouter()
     const { pid } = router.query
-    // singlePosts 만들기
     const { mainPosts, loadPostsLoading, hasMorePosts, searchValue } = useAppSelector((state) => state.post);
     const [requestPage, setRequestPage] = useState<number>(0);
 

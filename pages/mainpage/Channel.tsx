@@ -2,14 +2,14 @@ import { randomTip } from '@actions/post';
 import { useAppDispatch, useAppSelector } from '@store/config'
 import Link from 'next/link'
 import { useRouter } from 'next/router';
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect } from 'react'
 
 function Channel() {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const { ranTip } = useAppSelector((state) => state.post)
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (!router.isReady) return
         dispatch(randomTip())
     }, [])

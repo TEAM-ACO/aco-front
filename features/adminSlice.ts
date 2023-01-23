@@ -5,9 +5,10 @@ import {
   adminMember,
   adminMemberReport,
   adminVisitant,
+  visitor,
 } from '@actions/admin';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Members } from '@typings/db';
+import { IWeek, Members } from '@typings/db';
 import _concat from 'lodash/concat';
 import _remove from 'lodash/concat';
 
@@ -56,6 +57,7 @@ export interface IAdminArticleReport {
 
 export interface IAdminState {
   adminContent: any;
+  adminVisitor: IWeek[];
   adminMemberContent: IAdmin[];
   adminMemberReportContent: IAdminMemberReport[];
   adminArticleContent: IAdminArticle[];
@@ -63,6 +65,9 @@ export interface IAdminState {
   adminVisitantLoading: boolean;
   adminVisitantDone: boolean;
   adminVisitantError: unknown | null;
+  visitorLoading: boolean;
+  visitorDone: boolean;
+  visitorError: unknown | null;
   adminMemberLoading: boolean;
   adminMemberDone: boolean;
   adminMemberError: unknown | null;
@@ -82,6 +87,7 @@ export interface IAdminState {
 
 const initialState: IAdminState = {
   adminContent: [], // 페이징 할 때 이전 페이지 찌거기 남는 현상 때문에 각각 Content분리
+  adminVisitor: [],
   adminMemberContent: [],
   adminMemberReportContent: [],
   adminArticleContent: [],
@@ -89,6 +95,9 @@ const initialState: IAdminState = {
   adminVisitantLoading: false,
   adminVisitantDone: false,
   adminVisitantError: null,
+  visitorLoading: false,
+  visitorDone: false,
+  visitorError: null,
   adminMemberLoading: false,
   adminMemberDone: false,
   adminMemberError: null,
@@ -117,14 +126,28 @@ const adminSlice = createSlice({
         state.adminVisitantDone = false;
         state.adminVisitantError = null;
       })
-      .addCase(adminVisitant.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
+      .addCase(adminVisitant.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.adminVisitantLoading = false;
         state.adminVisitantDone = true;
-        state.adminContent = _concat(state.adminContent, action.payload);
+        state.adminContent = [action.payload['recentMember'], action.payload['recentArticle']];
       })
       .addCase(adminVisitant.rejected, (state: IAdminState, action) => {
         state.adminVisitantLoading = false;
         state.adminVisitantError = action.payload;
+      })
+      .addCase(visitor.pending, (state: IAdminState) => {
+        state.visitorLoading = true;
+        state.visitorDone = false;
+        state.visitorError = null;
+      })
+      .addCase(visitor.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
+        state.visitorLoading = false;
+        state.visitorDone = true;
+        state.adminVisitor = [action.payload['visitorInfo']];
+      })
+      .addCase(visitor.rejected, (state: IAdminState, action) => {
+        state.visitorLoading = false;
+        state.visitorError = action.payload;
       })
       .addCase(adminMember.pending, (state: IAdminState) => {
         state.adminMemberLoading = true;

@@ -21,6 +21,20 @@ export const adminVisitant = createAsyncThunk<IAdminState, IAdminVisitant>(
   },
 );
 
+export const visitor = createAsyncThunk<IAdminState, IAdminVisitant>(
+  'admin/visitor',
+  async (data, { rejectWithValue }) => {
+    console.log(data);
+    try {
+      const response = await axios.get(`/api/admin/main/${data.week}`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
+
 export const adminMember = createAsyncThunk<IAdminState, IPageNumber | undefined>(
   'admin/member',
   async (data, { rejectWithValue }) => {

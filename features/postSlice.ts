@@ -59,7 +59,6 @@ export interface IReply {
 
 export interface IArticleState {
   mainPosts: IArticle[];
-  singlePosts: IArticle[];
   hasMorePosts: boolean;
   loadUserPostsLoading: boolean;
   loadUserPostsDone: boolean;
@@ -119,7 +118,6 @@ export interface IArticleState {
 
 export const initialState: IArticleState = {
   mainPosts: [],
-  singlePosts: [],
   hasMorePosts: true,
   loadUserPostsLoading: false, // 개인 post 로드
   loadUserPostsDone: false,

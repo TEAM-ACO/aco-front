@@ -70,9 +70,9 @@ function PostForm() {
         dispatch(mainRequestPage({ mainReqPage: 0 }))
         dispatch(addPost(result))
         setTimeout(() => {
+            router.push(`${router.asPath}`)
             setImgList([])
             setImageStorage([])
-            router.push(`${router.asPath}`)
         }, 0)
     }, [text, tagList, mainPosts])
 

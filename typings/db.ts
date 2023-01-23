@@ -108,3 +108,39 @@ export interface IUploadImages {
 export interface IRandomTip {
   ranTip: string | null;
 }
+
+export interface IRecentArticleContent {
+  articleId: number;
+  articleContext: string;
+  menu: string;
+  member: {
+    memberId: number;
+    email: string;
+    nickname: string;
+  };
+  tags: string[];
+  visitors: number;
+  reported: number;
+  likes: number;
+  articleImagesNames: string[];
+  date: string;
+}
+
+export interface IRecentMemberContent {
+  memberId: number;
+  email: string;
+  nickname: string;
+  joindate: string;
+}
+
+export interface IWeek {
+  thisWeekVisitor: number;
+  dayOfVisitor: number;
+  prevLinkWithSum: string;
+  visitedArticle: WeekArticles[];
+}
+
+export interface WeekArticles {
+  articleId: number;
+  articleContext: string;
+}

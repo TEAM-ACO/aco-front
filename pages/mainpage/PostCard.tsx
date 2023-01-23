@@ -53,8 +53,8 @@ const PostCard = ({ post }: PostProps) => {
     }, [requestPage, requestComment])
 
     const onFavoriteToggle = useCallback(() => {
-        dispatch(likePost({ article: { articleId: Number(post.articleId) }, liker: Number(cookies.user.num) }))
-        setFavorite((prev) => !prev)
+        dispatch(likePost({ article: { articleId: post.articleId }, liker: Number(cookies.user.num) }))
+        // setFavorite((prev) => !prev)
     }, [favorite])
 
     const onMenu = useCallback(() => {

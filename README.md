@@ -45,11 +45,11 @@ Communication
 
 ### 멤버구성
 
-| 이름 | 역할 | Github |
-| --- | --- | --- | --- |
-| 이태일 | 프론트엔드 | https://github.com/k1k2brz |
-| 변현석 | 백엔드 | https://github.com/B-HS |
-| 김형준 | 백엔드 | https://github.com/PorkbellyBigfan |
+|이름|역할|Github|
+|---|---|------|
+|이태일|프론트엔드|https://github.com/k1k2brz|
+|변현석|백엔드|https://github.com/B-HS|
+|김형준|백엔드|https://github.com/PorkbellyBigfan|
 
 
 # Install JavaScript Packages

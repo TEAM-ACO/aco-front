@@ -12,11 +12,21 @@ type ContentProps = {
 const AdminMemberComponent = ({ content }: ContentProps) => {
     const dispatch = useAppDispatch();
     const router = useRouter()
+    const [memberId, setMemberId] = useState<number>()
+    const [nickname, setNickname] = useState<string>()
+    const [email, setEmail] = useState<string>()
 
     const onDelete = useCallback(() => {
         const refresh: any = router.reload
         dispatch(adminDelete({ which: "member", number: content.memberId }))
         refresh(window.location.pathname)
+    }, [])
+
+    useEffect(() => {
+        if (content.memberId === undefined) return
+        setMemberId(content.memberId)
+        setNickname(content.nickname)
+        setEmail(content.email)
     }, [])
     return (
         <Table.Body className="divide-y">
@@ -24,13 +34,13 @@ const AdminMemberComponent = ({ content }: ContentProps) => {
                 <Table.Cell className="!p-4">
                 </Table.Cell>
                 <Table.Cell className="truncate whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {content.memberId}
+                    {memberId}
                 </Table.Cell>
                 <Table.Cell>
-                    {content.nickname}
+                    {nickname}
                 </Table.Cell>
                 <Table.Cell>
-                    {content.email}
+                    {email}
                 </Table.Cell>
                 <Table.Cell>
                     <button

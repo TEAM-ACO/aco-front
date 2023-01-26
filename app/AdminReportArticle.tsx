@@ -1,51 +1,47 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { adminDelete } from '@actions/admin'
-import { IAdminArticle } from '@features/adminSlice'
+import { IAdminArticleReport } from '@features/adminSlice'
 import { useAppDispatch } from '@store/config'
 import { Table } from 'flowbite-react'
 import { useRouter } from 'next/router'
 
 type ContentProps = {
-    content: IAdminArticle
+    content: IAdminArticleReport
 }
 
-const AdminArticleComponent = ({ content }: ContentProps) => {
+const AdminReportArticleComponent = ({ content }: ContentProps) => {
     const dispatch = useAppDispatch();
     const router = useRouter()
-    const [memberEmail, setMemberEmail] = useState('');
-
-    useEffect(() => {
-        if (content.member === undefined) return
-        setMemberEmail(content.member.email)
-    }, [])
+    const [articleReportId, setArticleReportId] = useState<number>()
+    const [articleReportContext, setArticleReportContext] = useState<string>()
+    const [articleId, setArticleId] = useState<number>()
 
     const onDelete = useCallback(() => {
-        // const refresh: any = router.reload
-        dispatch(adminDelete({ which: "article", number: content.articleId }))
-        setTimeout(() => {
-            router.push(`/admin/article/${router.asPath.split('/')[3]}`)
-        }, 300)
-        // refresh(window.location.pathname)
-    }, [content])
+        const refresh: any = router.reload
+        dispatch(adminDelete({ which: "articlereport", number: content.articleReportId }))
+        refresh(window.location.pathname)
+    }, [])
+
+    useEffect(() => {
+        if (content.articleReportId === undefined) return
+        setArticleReportId(content.articleReportId)
+        setArticleReportContext(content.articleReportContext)
+        setArticleId(content.articleId)
+    }, [])
+
     return (
         <Table.Body className="divide-y">
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
                 <Table.Cell className="!p-4">
                 </Table.Cell>
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {content.articleId}
+                    {articleReportId}
                 </Table.Cell>
                 <Table.Cell>
-                    {content.menu}
+                    {articleReportContext}
                 </Table.Cell>
                 <Table.Cell>
-                    {memberEmail}
-                </Table.Cell>
-                <Table.Cell>
-                    {content.articleContext}
-                </Table.Cell>
-                <Table.Cell>
-                    {content.reported}
+                    {articleId}
                 </Table.Cell>
                 <Table.Cell>
                     <button
@@ -60,4 +56,4 @@ const AdminArticleComponent = ({ content }: ContentProps) => {
     )
 }
 
-export default AdminArticleComponent
+export default AdminReportArticleComponent

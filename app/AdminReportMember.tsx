@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { IAdminMemberReport } from '@features/adminSlice'
 import { useAppDispatch } from '@store/config';
 import { Table } from 'flowbite-react'
 import { adminDelete } from '@actions/admin';
+import { useRouter } from 'next/router';
 
 type ContentProps = {
     content: IAdminMemberReport;
@@ -10,9 +11,23 @@ type ContentProps = {
 
 const AdminReportMemberComponent = ({ content }: ContentProps) => {
     const dispatch = useAppDispatch();
+    const router = useRouter()
+
+    const [userReportId, setUserReportId] = useState<number>()
+    const [userReportContext, setUserReportContext] = useState<string>()
+    const [targetUserId, setTargetUserId] = useState<number>()
 
     const onDelete = useCallback(() => {
+        const refresh: any = router.reload
         dispatch(adminDelete({ which: "memberreport", number: content.userReportId }))
+        refresh(window.location.pathname)
+    }, [])
+
+    useEffect(() => {
+        if (content.userReportId === undefined) return
+        setUserReportId(content.userReportId)
+        setUserReportContext(content.userReportContext)
+        setTargetUserId(content.targetUserId)
     }, [])
 
     return (
@@ -21,13 +36,13 @@ const AdminReportMemberComponent = ({ content }: ContentProps) => {
                 <Table.Cell className="!p-4">
                 </Table.Cell>
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                    {content.userReportId}
+                    {userReportId}
                 </Table.Cell>
                 <Table.Cell>
-                    {content.userReportContext}
+                    {userReportContext}
                 </Table.Cell>
                 <Table.Cell>
-                    {content.targetUserId}
+                    {targetUserId}
                 </Table.Cell>
                 <Table.Cell>
                     <button

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useRef } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Client, over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import { useCookies } from "react-cookie"
@@ -67,7 +67,6 @@ const ChatRoom = () => {
     }
 
     const onPrivateMessage = (payload: any) => {
-        console.log(payload);
         var payloadData = JSON.parse(payload.body);
         if (privateChats.get(payloadData.senderName)) {
             privateChats.get(payloadData.senderName).push(payloadData);

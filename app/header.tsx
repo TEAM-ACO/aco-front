@@ -62,13 +62,20 @@ const header = () => {
                         <ul className="mt-4 gap-3 flex flex-col md:mt-0 md:flex-row md:text-sm md:font-medium">
                             <Navbar.Link
                                 href="/"
+                                className={`
+                            ${router.route === '/' ?
+                                        "bg-gray-100 md:bg-white" : ''}`}
                             >
                                 Home
                             </Navbar.Link>
-                            <Navbar.Link href="/LogIn">
+                            <Navbar.Link href="/LogIn" className={`
+                            ${router.route === '/LogIn' ?
+                                    "bg-gray-100 md:bg-white" : ''}`}>
                                 로그인
                             </Navbar.Link>
-                            <Navbar.Link href="/SignUp">
+                            <Navbar.Link href="/SignUp" className={`
+                            ${router.route === '/SignUp' ?
+                                    "bg-gray-100 md:bg-white" : ''}`}>
                                 회원가입
                             </Navbar.Link>
                         </ul>
@@ -138,7 +145,7 @@ const header = () => {
                             ${router.route === '/category/question' ?
                                     "md:hidden px-0 mx-0 bg-gray-100" : 'md:hidden px-0 mx-0'}`}>                                질문
                             </Navbar.Link>
-                            <Navbar.Link href="/admin" className="md:hidden px-0 mx-0"
+                            <Navbar.Link href="/admin/member/1" className="md:hidden px-0 mx-0"
                             >
                                 관리자페이지
                             </Navbar.Link>

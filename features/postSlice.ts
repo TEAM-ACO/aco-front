@@ -294,7 +294,7 @@ const postSlice = createSlice({
         state.likePostDone = false;
         state.likePostError = null;
       })
-      .addCase(likePost.fulfilled, (state: any) => {
+      .addCase(likePost.fulfilled, (state, action) => {
         state.likePostLoading = false;
         state.likePostDone = true;
       })

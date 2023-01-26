@@ -46,7 +46,7 @@ export interface IAddComment {
 }
 
 export interface ILikePost {
-  article: { articleId: number };
+  article: number;
   liker: number;
 }
 

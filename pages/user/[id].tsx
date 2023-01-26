@@ -52,10 +52,7 @@ const userid = () => {
 
     const loadMore = useCallback(() => {
         dispatch(userRequestPage({ reqPage }))
-        // setRequestPage(prev => prev + 1);
     }, [reqPage])
-
-    // console.log('req' + reqPage, 'requestPage' + requestPage)
 
     useEffect(() => {
         if (!router.isReady) return;

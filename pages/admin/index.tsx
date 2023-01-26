@@ -9,6 +9,7 @@ import RecentMember from './RecentMember'
 import RecentArticle from './RecentArticle'
 import Head from 'next/head'
 import { IRecentArticleContent, IRecentMemberContent } from '@typings/db'
+import { useRouter } from 'next/router'
 
 const options = [
     { value: 1, label: '1주일' },
@@ -24,16 +25,22 @@ type IOptions = {
 }
 
 const Visitant = () => {
+    const router = useRouter();
     const dispatch = useAppDispatch();
     const { adminContent } = useAppSelector((state) => state.admin)
     const [selectedOption, setSelectedOption] = useState<IOptions | any>(options[0]);
 
     // 주 선택하고 버튼 만들기
     useEffect(() => {
-        dispatch(adminVisitant({ week: selectedOption.value }))
+        // dispatch(adminVisitant({ week: selectedOption.value }))
     }, [selectedOption.value])
 
-    // chart 의논
+    useEffect(() => {
+        // 수정중 /admin에 접근방지
+        router.replace('/admin/member/1')
+    }, [])
+
+    // chart 의논중
 
     return (
         <>
@@ -41,13 +48,13 @@ const Visitant = () => {
                 <title>관리자페이지 | Project ACO</title>
             </Head>
             <AdminMenu>
-                <Select
+                {/* <Select
                     instanceId="long-value-select"
                     defaultValue={selectedOption}
                     onChange={setSelectedOption}
                     options={options}
                 />
-                {/* <Table hoverable={true}>
+                <Table hoverable={true}>
                     <Table.Head>
                         <Table.HeadCell className="!p-4">
                         </Table.HeadCell>
@@ -65,7 +72,7 @@ const Visitant = () => {
                         </Table.HeadCell>
                     </Table.Head>
                 </Table> */}
-                <VisitorInfo select={selectedOption.value} />
+                {/* <VisitorInfo select={selectedOption.value} />
                 <Table hoverable={true}>
                     <Table.Head>
                         <Table.HeadCell className="!p-4">
@@ -113,7 +120,7 @@ const Visitant = () => {
                         )
                     })
                     }
-                </Table>
+                </Table> */}
             </AdminMenu>
         </>
     )

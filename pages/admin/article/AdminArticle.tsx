@@ -20,10 +20,13 @@ const AdminArticleComponent = ({ content }: ContentProps) => {
     }, [])
 
     const onDelete = useCallback(() => {
-        const refresh: any = router.reload
+        // const refresh: any = router.reload
         dispatch(adminDelete({ which: "article", number: content.articleId }))
-        refresh(window.location.pathname)
-    }, [])
+        setTimeout(() => {
+            router.push(`/admin/article/${router.asPath.split('/')[3]}`)
+        }, 300)
+        // refresh(window.location.pathname)
+    }, [content])
     return (
         <Table.Body className="divide-y">
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">

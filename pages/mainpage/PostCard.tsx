@@ -53,8 +53,8 @@ const PostCard = ({ post }: PostProps) => {
     }, [requestPage, requestComment])
 
     const onFavoriteToggle = useCallback(() => {
-        dispatch(likePost({ article: { articleId: post.articleId }, liker: Number(cookies.user.num) }))
-        // setFavorite((prev) => !prev)
+        dispatch(likePost({ article: post.articleId, liker: Number(cookies.user.num) }))
+        setFavorite((prev) => !prev)
     }, [favorite])
 
     const onMenu = useCallback(() => {
@@ -74,7 +74,7 @@ const PostCard = ({ post }: PostProps) => {
         } else if (post.likes === 0) {
             setFavorite(false)
         }
-    }, [favorite])
+    }, [])
 
     useEffect(() => {
         if (!cookies.user) {

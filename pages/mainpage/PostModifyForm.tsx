@@ -6,7 +6,7 @@ import { editPost } from '@actions/post';
 import { useCookies } from 'react-cookie';
 import Select from 'react-select';
 import { useRouter } from 'next/router';
-import { IArticle, editPostToMe } from '@features/postSlice';
+import { IArticle } from '@features/postSlice';
 import _remove from 'lodash'
 
 const options = [

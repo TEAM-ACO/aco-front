@@ -38,6 +38,10 @@ export interface IAdminMemberReport {
   totalCount: number;
 }
 
+type IArticleId = {
+  articleId: number;
+};
+
 export interface IAdminArticle {
   articleId: number;
   articleContext: string;
@@ -210,11 +214,12 @@ const adminSlice = createSlice({
         state.adminDeleteDone = false;
         state.adminDeleteError = null;
       })
-      .addCase(adminDelete.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
+      .addCase(adminDelete.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.adminDeleteLoading = false;
         state.adminDeleteDone = true;
-        // _remove(state.adminContent, action.payload);
-        // state.adminContent = _concat(state.adminContent, action.payload);
+        state.adminArticleContent = state.adminArticleContent.filter(
+          (v: any) => v.articleId !== action.payload.articleId,
+        );
       })
       .addCase(adminDelete.rejected, (state: IAdminState, action) => {
         state.adminDeleteLoading = false;
@@ -222,4 +227,5 @@ const adminSlice = createSlice({
       }),
 });
 
+export const {} = adminSlice.actions;
 export default adminSlice;

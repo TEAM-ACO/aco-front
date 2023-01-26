@@ -158,7 +158,7 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <a href="/admin">
+                                <a href="/admin/member/1">
                                     <span className="ml-2">관리자페이지</span>
                                 </a>
                             </li>

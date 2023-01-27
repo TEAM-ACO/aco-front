@@ -1,4 +1,4 @@
-import React, { useState, useCallback, Dispatch, SetStateAction } from 'react'
+import React, { useState, useCallback, Dispatch, SetStateAction, useEffect } from 'react'
 import { useCookies } from "react-cookie"
 import { Avatar, Modal, Button, Spinner } from 'flowbite-react'
 import dayjs from 'dayjs';
@@ -19,12 +19,17 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const date = dayjs(comment.date).format("YY-MM-DD");
+    const [dayCheck, setDayCheck] = useState<string>();
     const { deleteCommentLoading } = useAppSelector((state) => state.post)
+    const date = dayjs(dayCheck).format("YY-MM-DD");
 
     const [bigComment, setBigComment] = useState<boolean>(false);
     const [commentDelete, setCommentDelete] = useState<boolean>(false);
     const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
+    const [replySortCheck, setReplySortCheck] = useState<number>();
+    const [nicknameCheck, setNicknameCheck] = useState<string>();
+    const [replyContextCheck, setReplyContextCheck] = useState<string[]>();
+    const [memberIdCheck, setMemberIdCheck] = useState<number>();
 
     const userinfo = useCallback(() => {
         dispatch(userRequestPage({ reqPage: 0 }))
@@ -56,39 +61,47 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
         }, 0)
     }, [onDeleteModal, commentDelete])
 
+    useEffect(() => {
+        setDayCheck(comment.date)
+        setReplySortCheck(comment.replySort)
+        setNicknameCheck(comment.member.nickname)
+        setReplyContextCheck(comment.replyContext)
+        setMemberIdCheck(comment.member.memberId)
+    }, [])
+
     return (
         <div>
             <li className="ml-6 flex items-center justify-between">
                 <div className='flex items-center'>
                     <div>
-                        {comment.replySort === 1 && <p className='px-3'>ㄴ</p>}
+                        {replySortCheck === 1 && <p className='px-3'>ㄴ</p>}
                     </div>
                     <button className='pr-2' onClick={userinfo}>
                         <div className='w-10'>
                             <Avatar
-                                img={`http://localhost:15251/api/image/user/${comment.member.memberId}`}
+                                img={`http://localhost:15251/api/image/user/${memberIdCheck}`}
                                 rounded={true}
                             />
                         </div>
                     </button>
                     <div className='mr-5 w-10'>
                         <button className="text-sm font-medium text-gray-900 dark:text-white"
-                            onClick={userinfo}>{comment.member.nickname}</button>
+                            onClick={userinfo}>{nicknameCheck}</button>
                     </div>
                     <div className="text-sm break-words font-normal text-gray-500 lex dark:text-gray-300">
-                        {comment.replyContext}
+                        {replyContextCheck}
                     </div>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-white rounded-lg border border-gray-200 sm:flex dark:bg-gray-700 dark:border-gray-600">
                     <time className="mr-3 text-xs font-normal text-gray-400 sm:mb-0">
                         {date}
                     </time>
-                    {comment.replySort === 0 &&
+                    {replySortCheck === 0 &&
                         <button onClick={onRereplyModalOpen} className="sm:order-last mr-3">
                             {bigComment ? '취소' : '답글'}
                         </button>
                     }
-                    {comment.member.memberId === cookies.user?.num &&
+                    {memberIdCheck === cookies.user?.num &&
                         <button onClick={onDeleteOpen} className="sm:order-last mr-3">
                             삭제
                         </button>

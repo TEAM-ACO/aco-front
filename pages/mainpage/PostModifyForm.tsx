@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef, Dispatch, SetStateAction } from 'react'
+import React, { useCallback, useState, useRef, Dispatch, SetStateAction, useEffect } from 'react'
 import { useAppSelector, useAppDispatch } from '@store/config'
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { Spinner } from 'flowbite-react';
@@ -25,20 +25,20 @@ type PostProps = {
 function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const [selectedOption, setSelectedOption] = useState<any>(post.menu == 'Diary' ? options[0] :
-        post.menu == 'Tip' ? options[1] : options[2]);
+    const [menuCheck, setMenuCheck] = useState<string>()
     const [imgStorage, setImageStorage] = useState<File[]>([]);
     const [imgl, setImgList] = useState<string[]>([]);
     const imageDeleteInput = useRef<HTMLImageElement | null>(null);
     const imageDataDeleteInput = useRef<HTMLImageElement | null>(null);
-    const [imgData, setImgData] = useState<string[]>([...post.articleImagesNames]);
+    const [imgData, setImgData] = useState<string[]>([]);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { editPostLoading } = useAppSelector((state) => state.post);
+    const [selectedOption, setSelectedOption] = useState<any>(options[0]);
 
     const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const [text, setText] = useState<string>(post.articleContext)
+    const [text, setText] = useState<string>()
     const [tagItem, setTagItem] = useState<string>('')
-    const [tagList, setTagList] = useState<string[]>(post.tags)
+    const [tagList, setTagList] = useState<string[]>([])
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
 
@@ -148,6 +148,17 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
         imageInput.current.click();
     }, [imageInput.current, imgData, imgl]);
 
+    useEffect(() => {
+        // SSR때 undefined섞이는 현상때문에 배포 후 수정
+        // if (post.menu === undefined) {
+        //     return
+        // } else {
+        //     setMenuCheck(post.menu)
+        // }
+        setImgData([...post.articleImagesNames])
+        setText(post.articleContext)
+        setTagList(post.tags)
+    }, [])
 
     return (
         <div className='w-full'>
@@ -228,10 +239,8 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
                                 {
                                     imgData.map((v, i: number) => {
                                         const deleteImageData = async () => {
-
                                             imgData.splice(i, 1)
                                             setImgData(v => [...imgData])
-                                            console.log(imgData);
                                         }
                                         return (
                                             <div className='flex'>

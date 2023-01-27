@@ -7,12 +7,13 @@ import PostForm from './PostForm';
 import Mainpage from './mainpage';
 import { IArticle, mainRequestPage } from '@features/postSlice';
 import { loadPosts } from '@actions/post';
-import axios from 'axios';
+import { useCookies } from "react-cookie"
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 function mainpage() {
+    const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { mainPosts, loadPostsLoading, hasMorePosts, mainReqPage } = useAppSelector((state) => state.post);
@@ -30,6 +31,12 @@ function mainpage() {
         // setRequestPage(prev => prev + 1);
         dispatch(mainRequestPage({ mainReqPage }))
     }, [mainReqPage])
+
+    useEffect(() => {
+        if (!cookies.user) {
+            router.replace('/')
+        }
+    })
 
     return (
         <div>

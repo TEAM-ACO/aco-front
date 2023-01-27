@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef, DetailedHTMLProps, SelectHTMLAttributes, Dispatch, SetStateAction } from 'react'
+import React, { useCallback, useState, useRef, DetailedHTMLProps, SelectHTMLAttributes, Dispatch, SetStateAction, useEffect } from 'react'
 import { useCookies } from "react-cookie"
 import { Modal, Button, Spinner } from 'flowbite-react';
 import { deletePost, editPost, reportArticle, reportPost } from '../../actions/post';
@@ -17,6 +17,7 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { deletePostDone, deletePostLoading, editPostDone } = useAppSelector((state) => state.post)
 
+    const [memberIdCheck, setMemberIdCheck] = useState<number>();
     const [postCardDropdown, setPostCardDropdown] = useState<boolean>(false);
     const [onReportModal, setOnReportModal] = useState<boolean>(false);
     const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
@@ -81,6 +82,10 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
         setOnDeleteModal(false)
     }, [deletePostDone])
 
+    useEffect(() => {
+        setMemberIdCheck(post.member.memberId)
+    }, [])
+
     return (
         <div>
             <div>
@@ -105,7 +110,7 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
                         id="dropdownDotsHorizontal"
                         className="z-10 w-20 absolute right-0 top-2
                          bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                        {post.member.memberId === cookies.user?.num ?
+                        {memberIdCheck === cookies.user?.num ?
                             <ul
                                 className="py-1 text-sm text-gray-700 dark:text-gray-200"
                                 aria-labelledby="dropdownMenuIconHorizontalButton">

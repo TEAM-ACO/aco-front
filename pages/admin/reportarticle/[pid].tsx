@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import AdminMenu from '../AdminMenu'
+import AdminMenu from '../../../app/AdminMenu'
 import AdminReportArticleComponent from '../../../app/AdminReportArticle'
 import { Table } from 'flowbite-react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config'

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Table } from 'flowbite-react'
-import AdminMenu from './AdminMenu'
+import AdminMenu from '../../app/AdminMenu'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import { adminVisitant } from '@actions/admin'
 import Select, { ActionMeta, SingleValue } from 'react-select';
 import VisitorInfo from './VisitorInfo';
 import RecentMember from './RecentMember'
-import RecentArticle from './RecentArticle'
+import RecentArticle from '../../app/RecentArticle'
 import Head from 'next/head'
 import { IRecentArticleContent, IRecentMemberContent } from '@typings/db'
 import { useRouter } from 'next/router'

@@ -20,7 +20,8 @@ type PostProps = {
 }
 
 const PostCard = ({ post }: PostProps) => {
-    const date = dayjs(post.date).format("YY-MM-DD");
+    const [dateCheck, setDateCheck] = useState<string>();
+    const date = dayjs(dateCheck).format("YY-MM-DD");
     const router = useRouter();
     const dispatch = useAppDispatch();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
@@ -28,6 +29,16 @@ const PostCard = ({ post }: PostProps) => {
     const [favorite, setFavorite] = useState<boolean>(false);
     const [requestPage, setRequestPage] = useState<number>(0);
     const [requestComment, setRequestComment] = useState<number>(5);
+    const [articleImageCheck, setArticleImageCheck] = useState<string[]>([]);
+    const [memberIdCheck, setMemberIdCheck] = useState<number>();
+    const [nicknameCheck, setNicknameCheck] = useState<string>();
+    const [articleIdCheck, setArticleIdCheck] = useState<number>();
+    const [menuCheck, setMenuCheck] = useState<string>();
+    const [articleContextCheck, setArticleContextCheck] = useState<string>();
+    const [tagsCheck, setTagsCheck] = useState<string[]>([]);
+    const [replysCheck, setReplysCheck] = useState<IReply[]>([]);
+    const [replyCountCheck, setReplyCountCheck] = useState<number>();
+    const [categoryCheck, setCategoryCheck] = useState<boolean>();
 
     const userinfo = useCallback(() => {
         dispatch(userRequestPage({ reqPage: 0 }))
@@ -82,6 +93,20 @@ const PostCard = ({ post }: PostProps) => {
         }
     })
 
+    useEffect(() => {
+        setDateCheck(post.date)
+        setArticleImageCheck(post.articleImagesNames)
+        setMemberIdCheck(post.member.memberId)
+        setNicknameCheck(post.member.nickname)
+        setArticleIdCheck(post.articleId)
+        setMenuCheck(post.menu)
+        setArticleContextCheck(post.articleContext)
+        setTagsCheck(post.tags)
+        setReplysCheck(post.replys)
+        setReplyCountCheck(post.replys[post.replys.length - 1]?.totalCount || 0)
+        setCategoryCheck(router.asPath.split('/')[2] === post.menu.toLowerCase())
+    })
+
     return (
         <>
             <section className="px-6 py-4">
@@ -89,7 +114,7 @@ const PostCard = ({ post }: PostProps) => {
                     <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
                         <div>
                             <Carousel className='px-6 py-4 xl:h-80  carousel-class' slide={false}>
-                                {post.articleImagesNames.map((articleImages) => {
+                                {articleImageCheck.map((articleImages) => {
                                     return (
                                         <PostImage key={articleImages} articleImages={articleImages} />
                                     )
@@ -106,44 +131,44 @@ const PostCard = ({ post }: PostProps) => {
                                     onClick={userinfo}
                                     className='flex justify-start items-center'>
                                     <Avatar
-                                        img={`http://localhost:15251/api/image/user/${post.member.memberId}`}
+                                        img={`http://localhost:15251/api/image/user/${memberIdCheck}`}
                                         rounded={true}
                                     />
                                     <p className='ml-2'>
-                                        {post.member.nickname}
+                                        {nicknameCheck}
                                     </p>
                                 </button>
                             </div>
-                            <Dropdown key={post.articleId} post={post}
+                            <Dropdown key={articleIdCheck} post={post}
                                 contextModify={contextModify} setContextModify={setContextModify} />
                         </div>
                         {contextModify ?
-                            <PostModifyForm key={post.articleId} post={post}
+                            <PostModifyForm key={articleIdCheck} post={post}
                                 contextModify={contextModify} setContextModify={setContextModify} />
                             :
                             <div>
                                 <div className='text-gray-500 text-xs items-center mb-3 flex justify-between'>
-                                    <p className='flex'>
+                                    <div className='flex'>
                                         카테고리:&nbsp;
-                                        {router.asPath.split('/')[2] === post.menu.toLowerCase() ?
+                                        {categoryCheck ?
                                             <Tooltip content="현재 카테고리">
                                                 <button>
-                                                    {post.menu}
+                                                    {menuCheck}
                                                 </button>
                                             </Tooltip>
                                             :
                                             <button onClick={onMenu}>
-                                                {post.menu}
+                                                {menuCheck}
                                             </button>
                                         }
-                                    </p>
+                                    </div>
                                     <div>
                                         {date}
                                     </div>
                                 </div>
                                 <div>
                                     <p className="text-gray-700 text-base">
-                                        {post.articleContext}
+                                        {articleContextCheck}
                                     </p>
                                 </div>
                             </div>
@@ -159,7 +184,7 @@ const PostCard = ({ post }: PostProps) => {
                             </div>
                             {/* HASHTAG */}
                             <div className="px-6 pt-4 pb-2">
-                                {post.tags.map((tags) => {
+                                {tagsCheck.map((tags) => {
                                     return (
                                         <PostCardContent key={tags} tags={tags} />
                                     )
@@ -170,14 +195,14 @@ const PostCard = ({ post }: PostProps) => {
                             <div>
                                 <div className=" border-l border-gray-200 dark:border-gray-700">
                                     <div className='ml-6 py-2 mt-3 text-xs text-cyan-800'>
-                                        {`${post.replys[post.replys.length - 1]?.totalCount || 0}개의 댓글`}
+                                        {`${replyCountCheck}개의 댓글`}
                                     </div>
                                     <div className='mt-2'>
-                                        {post.replys.map((cmt: IReply) => (
+                                        {replysCheck.map((cmt: IReply) => (
                                             <CommentList key={cmt.replyId} comment={cmt} commentListUpdate={commentListUpdate} />
                                         ))}
                                     </div>
-                                    <CommentMore replys={post.replys} onCommentViewMore={onCommentViewMore} />
+                                    <CommentMore replys={replysCheck} onCommentViewMore={onCommentViewMore} />
                                 </div>
                             </div>
                         </>

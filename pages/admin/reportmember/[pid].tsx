@@ -31,11 +31,14 @@ const AdminReportMember = () => {
         router.replace(`/admin/reportmember/${requestPage + 1}`)
     }, [requestPage])
 
+    const [hasMorePost, setHasMorePost] = useState<boolean>(true);
+
     useEffect(() => {
-        if (!adminMemberReportLoading) {
+        if (!adminMemberReportLoading && hasMorePost) {
             dispatch(adminMemberReport({ requestedPageNumber: Number(pid) - 1, requestedPageSize: postsLimit }))
+            setHasMorePost(false)
         }
-    }, [])
+    }, [adminMemberReportLoading, hasMorePost])
 
     return (
         <>

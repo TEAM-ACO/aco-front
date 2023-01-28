@@ -12,7 +12,7 @@ import Head from 'next/head';
 const Question = () => {
     const dispatch = useAppDispatch();
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
-    const [requestPage, setRequestPage] = useState<number>(0);
+    const [requestPage, setRequestPage] = useState<number>(1);
 
     const [ref, inView] = useInView();
 
@@ -57,7 +57,7 @@ const Question = () => {
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
 
-    await store.dispatch(loadMenu());
+    await store.dispatch(loadMenu({ num: 2, menu: "Question", requestedPageNumber: 0, requestedPageSize: 10 }));
 
     return { props: {} }
 })

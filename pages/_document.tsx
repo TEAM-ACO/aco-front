@@ -14,7 +14,11 @@ export default class MyDocument extends Document {
                 styles: (
                     <>
                         {initialProps.styles}
-                        <style key="custom" dangerouslySetInnerHTML={{ __html: bundleCss }} />
+                        <Html lang="ko">
+                            <style key="custom" dangerouslySetInnerHTML={{ __html: bundleCss }} />
+                            <Main />
+                            <NextScript />
+                        </Html>
                     </>
                 ),
             };

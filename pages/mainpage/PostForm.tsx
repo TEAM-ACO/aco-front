@@ -68,11 +68,6 @@ function PostForm() {
         }
         dispatch(mainRequestPage({ mainReqPage: 0 }))
         dispatch(addPost(result))
-        setTimeout(() => {
-            router.push(`${router.asPath}`)
-            setImgList([])
-            setImageStorage([])
-        }, 0)
     }, [text, tagList, mainPosts])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -125,6 +120,11 @@ function PostForm() {
 
     useEffect(() => {
         if (addPostDone) {
+            setTimeout(() => {
+                router.push(`${router.asPath}`)
+                setImgList([])
+                setImageStorage([])
+            }, 0)
             setText('');
             setTagList([]);
             setTagItem('');

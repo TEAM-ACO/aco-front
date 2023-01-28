@@ -60,15 +60,15 @@ const userid = () => {
             return
         }
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(loadUserPosts({ memberId: id, requestedPageNumber: reqPage, requestedPageSize: 10 }));
             loadMore();
+            dispatch(loadUserPosts({ memberId: id, requestedPageNumber: reqPage, requestedPageSize: 10 }));
         }
     }, [inView, hasMorePosts, loadPostsLoading, id]);
 
     return (
         <div>
             <Head>
-                <title>{mainPosts[0]?.member.nickname}님의 페이지입니다. | Project ACO</title>
+                <title>{`${mainPosts[0]?.member.nickname}`}님의 페이지입니다. | Project ACO</title>
                 <meta charSet="utf-8" />
                 <meta
                     name="viewport"
@@ -157,7 +157,8 @@ const userid = () => {
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }: any) => {
 
-    store.dispatch(loadUserPosts({ memberId: params.id } as any))
+    await store.dispatch(loadUserPosts({ memberId: params.id, requestedPageNumber: 0, requestedPageSize: 10 }))
+    await store.dispatch(userRequestPage({ reqPage: 0 }))
     return {
         props: {},
     }

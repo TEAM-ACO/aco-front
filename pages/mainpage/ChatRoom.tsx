@@ -15,7 +15,7 @@ const ChatRoom = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [privateChats, setPrivateChats] = useState<any>(new Map());
     const [publicChats, setPublicChats] = useState<any | any[]>([]);
-    const [tab, setTab] = useState<any>("CHATROOM");
+    const [tab, setTab] = useState<string>("CHATROOM");
     const [connectError, setConnectError] = useState<boolean>(false);
     const [chatError, setChatError] = useState<boolean>(false);
     const [userData, setUserData] = useState<IUserData>({
@@ -29,27 +29,31 @@ const ChatRoom = () => {
     const chatFocus = React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const prChatFocus = React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
-    const connect = () => {
+    // 클라생성, 연결
+    const connect = useCallback(() => {
         let Sock = new SockJS('http://127.0.0.1:3075/api/ws');
         stompClient = over(Sock);
         stompClient.connect({}, onConnected, onError);
-    }
+    }, [])
 
-    const onConnected = () => {
+    // 구독
+    const onConnected = useCallback(() => {
         setUserData({ ...userData, "connected": true });
         stompClient.subscribe('/chatroom/public', onMessageReceived);
         stompClient.subscribe('/user/' + userData.username + '/private', onPrivateMessage);
         userJoin();
-    }
+    }, [userData])
 
-    const userJoin = () => {
+    // Join 전송
+    const userJoin = useCallback(() => {
         var chatMessage = {
             senderName: userData.username,
             status: "JOIN"
         };
         stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-    }
+    }, [userData.username])
 
+    // 수신
     const onMessageReceived = (payload: any) => {
         var payloadData = JSON.parse(payload.body);
         switch (payloadData.status) {
@@ -66,6 +70,7 @@ const ChatRoom = () => {
         }
     }
 
+    // 프라이빗 수신
     const onPrivateMessage = (payload: any) => {
         var payloadData = JSON.parse(payload.body);
         if (privateChats.get(payloadData.senderName)) {
@@ -79,14 +84,18 @@ const ChatRoom = () => {
         }
     }
 
-    const onError = (err: any) => {
+    // 에러발생시
+    const onError = useCallback((err: any) => {
         console.log(err);
-    }
+    }, [])
 
-    const handleMessage = (event: any) => {
+    // 메세지핸들
+    const handleMessage = useCallback((event: any) => {
         const { value } = event.target;
         setUserData({ ...userData, "message": value });
-    }
+    }, [userData])
+
+    // 메세지 전송
     const sendValue = () => {
         if (userData.message === '') {
             chatFocus.current.focus()
@@ -109,6 +118,7 @@ const ChatRoom = () => {
         setChatError(false)
     }
 
+    // 엔터
     const onKeyPress = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
         if (e.key === 'Enter') {
             sendValue();
@@ -121,6 +131,7 @@ const ChatRoom = () => {
         }
     }, [userData.message])
 
+    // Private 메세지 전송
     const sendPrivateValue = () => {
         if (userData.message === '') {
             prChatFocus.current.focus()
@@ -146,11 +157,13 @@ const ChatRoom = () => {
         prChatFocus.current.focus()
     }
 
+    // Name핸들
     const handleUsername = useCallback((event: any) => {
         const { value } = event.target;
         setUserData({ ...userData, "username": value });
     }, [userData.username])
 
+    // 접속
     const registerUser = useCallback(() => {
         if (userData.username === '' || userData.username.match(/\s/g)) {
             chatFocus.current.focus()
@@ -161,6 +174,7 @@ const ChatRoom = () => {
         setConnectError(false)
     }, [userData.username])
 
+    // 접속 엔터
     const registerUserEnter = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
         if (e.key === 'Enter') {
             registerUser()

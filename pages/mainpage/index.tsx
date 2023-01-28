@@ -13,7 +13,6 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 const mainpage: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    console.log(props)
 
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const dispatch = useAppDispatch();

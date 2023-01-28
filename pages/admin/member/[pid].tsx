@@ -36,11 +36,14 @@ const AdminMember = () => {
         setTotal(adminMemberContent[adminMemberContent.length - 1]?.totalCount || 0)
     }, [total])
 
+    const [hasMorePost, setHasMorePost] = useState<boolean>(true);
+
     useEffect(() => {
-        if (!adminMemberLoading && adminMemberContent.length !== 10) {
+        if (!adminMemberLoading && hasMorePost) {
+            setHasMorePost(false)
             dispatch(adminMember({ requestedPageNumber: Number(pid) - 1, requestedPageSize: postsLimit }))
         }
-    }, [adminMemberLoading, adminMemberContent])
+    }, [adminMemberLoading, hasMorePost])
 
     return (
         <>

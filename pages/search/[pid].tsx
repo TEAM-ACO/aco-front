@@ -28,8 +28,8 @@ function PostList() {
             return
         }
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(searchPosts({ keywords: pid, requestedPageNumber: searchValue, requestedPageSize: 10 }));
             loadMore()
+            dispatch(searchPosts({ keywords: pid, requestedPageNumber: searchValue, requestedPageSize: 10 }));
         }
     }, [inView, hasMorePosts, loadPostsLoading, pid]);
     return (
@@ -65,9 +65,10 @@ function PostList() {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
 
-    store.dispatch(searchPosts({ keywords: params?.pid } as any))
+    await store.dispatch(searchPosts({ keywords: params?.pid, requestedPageNumber: 0, requestedPageSize: 10 } as any))
+    await store.dispatch(searchRequestPage({ searchValue: 0 }))
     return {
-        props: {},
+        props: { message: "Success SSR" },
     }
 })
 

@@ -32,11 +32,14 @@ const AdminReportArticle = () => {
         router.replace(`/admin/reportarticle/${requestPage + 1}`)
     }, [requestPage])
 
+    const [hasMorePost, setHasMorePost] = useState<boolean>(true);
+
     useEffect(() => {
-        if (!adminArticleReportLoading) {
+        if (!adminArticleReportLoading && hasMorePost) {
             dispatch(adminArticleReport({ requestedPageNumber: Number(pid) - 1, requestedPageSize: postsLimit }))
+            setHasMorePost(false)
         }
-    }, [])
+    }, [adminArticleReportLoading, hasMorePost])
     return (
         <>
             <Head>
@@ -123,12 +126,12 @@ const AdminReportArticle = () => {
     )
 }
 
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-    console.log(req.headers);
+// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+//     console.log(req.headers);
 
-    await store.dispatch(adminArticleReport());
+//     await store.dispatch(adminArticleReport());
 
-    return { props: {} }
-})
+//     return { props: {} }
+// })
 
 export default AdminReportArticle

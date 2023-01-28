@@ -75,20 +75,4 @@ const config: Configuration = {
   },
 };
 
-/**
- // 배포
- // 개발모드
- if (isDevelopment && config.plugins) {
-   config.plugins.push(new webpack.HotModuleReplacementPlugin());
-   config.plugins.push(new ReactRefreshWebpackPlugin());
-   config.plugins.push(new BundleAnalyzerPlugin({ analyzerMode: 'server', openAnalyzer: true }));
- }
- // 배포모드
- if (!isDevelopment && config.plugins) {
-   // 이거 켜면 최적화 되는 옛날 플러그인들이 있다.
-   config.plugins.push(new webpack.LoaderOptionsPlugin({ minimize: true }));
-   config.plugins.push(new BundleAnalyzerPlugin({ analyzerMode: 'static' }));
- }
- */
-
 export default config;

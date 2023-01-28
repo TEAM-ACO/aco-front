@@ -12,7 +12,7 @@ import Head from 'next/head';
 const Question = () => {
     const dispatch = useAppDispatch();
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
-    const [requestPage, setRequestPage] = useState<number>(0);
+    const [requestPage, setRequestPage] = useState<number>(1);
 
     const [ref, inView] = useInView();
 
@@ -30,6 +30,15 @@ const Question = () => {
         <div>
             <Head>
                 <title>ACO 질문 | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="Question page" />
+                <meta name="keywords" content="Question" />
+                <meta property="og:title" content="ACO 질문 | Project ACO" />
             </Head>
             <Mainpage>
                 <div className="ml-auto mr-auto">
@@ -48,7 +57,7 @@ const Question = () => {
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
 
-    await store.dispatch(loadMenu());
+    await store.dispatch(loadMenu({ num: 2, menu: "Question", requestedPageNumber: 0, requestedPageSize: 10 }));
 
     return { props: {} }
 })

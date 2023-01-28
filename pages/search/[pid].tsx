@@ -28,14 +28,23 @@ function PostList() {
             return
         }
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(searchPosts({ keywords: pid, requestedPageNumber: searchValue, requestedPageSize: 10 }));
             loadMore()
+            dispatch(searchPosts({ keywords: pid, requestedPageNumber: searchValue, requestedPageSize: 10 }));
         }
     }, [inView, hasMorePosts, loadPostsLoading, pid]);
     return (
         <>
             <Head>
                 <title>{pid} | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="Search page" />
+                <meta name="keywords" content="Search" />
+                <meta property="og:title" content="검색페이지 | Project ACO" />
             </Head>
             <div>
                 <Mainpage>
@@ -56,9 +65,10 @@ function PostList() {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
 
-    store.dispatch(searchPosts({ keywords: params?.pid } as any))
+    await store.dispatch(searchPosts({ keywords: params?.pid, requestedPageNumber: 0, requestedPageSize: 10 } as any))
+    await store.dispatch(searchRequestPage({ searchValue: 0 }))
     return {
-        props: {},
+        props: { message: "Success SSR" },
     }
 })
 

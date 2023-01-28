@@ -27,8 +27,10 @@ const PostCard = ({ post }: PostProps) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [contextModify, setContextModify] = useState<boolean>(false);
     const [favorite, setFavorite] = useState<boolean>(false);
+    const [favoriteError, setFavoriteError] = useState<boolean>(false);
     const [requestPage, setRequestPage] = useState<number>(0);
     const [requestComment, setRequestComment] = useState<number>(5);
+
     const [articleImageCheck, setArticleImageCheck] = useState<string[]>([]);
     const [memberIdCheck, setMemberIdCheck] = useState<number>();
     const [nicknameCheck, setNicknameCheck] = useState<string>();
@@ -64,9 +66,15 @@ const PostCard = ({ post }: PostProps) => {
     }, [requestPage, requestComment])
 
     const onFavoriteToggle = useCallback(() => {
+        if (post.member.memberId === cookies.user.num) {
+            setFavoriteError(true)
+            return
+        }
         dispatch(likePost({ article: post.articleId, liker: Number(cookies.user.num) }))
         setFavorite((prev) => !prev)
-    }, [favorite])
+        setFavoriteError(false)
+
+    }, [favorite, favoriteError])
 
     const onMenu = useCallback(() => {
         router.push(`/category/${post.menu.toLowerCase()}`)
@@ -181,6 +189,8 @@ const PostCard = ({ post }: PostProps) => {
                             <div className="px-6 py-4">
                                 {favorite ? <FaHeart onClick={onFavoriteToggle} className='text-red-600 cursor-pointer'></FaHeart>
                                     : <FaRegHeart onClick={onFavoriteToggle} className='text-gray-400 cursor-pointer'></FaRegHeart>}
+                                {favoriteError &&
+                                    <p className='mt-2 text-xs font-medium text-red-600'>자신의 게시글은 좋아요를 누를 수 없습니다</p>}
                             </div>
                             {/* HASHTAG */}
                             <div className="px-6 pt-4 pb-2">

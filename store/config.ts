@@ -29,7 +29,10 @@ export interface IState {
 const rootReducer = (state: IState, action: AnyAction): CombinedState<IState> => {
   switch (action.type) {
     case HYDRATE:
-      return action.payload;
+      return {
+        ...state,
+        ...action.payload,
+      };
     default: {
       const combinedReducer = combineReducers({
         user: userReducer.reducer,
@@ -64,6 +67,8 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 export const wrapper = createWrapper<AppStore>(makeStore, {
   debug: isDev,
+  serializeState: (state) => JSON.stringify(state),
+  deserializeState: (state) => JSON.parse(state),
 });
 
 export default wrapper;

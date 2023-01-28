@@ -6,30 +6,40 @@ import Mainpage from '../../mainpage/mainpage';
 import PostForm from '../../mainpage/PostForm';
 import { IArticle } from '@features/postSlice';
 import PostCard from '../../mainpage/PostCard';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
 
-const Diary = () => {
+const Diary: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const dispatch = useAppDispatch();
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
-    const [requestPage, setRequestPage] = useState<number>(0);
+    const [requestPage, setRequestPage] = useState<number>(1);
 
     const [ref, inView] = useInView();
 
     const loadMore = useCallback(() => {
         setRequestPage(prev => prev + 1);
+        dispatch(loadMenu({ num: 0, menu: "Diary", requestedPageNumber: requestPage, requestedPageSize: 10 }));
     }, [requestPage])
 
     useEffect(() => {
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(loadMenu({ num: 0, menu: "Diary", requestedPageNumber: requestPage, requestedPageSize: 10 }));
             loadMore()
         }
     }, [inView, hasMorePosts, loadPostsLoading]);
+
     return (
         <div>
             <Head>
                 <title>ACO 다이어리 | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="Diary page" />
+                <meta name="keywords" content="Diary" />
+                <meta property="og:title" content="ACO 다이어리 | Project ACO" />
             </Head>
             <Mainpage>
                 <div className="ml-auto mr-auto">
@@ -46,11 +56,11 @@ const Diary = () => {
     )
 }
 
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async () => {
 
-    await store.dispatch(loadMenu());
+    const { payload } = await store.dispatch(loadMenu({ num: 0, menu: "Diary", requestedPageNumber: 0, requestedPageSize: 10 }));
 
-    return { props: {} }
+    return { props: { message: 'Success SSR', payload } }
 })
 
 export default Diary

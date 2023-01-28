@@ -36,16 +36,28 @@ const AdminMember = () => {
         setTotal(adminMemberContent[adminMemberContent.length - 1]?.totalCount || 0)
     }, [total])
 
+    const [hasMorePost, setHasMorePost] = useState<boolean>(true);
+
     useEffect(() => {
-        if (!adminMemberLoading) {
+        if (!adminMemberLoading && hasMorePost) {
+            setHasMorePost(false)
             dispatch(adminMember({ requestedPageNumber: Number(pid) - 1, requestedPageSize: postsLimit }))
         }
-    }, [requestPage])
+    }, [adminMemberLoading, hasMorePost])
 
     return (
         <>
             <Head>
                 <title>멤버관리 페이지 | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="Admin Member page" />
+                <meta name="keywords" content="MemberAdmin" />
+                <meta property="og:title" content="멤버관리 페이지 | Project ACO" />
             </Head>
             <AdminMenu>
                 <Table hoverable={true}>
@@ -120,7 +132,6 @@ const AdminMember = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-    console.log(req.headers);
     await store.dispatch(adminMember());
 
     return { props: {} }

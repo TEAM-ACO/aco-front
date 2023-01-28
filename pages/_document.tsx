@@ -1,5 +1,5 @@
 import React from 'react';
-import Document, { DocumentContext, } from 'next/document';
+import Document, { DocumentContext, Html, Main, NextScript, } from 'next/document';
 // @ts-ignore
 import bundleCss from '!raw-loader!../styles/tailwindSSR.css';
 
@@ -14,7 +14,11 @@ export default class MyDocument extends Document {
                 styles: (
                     <>
                         {initialProps.styles}
-                        <style key="custom" dangerouslySetInnerHTML={{ __html: bundleCss }} />
+                        <Html lang="ko">
+                            <style key="custom" dangerouslySetInnerHTML={{ __html: bundleCss }} />
+                            <Main />
+                            <NextScript />
+                        </Html>
                     </>
                 ),
             };

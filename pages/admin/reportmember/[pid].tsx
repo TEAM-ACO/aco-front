@@ -31,16 +31,28 @@ const AdminReportMember = () => {
         router.replace(`/admin/reportmember/${requestPage + 1}`)
     }, [requestPage])
 
+    const [hasMorePost, setHasMorePost] = useState<boolean>(true);
+
     useEffect(() => {
-        if (!adminMemberReportLoading) {
+        if (!adminMemberReportLoading && hasMorePost) {
             dispatch(adminMemberReport({ requestedPageNumber: Number(pid) - 1, requestedPageSize: postsLimit }))
+            setHasMorePost(false)
         }
-    }, [])
+    }, [adminMemberReportLoading, hasMorePost])
 
     return (
         <>
             <Head>
                 <title>멤버 신고관리 페이지 | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="Admin Member Report page" />
+                <meta name="keywords" content="MemberReportAdmin" />
+                <meta property="og:title" content="멤버 신고관리 페이지 | Project ACO" />
             </Head>
             <AdminMenu>
                 <Table hoverable={true}>

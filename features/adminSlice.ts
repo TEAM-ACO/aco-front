@@ -68,25 +68,18 @@ export interface IAdminState {
   adminArticleReportContent: IAdminArticleReport[];
   adminVisitantLoading: boolean;
   adminVisitantDone: boolean;
-  adminVisitantError: unknown | null;
   visitorLoading: boolean;
   visitorDone: boolean;
-  visitorError: unknown | null;
   adminMemberLoading: boolean;
   adminMemberDone: boolean;
-  adminMemberError: unknown | null;
   adminMemberReportLoading: boolean;
   adminMemberReportDone: boolean;
-  adminMemberReportError: unknown | null;
   adminArticleLoading: boolean;
   adminArticleDone: boolean;
-  adminArticleError: unknown | null;
   adminArticleReportLoading: boolean;
   adminArticleReportDone: boolean;
-  adminArticleReportError: unknown | null;
   adminDeleteLoading: boolean;
   adminDeleteDone: boolean;
-  adminDeleteError: unknown | null;
 }
 
 const initialState: IAdminState = {
@@ -98,25 +91,18 @@ const initialState: IAdminState = {
   adminArticleReportContent: [],
   adminVisitantLoading: false,
   adminVisitantDone: false,
-  adminVisitantError: null,
   visitorLoading: false,
   visitorDone: false,
-  visitorError: null,
   adminMemberLoading: false,
   adminMemberDone: false,
-  adminMemberError: null,
   adminMemberReportLoading: false,
   adminMemberReportDone: false,
-  adminMemberReportError: null,
   adminArticleLoading: false,
   adminArticleDone: false,
-  adminArticleError: null,
   adminArticleReportLoading: false,
   adminArticleReportDone: false,
-  adminArticleReportError: null,
   adminDeleteLoading: false,
   adminDeleteDone: false,
-  adminDeleteError: null,
 };
 
 const adminSlice = createSlice({
@@ -128,91 +114,78 @@ const adminSlice = createSlice({
       .addCase(adminVisitant.pending, (state: IAdminState) => {
         state.adminVisitantLoading = true;
         state.adminVisitantDone = false;
-        state.adminVisitantError = null;
       })
       .addCase(adminVisitant.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.adminVisitantLoading = false;
         state.adminVisitantDone = true;
         state.adminContent = [action.payload['recentMember'], action.payload['recentArticle']];
       })
-      .addCase(adminVisitant.rejected, (state: IAdminState, action) => {
+      .addCase(adminVisitant.rejected, (state: IAdminState) => {
         state.adminVisitantLoading = false;
-        state.adminVisitantError = action.payload;
       })
       .addCase(visitor.pending, (state: IAdminState) => {
         state.visitorLoading = true;
         state.visitorDone = false;
-        state.visitorError = null;
       })
       .addCase(visitor.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.visitorLoading = false;
         state.visitorDone = true;
         state.adminVisitor = [action.payload['visitorInfo']];
       })
-      .addCase(visitor.rejected, (state: IAdminState, action) => {
+      .addCase(visitor.rejected, (state: IAdminState) => {
         state.visitorLoading = false;
-        state.visitorError = action.payload;
       })
       .addCase(adminMember.pending, (state: IAdminState) => {
         state.adminMemberLoading = true;
         state.adminMemberDone = false;
-        state.adminMemberError = null;
       })
       .addCase(adminMember.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.adminMemberLoading = false;
         state.adminMemberDone = true;
         state.adminMemberContent = _concat(state.adminMemberContent, action.payload);
       })
-      .addCase(adminMember.rejected, (state: IAdminState, action) => {
+      .addCase(adminMember.rejected, (state: IAdminState) => {
         state.adminMemberLoading = false;
-        state.adminMemberError = action.payload;
       })
       .addCase(adminMemberReport.pending, (state: IAdminState) => {
         state.adminMemberReportLoading = true;
         state.adminMemberReportDone = false;
-        state.adminMemberReportError = null;
       })
       .addCase(adminMemberReport.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.adminMemberReportLoading = false;
         state.adminMemberReportDone = true;
         state.adminMemberReportContent = _concat(state.adminMemberReportContent, action.payload);
       })
-      .addCase(adminMemberReport.rejected, (state: IAdminState, action) => {
+      .addCase(adminMemberReport.rejected, (state: IAdminState) => {
         state.adminMemberReportLoading = false;
-        state.adminMemberReportError = action.payload;
       })
       .addCase(adminArticle.pending, (state: IAdminState) => {
         state.adminArticleLoading = true;
         state.adminArticleDone = false;
-        state.adminArticleError = null;
       })
       .addCase(adminArticle.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.adminArticleLoading = false;
         state.adminArticleDone = true;
         state.adminArticleContent = _concat(state.adminArticleContent, action.payload);
       })
-      .addCase(adminArticle.rejected, (state: IAdminState, action) => {
+      .addCase(adminArticle.rejected, (state: IAdminState) => {
         state.adminArticleLoading = false;
-        state.adminArticleError = action.payload;
       })
       .addCase(adminArticleReport.pending, (state: IAdminState) => {
         state.adminArticleReportLoading = true;
         state.adminArticleReportDone = false;
-        state.adminArticleReportError = null;
       })
       .addCase(adminArticleReport.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.adminArticleReportLoading = false;
         state.adminArticleReportDone = true;
         state.adminArticleReportContent = _concat(state.adminArticleReportContent, action.payload);
       })
-      .addCase(adminArticleReport.rejected, (state: IAdminState, action) => {
+      .addCase(adminArticleReport.rejected, (state: IAdminState) => {
         state.adminArticleReportLoading = false;
-        state.adminArticleReportError = action.payload;
       })
       .addCase(adminDelete.pending, (state: IAdminState) => {
         state.adminDeleteLoading = true;
         state.adminDeleteDone = false;
-        state.adminDeleteError = null;
       })
       .addCase(adminDelete.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
         state.adminDeleteLoading = false;
@@ -221,9 +194,8 @@ const adminSlice = createSlice({
           (v: any) => v.articleId !== action.payload.articleId,
         );
       })
-      .addCase(adminDelete.rejected, (state: IAdminState, action) => {
+      .addCase(adminDelete.rejected, (state: IAdminState) => {
         state.adminDeleteLoading = false;
-        state.adminDeleteError = action.payload;
       }),
 });
 

@@ -32,15 +32,27 @@ const AdminReportArticle = () => {
         router.replace(`/admin/reportarticle/${requestPage + 1}`)
     }, [requestPage])
 
+    const [hasMorePost, setHasMorePost] = useState<boolean>(true);
+
     useEffect(() => {
-        if (!adminArticleReportLoading) {
+        if (!adminArticleReportLoading && hasMorePost) {
             dispatch(adminArticleReport({ requestedPageNumber: Number(pid) - 1, requestedPageSize: postsLimit }))
+            setHasMorePost(false)
         }
-    }, [])
+    }, [adminArticleReportLoading, hasMorePost])
     return (
         <>
             <Head>
                 <title>게시글 신고관리 페이지 | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="Admin Article Report page" />
+                <meta name="keywords" content="ArticleReportAdmin" />
+                <meta property="og:title" content="게시글 신관리 페이지 | Project ACO" />
             </Head>
             <AdminMenu>
                 <Table hoverable={true}>
@@ -114,12 +126,12 @@ const AdminReportArticle = () => {
     )
 }
 
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-    console.log(req.headers);
+// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+//     console.log(req.headers);
 
-    await store.dispatch(adminArticleReport());
+//     await store.dispatch(adminArticleReport());
 
-    return { props: {} }
-})
+//     return { props: {} }
+// })
 
 export default AdminReportArticle

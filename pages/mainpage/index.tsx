@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
 
@@ -8,29 +8,28 @@ import Mainpage from './mainpage';
 import { IArticle, mainRequestPage } from '@features/postSlice';
 import { loadPosts } from '@actions/post';
 import { useCookies } from "react-cookie"
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-function mainpage() {
+const mainpage: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { mainPosts, loadPostsLoading, hasMorePosts, mainReqPage } = useAppSelector((state) => state.post);
     const [ref, inView] = useInView();
-    const [requestPage, setRequestPage] = useState<number>(0);
+
+    const loadMore = useCallback(() => {
+        dispatch(mainRequestPage({ mainReqPage }))
+        dispatch(loadPosts({ requestedPageNumber: mainReqPage, requestedPageSize: 10 }));
+    }, [mainReqPage])
 
     useEffect(() => {
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(loadPosts({ requestedPageNumber: mainReqPage, requestedPageSize: 10 }));
             loadMore();
         }
     }, [inView, hasMorePosts, loadPostsLoading]);
-
-    const loadMore = useCallback(() => {
-        // setRequestPage(prev => prev + 1);
-        dispatch(mainRequestPage({ mainReqPage }))
-    }, [mainReqPage])
 
     useEffect(() => {
         if (!cookies.user) {
@@ -42,6 +41,15 @@ function mainpage() {
         <div>
             <Head>
                 <title>ACO 메인페이지 | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="Mainpage page" />
+                <meta name="keywords" content="Mainpage" />
+                <meta property="og:title" content="ACO 메인페이지 | Project ACO" />
             </Head>
             <Mainpage>
                 <div className="ml-auto mr-auto">
@@ -58,12 +66,12 @@ function mainpage() {
     )
 }
 
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async () => {
+    const mainReqPage = 0
+    const { payload } = await store.dispatch(loadPosts({ requestedPageNumber: mainReqPage, requestedPageSize: 10 }));
+    await store.dispatch(mainRequestPage({ mainReqPage: 0 }))
 
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-
-    await store.dispatch(loadPosts());
-
-    return { props: { message: 'Success SSR' } }
+    return { props: { message: 'Success SSR', payload } }
 })
 
 export default mainpage

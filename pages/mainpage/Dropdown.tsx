@@ -17,6 +17,10 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { deletePostDone, deletePostLoading, editPostDone } = useAppSelector((state) => state.post)
 
+    const [editContent, setEditContent] = useState<string>()
+    const [onUserText, setOnUserText] = useState<string>()
+    const [onUserHTML, setOnUserHTML] = useState<string>()
+
     const [memberIdCheck, setMemberIdCheck] = useState<number>();
     const [postCardDropdown, setPostCardDropdown] = useState<boolean>(false);
     const [onReportModal, setOnReportModal] = useState<boolean>(false);
@@ -84,7 +88,15 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
 
     useEffect(() => {
         setMemberIdCheck(post.member.memberId)
-    }, [])
+        if (post.member.memberId === cookies.user?.num) {
+            contextModify ? setEditContent('수정취소') : setEditContent('수정하기')
+            setOnUserText('삭제하기')
+            setOnUserHTML('flex')
+        } else if (post.member.memberId !== cookies.user?.num) {
+            setOnUserText('신고하기')
+            setOnUserHTML('hidden')
+        }
+    }, [contextModify, onUserText, editContent])
 
     return (
         <div>
@@ -110,40 +122,35 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
                         id="dropdownDotsHorizontal"
                         className="z-10 w-20 absolute right-0 top-2
                          bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                        {memberIdCheck === cookies.user?.num ?
-                            <ul
-                                className="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="dropdownMenuIconHorizontalButton">
-                                <li>
-                                    <button
-                                        onClick={onEditPost}
-                                        className="flex justify-start py-2 pl-3.5 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        {contextModify ?
-                                            '수정취소'
-                                            :
-                                            '수정하기'
-                                        }
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        onClick={onDeleteOpen}
-                                        className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        삭제하기
-                                    </button>
-                                </li>
-                            </ul>
-                            :
-                            <ul>
-                                <li>
-                                    <button
+                        <ul
+                            className="py-1 text-sm text-gray-700 dark:text-gray-200"
+                            aria-labelledby="dropdownMenuIconHorizontalButton">
+                            <li>
+                                <button
+                                    type="button"
+                                    onClick={onEditPost}
+                                    className={`${onUserHTML}
+                                    "flex justify-start py-2 pl-3.5 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"`}>
+                                    {editContent}
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    onClick={onUserText ? onDeleteOpen : onReportModalOpen}
+                                    className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    {onUserText}
+                                </button>
+                            </li>
+                        </ul>
+                        {/* <ul>
+                                 <li>
+                                     <button
                                         onClick={onReportModalOpen}
                                         className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                        신고하기
+                                        {onUserText}
                                     </button>
                                 </li>
-                            </ul>
-                        }
+                            </ul> */}
                         <div className="sm h-full flex justify-center items-center">
                             {/* 삭제 Modal */}
                             <Modal

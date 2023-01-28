@@ -143,6 +143,15 @@ const MyPageForm = () => {
         <>
             <Head>
                 <title>마이페이지 | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="MyPage page" />
+                <meta name="keywords" content="MyPage" />
+                <meta property="og:title" content="마이페이지 | Project ACO" />
             </Head>
             <section className="bg-white dark:bg-gray-900">
                 <div className="max-w-2xl px-4 py-8 mx-auto lg:py-16">

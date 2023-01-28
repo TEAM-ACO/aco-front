@@ -40,6 +40,15 @@ const InitOauth = () => {
         <>
             <Head>
                 <title>회원가입 | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="SignUp page" />
+                <meta name="keywords" content="SignUp" />
+                <meta property="og:title" content="회원가입 | Project ACO" />
             </Head>
             <form onSubmit={onSubmit}>
                 <div className="flex justify-center items-center w-full h-screen90 max-w-slg mx-auto">

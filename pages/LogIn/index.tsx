@@ -64,6 +64,15 @@ const LogIn = () => {
     return (
         <>
             <Head>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="LogIn page" />
+                <meta name="keywords" content="LogIn" />
+                <meta property="og:title" content="로그인 | Project ACO" />
                 <title>로그인 | Project ACO</title>
             </Head>
             <section className="h-screen">

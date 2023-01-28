@@ -1,5 +1,5 @@
 import React from 'react';
-import Document, { DocumentContext, } from 'next/document';
+import Document, { DocumentContext, Html, Main, NextScript, } from 'next/document';
 // @ts-ignore
 import bundleCss from '!raw-loader!../styles/tailwindSSR.css';
 

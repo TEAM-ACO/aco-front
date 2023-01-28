@@ -30,8 +30,8 @@ const Visitant = () => {
     const { adminContent } = useAppSelector((state) => state.admin)
     const [selectedOption, setSelectedOption] = useState<IOptions | any>(options[0]);
 
-    // 주 선택하고 버튼 만들기
     useEffect(() => {
+        // 작업 의논중
         // dispatch(adminVisitant({ week: selectedOption.value }))
     }, [selectedOption.value])
 
@@ -40,14 +40,24 @@ const Visitant = () => {
         router.replace('/admin/member/1')
     }, [])
 
-    // chart 의논중
+    // chart 작업 의논중
 
     return (
         <>
             <Head>
                 <title>관리자페이지 | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="Admin page" />
+                <meta name="keywords" content="Admin" />
+                <meta property="og:title" content="관리자페이지 | Project ACO" />
             </Head>
             <AdminMenu>
+                {/* 이 파트 의논중 */}
                 {/* <Select
                     instanceId="long-value-select"
                     defaultValue={selectedOption}

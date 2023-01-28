@@ -5,18 +5,18 @@ import { Table } from 'flowbite-react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config'
 import { adminArticle } from '@actions/admin'
 import { IAdminArticle } from '@features/adminSlice'
-import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import Head from 'next/head'
+import { GetServerSideProps } from 'next'
 
 const AdminArticle = () => {
     // total 받으면 마지막 화살표 없애는 식 만들 것
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { pid } = router.query;
-    const { adminArticleContent, adminArticleDone, adminArticleLoading } = useAppSelector((state) => state.admin)
+    const { adminArticleContent, adminArticleLoading } = useAppSelector((state) => state.admin)
     const [requestPage, setRequestPage] = useState<number>(Number(pid));
+    const [hasMorePost, setHasMorePost] = useState<boolean>(true);
     const [postsLimit, setPostsLimit] = useState(10);
     const numPages = [];
     for (let i = 1; i <= Math.ceil(adminArticleContent[adminArticleContent.length - 1]?.totalCount / postsLimit); i++) {
@@ -34,14 +34,24 @@ const AdminArticle = () => {
     }, [requestPage])
 
     useEffect(() => {
-        if (!adminArticleLoading) {
-            dispatch(adminArticle({ requestedPageNumber: Number(pid) - 1, requestedPageSize: postsLimit }))
+        if (!adminArticleLoading && hasMorePost) {
+            dispatch(adminArticle({ requestedPageNumber: requestPage - 1, requestedPageSize: 10 }))
+            setHasMorePost(false)
         }
-    }, [adminArticleLoading])
+    }, [adminArticleLoading, hasMorePost])
     return (
         <>
             <Head>
                 <title>게시글관리 페이지 | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="Admin Article page" />
+                <meta name="keywords" content="ArticleAdmin" />
+                <meta property="og:title" content="게시글관리 페이지 | Project ACO" />
             </Head>
             <AdminMenu>
                 <Table hoverable={true}>
@@ -122,11 +132,9 @@ const AdminArticle = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-    console.log(req.headers);
-
     await store.dispatch(adminArticle());
 
-    return { props: {} }
+    return { props: { message: 'Success SSR' } }
 })
 
 export default AdminArticle

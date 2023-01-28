@@ -36,6 +36,15 @@ function PostList() {
         <>
             <Head>
                 <title>{pid} | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="Search page" />
+                <meta name="keywords" content="Search" />
+                <meta property="og:title" content="검색페이지 | Project ACO" />
             </Head>
             <div>
                 <Mainpage>

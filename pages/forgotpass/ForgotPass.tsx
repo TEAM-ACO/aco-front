@@ -68,6 +68,15 @@ const ForgotPassword = () => {
         <>
             <Head>
                 <title>비밀번호찾기 | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="ForgotPass page" />
+                <meta name="keywords" content="ForgotPass" />
+                <meta property="og:title" content="비밀번호찾기 | Project ACO" />
             </Head>
             <main id="content" role="main" className="flex justify-center items-center w-full h-screen90 max-w-slg mx-auto">
                 <div className="w-8/12 md:w-6/12 slg:w-5/12">

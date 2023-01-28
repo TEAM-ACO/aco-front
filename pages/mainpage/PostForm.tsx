@@ -30,7 +30,6 @@ function PostForm() {
     const [tagList, setTagList] = useState<string[]>([])
     const [textError, setTextError] = useState<boolean>(false);
     const [tagError, setTagError] = useState<boolean>(false);
-    const [requestPage, setRequestPage] = useState<number>(0);
 
     const imageStorageFunction = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files?.length) {
@@ -155,7 +154,7 @@ function PostForm() {
                                     <div className='flex items-center justify-between px-2 ml-1 my-1
                                     text-white bg-sky-300 hover:bg-sky-600 focus:ring-4 focus:ring-blue-300 rounded-lg dark:bg-sky-500 dark:hover:bg-sky-600 focus:outline-none dark:focus:ring-sky-600
                                     '
-                                        key={index}>
+                                        key={tagItem}>
                                         <span>{tagItem}</span>
                                         <button
                                             type="button"

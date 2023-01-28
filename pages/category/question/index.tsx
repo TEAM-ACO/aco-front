@@ -30,6 +30,15 @@ const Question = () => {
         <div>
             <Head>
                 <title>ACO 질문 | Project ACO</title>
+                <meta charSet="utf-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+                />
+                <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+                <meta name="description" content="Question page" />
+                <meta name="keywords" content="Question" />
+                <meta property="og:title" content="ACO 질문 | Project ACO" />
             </Head>
             <Mainpage>
                 <div className="ml-auto mr-auto">

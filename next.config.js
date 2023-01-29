@@ -6,7 +6,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: `http://acoapi.hyns.co.kr/api/:path*`,
+        destination: `http://acoapi.hyns.co.kr/aco/:path*`,
       },
     ];
   },

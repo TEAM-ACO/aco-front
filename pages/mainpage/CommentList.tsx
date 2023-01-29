@@ -80,7 +80,7 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
                     <button className='pr-2' onClick={userinfo}>
                         <div className='w-10'>
                             <Avatar
-                                img={`http://acoapi.hyns.co.kr/api/image/user/${memberIdCheck}`}
+                                img={`${imgUrl}/image/user/${memberIdCheck}`}
                                 rounded={true}
                             />
                         </div>

@@ -140,7 +140,7 @@ const PostCard = ({ post }: PostProps) => {
                                     onClick={userinfo}
                                     className='flex justify-start items-center'>
                                     <Avatar
-                                        img={`${imgUrl}/image/user/${memberIdCheck}`}
+                                        img={`http://acoapi.hyns.co.kr/api/image/user/${memberIdCheck}`}
                                         rounded={true}
                                     />
                                     <p className='ml-2'>

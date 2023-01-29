@@ -108,7 +108,7 @@ const header = () => {
                     <div className={`${buttonToggle ? "w-full md:block md:w-auto" : "w-full md:block md:w-auto hidden"}`}>
                         <div className='mt-3 inline-flex md:hidden'>
                             <div className="flex overflow-hidden relative items-center mx-auto w-12 h-12 bg-gray-100 rounded-full dark:bg-gray-600">
-                                <img className='h-12 object-cover' src={`${imgUrl}/image/user/${userLink}`} />
+                                <img className='h-12 object-cover' src={`http://acoapi.hyns.co.kr/api/image/user/${userLink}`} />
                             </div>
                             <Link href="/mypage" className="ml-3 flex items-center font-medium text-sm">{myNickname}</Link>
                         </div>

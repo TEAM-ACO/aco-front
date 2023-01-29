@@ -94,7 +94,7 @@ const userid = () => {
                             <div className='flex items-center gap-2'>
                                 <div className='w-10'>
                                     <Avatar
-                                        img={`${imgUrl}/image/user/${mainPosts[0]?.member.memberId}`}
+                                        img={`http://acoapi.hyns.co.kr/api/image/user/${mainPosts[0]?.member.memberId}`}
                                         rounded={true}
                                     />
                                 </div>

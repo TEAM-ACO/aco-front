@@ -9,6 +9,7 @@ import { Spinner } from 'flowbite-react'
 import { useCookies } from "react-cookie"
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { imgUrl } from 'util/imgUrl'
 
 const BGcolor = {
     google: {
@@ -145,7 +146,7 @@ const LogIn = () => {
                             <Link
                                 className="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center mb-3"
                                 style={BGcolor.google}
-                                href="http://localhost:15251/api/oauth/chrome"
+                                href={`${imgUrl}/oauth/chrome`}
                             >
                                 {/* <!-- Google --> */}
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-3.5 h-3.5 mr-2">
@@ -158,7 +159,7 @@ const LogIn = () => {
                             <Link
                                 className="px-7 py-3 text-gray-700 font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center"
                                 style={BGcolor.kakao}
-                                href="http://localhost:15251/api/oauth/kakao"
+                                href={`${imgUrl}/oauth/kakao`}
                             >
                                 {/* <!-- Kakao --> */}
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-3.5 h-3.5 mr-2">

@@ -12,6 +12,7 @@ import Mainpage from '@pages/mainpage/mainpage';
 import { loadUserPosts, reportMember } from '@actions/post';
 import { Avatar, Button, Modal } from 'flowbite-react';
 import Head from 'next/head';
+import { imgUrl } from 'util/imgUrl';
 
 const userid = () => {
     const dispatch = useAppDispatch();
@@ -93,7 +94,7 @@ const userid = () => {
                             <div className='flex items-center gap-2'>
                                 <div className='w-10'>
                                     <Avatar
-                                        img={`http://localhost:15251/api/image/user/${mainPosts[0]?.member.memberId}`}
+                                        img={`${imgUrl}/image/user/${mainPosts[0]?.member.memberId}`}
                                         rounded={true}
                                     />
                                 </div>

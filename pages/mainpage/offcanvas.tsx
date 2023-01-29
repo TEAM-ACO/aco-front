@@ -43,7 +43,7 @@ function OffCanvas() {
                     <div className="flex flex-wrap mt-8">
                         <div className="ml-4 w-1/4">
                             <div className="inline-flex overflow-hidden relative justify-center items-center mx-auto w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600">
-                                <img className='h-16 object-cover' src={`${imgUrl}/image/user/${userLink}`} />
+                                <img className='h-16 object-cover' src={`http://acoapi.hyns.co.kr/api/image/user/${userLink}`} />
                             </div>
                         </div>
                         <div className="ml-6 w-2/4">

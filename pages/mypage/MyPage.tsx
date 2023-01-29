@@ -249,7 +249,7 @@ const MyPageForm = () => {
                         <div className="sm:col-span-2">
                             <div className="mb-3 inline-flex overflow-hidden relative justify-center items-center mx-auto w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600">
                                 <span className="font-medium text-gray-600 dark:text-gray-300">
-                                    <img className='h-16 object-cover' src={`${imgUrl}/image/user/${userLink}`} />
+                                    <img className='h-16 object-cover' src={`http://acoapi.hyns.co.kr/api/image/user/${userLink}`} />
                                 </span>
                             </div>
                             <div className='mb-3 '>

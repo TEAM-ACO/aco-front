@@ -6,6 +6,7 @@ import useInput from '@hooks/useInput'
 import { useAppDispatch } from '@store/config'
 import { signup, emailAuthRequest, authnumVerifyRequest } from '@actions/signup'
 import Head from 'next/head'
+import { imgUrl } from 'util/imgUrl'
 
 const BGcolor = {
     google: {

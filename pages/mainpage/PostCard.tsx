@@ -14,6 +14,7 @@ import { likePost, updateComment } from '@actions/post';
 import { useRouter } from 'next/router';
 import PostModifyForm from './PostModifyForm';
 import CommentMore from './CommentMore';
+import { imgUrl } from 'util/imgUrl';
 
 type PostProps = {
     post: IArticle
@@ -139,7 +140,7 @@ const PostCard = ({ post }: PostProps) => {
                                     onClick={userinfo}
                                     className='flex justify-start items-center'>
                                     <Avatar
-                                        img={`http://localhost:15251/api/image/user/${memberIdCheck}`}
+                                        img={`http://acoapi.hyns.co.kr/api/image/user/${memberIdCheck}`}
                                         rounded={true}
                                     />
                                     <p className='ml-2'>

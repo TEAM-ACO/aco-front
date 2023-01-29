@@ -39,7 +39,12 @@ const Diary: NextPage = (props: InferGetServerSidePropsType<typeof getServerSide
                 <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
                 <meta name="description" content="Diary page" />
                 <meta name="keywords" content="Diary" />
+                <link rel="icon" sizes="100x100" href="/favicon.png" />
+                <meta property="og:image" content="/favicon.png" />
                 <meta property="og:title" content="ACO 다이어리 | Project ACO" />
+                <meta property="og:description" content="Diary page" />
+                <meta property="og:site_name" content="ACO" />
+                <meta property="og:locale" content="ko_KR" />
             </Head>
             <Mainpage>
                 <div className="ml-auto mr-auto">

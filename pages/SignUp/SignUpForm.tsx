@@ -94,6 +94,11 @@ const SignUp = () => {
                 <meta name="description" content="SignUp page" />
                 <meta name="keywords" content="SignUp" />
                 <meta property="og:title" content="회원가입 | Project ACO" />
+                <meta property="og:image" content="/favicon.png" />
+                <meta property="og:description" content="SignUp Page" />
+                <meta property="og:site_name" content="ACO" />
+                <meta property="og:locale" content="ko_KR" />
+                <link rel="icon" sizes="100x100" href="/favicon.png" />
             </Head>
             <section className="h-screen94">
                 <div className="container px-6 py-12 h-full">

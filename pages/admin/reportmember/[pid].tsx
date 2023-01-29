@@ -52,7 +52,12 @@ const AdminReportMember = () => {
                 <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
                 <meta name="description" content="Admin Member Report page" />
                 <meta name="keywords" content="MemberReportAdmin" />
+                <link rel="icon" sizes="100x100" href="/favicon.png" />
+                <meta property="og:image" content="/favicon.png" />
                 <meta property="og:title" content="멤버 신고관리 페이지 | Project ACO" />
+                <meta property="og:description" content="Admin Member Report page" />
+                <meta property="og:site_name" content="ACO" />
+                <meta property="og:locale" content="ko_KR" />
             </Head>
             <AdminMenu>
                 <Table hoverable={true}>

@@ -149,9 +149,14 @@ const MyPageForm = () => {
                     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
                 />
                 <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-                <meta name="description" content="MyPage page" />
+                <meta name="description" content="ACO MyPage page입니다." />
                 <meta name="keywords" content="MyPage" />
                 <meta property="og:title" content="마이페이지 | Project ACO" />
+                <meta property="og:image" content="/favicon.png" />
+                <meta property="og:description" content="ACO MyPage page입니다." />
+                <meta property="og:site_name" content="ACO" />
+                <meta property="og:locale" content="ko_KR" />
+                <link rel="icon" sizes="100x100" href="/favicon.png" />
             </Head>
             <section className="bg-white dark:bg-gray-900">
                 <div className="max-w-2xl px-4 py-8 mx-auto lg:py-16">

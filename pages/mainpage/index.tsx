@@ -47,9 +47,14 @@ const mainpage: NextPage = (props: InferGetServerSidePropsType<typeof getServerS
                     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
                 />
                 <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-                <meta name="description" content="Mainpage page" />
+                <meta name="description" content="ACO Mainpage page입니다." />
                 <meta name="keywords" content="Mainpage" />
                 <meta property="og:title" content="ACO 메인페이지 | Project ACO" />
+                <meta property="og:image" content="/favicon.png" />
+                <meta property="og:description" content="ACO Mainpage page입니다." />
+                <meta property="og:site_name" content="ACO" />
+                <meta property="og:locale" content="ko_KR" />
+                <link rel="icon" sizes="100x100" href="/favicon.png" />
             </Head>
             <Mainpage>
                 <div className="ml-auto mr-auto">

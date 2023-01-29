@@ -8,6 +8,7 @@ import ReComments from './ReCommentForm';
 import { useAppDispatch, useAppSelector } from '@store/config';
 import { deleteComment } from '@actions/post';
 import { IUpdateComment } from '@typings/db';
+import { imgUrl } from 'util/imgUrl';
 
 type CommentProps = {
     comment: IReply
@@ -79,7 +80,7 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
                     <button className='pr-2' onClick={userinfo}>
                         <div className='w-10'>
                             <Avatar
-                                img={`http://localhost:15251/api/image/user/${memberIdCheck}`}
+                                img={`${imgUrl}/image/user/${memberIdCheck}`}
                                 rounded={true}
                             />
                         </div>

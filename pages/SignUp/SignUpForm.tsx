@@ -228,7 +228,7 @@ const SignUp = () => {
                             <Link
                                 className="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center mb-3"
                                 style={BGcolor.google}
-                                href={`http://acoapi.hyns.co.kr/api/oauth/chrome`}
+                                href="http://acoapi.hyns.co.kr/api/oauth/chrome"
                             >
                                 {/* <!-- Google --> */}
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -242,7 +242,7 @@ const SignUp = () => {
                             <Link
                                 className="mb-20 slg:mb-0 px-7 py-3 text-gray-700 font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center"
                                 style={BGcolor.kakao}
-                                href={`http://acoapi.hyns.co.kr/api/oauth/kakao`}
+                                href="http://acoapi.hyns.co.kr/api/oauth/kakao"
                             >
                                 {/* <!-- Kakao --> */}
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-3.5 h-3.5 mr-2">

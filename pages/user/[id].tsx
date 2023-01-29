@@ -75,9 +75,14 @@ const userid = () => {
                     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
                 />
                 <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-                <meta name="description" content="User page" />
+                <meta name="description" content={`${mainPosts[0]?.member.nickname}"님의 페이지입니다." | User Page`} />
                 <meta name="keywords" content="User" />
                 <meta property="og:title" content="유저페이지 | Project ACO" />
+                <meta property="og:image" content="/favicon.png" />
+                <meta property="og:description" content={`${mainPosts[0]?.member.nickname}"님의 페이지입니다." | User Page`} />
+                <meta property="og:site_name" content="ACO" />
+                <meta property="og:locale" content="ko_KR" />
+                <link rel="icon" sizes="100x100" href="/favicon.png" />
             </Head>
             <Mainpage>
                 <div className="ml-auto mr-auto">

@@ -38,7 +38,12 @@ const Question = () => {
                 <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
                 <meta name="description" content="Question page" />
                 <meta name="keywords" content="Question" />
+                <link rel="icon" sizes="100x100" href="/favicon.png" />
+                <meta property="og:image" content="/favicon.png" />
                 <meta property="og:title" content="ACO 질문 | Project ACO" />
+                <meta property="og:description" content="Question page" />
+                <meta property="og:site_name" content="ACO" />
+                <meta property="og:locale" content="ko_KR" />
             </Head>
             <Mainpage>
                 <div className="ml-auto mr-auto">

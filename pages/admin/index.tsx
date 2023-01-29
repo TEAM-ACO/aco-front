@@ -46,6 +46,7 @@ const Visitant = () => {
         <>
             <Head>
                 <title>관리자페이지 | Project ACO</title>
+                <link rel="icon" sizes="100x100" href="/favicon.png" />
                 <meta charSet="utf-8" />
                 <meta
                     name="viewport"
@@ -54,7 +55,11 @@ const Visitant = () => {
                 <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
                 <meta name="description" content="Admin page" />
                 <meta name="keywords" content="Admin" />
+                <meta property="og:image" content="/favicon.png" />
                 <meta property="og:title" content="관리자페이지 | Project ACO" />
+                <meta property="og:description" content="Admin page" />
+                <meta property="og:site_name" content="ACO" />
+                <meta property="og:locale" content="ko_KR" />
             </Head>
             <AdminMenu>
                 {/* 이 파트 의논중 */}

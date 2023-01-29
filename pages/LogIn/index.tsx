@@ -73,6 +73,11 @@ const LogIn = () => {
                 <meta name="description" content="LogIn page" />
                 <meta name="keywords" content="LogIn" />
                 <meta property="og:title" content="로그인 | Project ACO" />
+                <meta property="og:image" content="/favicon.png" />
+                <meta property="og:description" content="LogIn page" />
+                <meta property="og:site_name" content="ACO" />
+                <meta property="og:locale" content="ko_KR" />
+                <link rel="icon" sizes="100x100" href="/favicon.png" />
                 <title>로그인 | Project ACO</title>
             </Head>
             <section className="h-screen">

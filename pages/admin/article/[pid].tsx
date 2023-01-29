@@ -51,7 +51,12 @@ const AdminArticle = () => {
                 <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
                 <meta name="description" content="Admin Article page" />
                 <meta name="keywords" content="ArticleAdmin" />
+                <meta property="og:image" content="/favicon.png" />
+                <link rel="icon" sizes="100x100" href="/favicon.png" />
                 <meta property="og:title" content="게시글관리 페이지 | Project ACO" />
+                <meta property="og:description" content="Admin Article page" />
+                <meta property="og:site_name" content="ACO" />
+                <meta property="og:locale" content="ko_KR" />
             </Head>
             <AdminMenu>
                 <Table hoverable={true}>

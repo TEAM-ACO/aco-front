@@ -1,3 +1,2 @@
-// export const backendURL = 'http://localhost:3075/';
-export const backendURL = './';
+export const backendURL = process.env.NODE_ENV === 'production' ? './' : 'http://localhost:3075/'
 export default backendURL;

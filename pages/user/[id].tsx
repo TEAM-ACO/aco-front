@@ -5,9 +5,9 @@ import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { useCookies } from "react-cookie"
 
-import PostCard from '@pages/mainpage/PostCard';
+import PostCard from '@app/PostCard';
 import { IArticle, userRequestPage } from '@features/postSlice';
-import PostForm from '@pages/mainpage/PostForm';
+import PostForm from '@app/PostForm';
 import Mainpage from '@app/mainpage';
 import { loadUserPosts, reportMember } from '@actions/post';
 import { Avatar, Button, Modal } from 'flowbite-react';

@@ -2,8 +2,8 @@ import React, { useEffect, useCallback } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
 
-import PostCard from './PostCard';
-import PostForm from './PostForm';
+import PostCard from '@app/PostCard';
+import PostForm from '@app/PostForm';
 import Mainpage from '../../app/mainpage';
 import { IArticle, mainRequestPage } from '@features/postSlice';
 import { loadPosts } from '@actions/post';

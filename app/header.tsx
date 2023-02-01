@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useCookies } from "react-cookie"
 import { Navbar } from "flowbite-react";
-import SearchForm from '@pages/SearchForm';
+import SearchForm from '@app/SearchForm';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAppDispatch } from '@store/config';

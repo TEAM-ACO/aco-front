@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useRef, DetailedHTMLProps, SelectHTMLAttributes, Dispatch, SetStateAction, useEffect } from 'react'
 import { useCookies } from "react-cookie"
 import { Modal, Button, Spinner } from 'flowbite-react';
-import { deletePost, editPost, reportArticle, reportPost } from '../../actions/post';
+import { deletePost, editPost, reportArticle, reportPost } from '../actions/post';
 import { useAppDispatch, useAppSelector } from '@store/config'
 import { IArticle, deletePostToMe } from '@features/postSlice';
 import { useRouter } from 'next/router';

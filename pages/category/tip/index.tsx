@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
 import { loadMenu } from '@actions/post';
-import Mainpage from '../../mainpage/mainpage';
+import Mainpage from '../../../app/mainpage';
 import PostForm from '../../mainpage/PostForm';
 import { IArticle } from '@features/postSlice';
 import PostCard from '../../mainpage/PostCard';

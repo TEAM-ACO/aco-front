@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next -p 3075",
     "prebuild": "tailwindcss-cli build -o styles/tailwindSSR.css",
-    "build": "cross-env NODE_ENV=production next build"
+    "build": "cross-env NODE_ENV=production next build",
+    "start": "cross-env NODE_ENV=production next start"
   },
   "repository": {
     "type": "git",

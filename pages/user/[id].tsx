@@ -8,7 +8,7 @@ import { useCookies } from "react-cookie"
 import PostCard from '@pages/mainpage/PostCard';
 import { IArticle, userRequestPage } from '@features/postSlice';
 import PostForm from '@pages/mainpage/PostForm';
-import Mainpage from '@pages/mainpage/mainpage';
+import Mainpage from '@app/mainpage';
 import { loadUserPosts, reportMember } from '@actions/post';
 import { Avatar, Button, Modal } from 'flowbite-react';
 import Head from 'next/head';

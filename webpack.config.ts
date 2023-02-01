@@ -32,24 +32,24 @@ const config: Configuration = {
   },
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            [
-              '@babel/preset-env',
-              {
-                targets: { browsers: ['IE 11'] },
-                debug: isDevelopment,
-              },
-            ],
-            '@babel/preset-react',
-            '@babel/preset-typescript',
-          ],
-        },
-        exclude: path.join(__dirname, 'node_modules'),
-      },
+      // {
+      //   test: /\.tsx?$/,
+      //   loader: 'babel-loader',
+      //   options: {
+      //     presets: [
+      //       [
+      //         '@babel/preset-env',
+      //         {
+      //           targets: { browsers: ['IE 11'] },
+      //           debug: isDevelopment,
+      //         },
+      //       ],
+      //       '@babel/preset-react',
+      //       '@babel/preset-typescript',
+      //     ],
+      //   },
+      //   exclude: path.join(__dirname, 'node_modules'),
+      // },
       {
         test: /\.css?$/,
         use: ['style-loader', 'css-loader', 'postcss-loader'],

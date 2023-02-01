@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer';
 
 import PostCard from './PostCard';
 import PostForm from './PostForm';
-import Mainpage from './mainpage';
+import Mainpage from '../../app/mainpage';
 import { IArticle, mainRequestPage } from '@features/postSlice';
 import { loadPosts } from '@actions/post';
 import { useCookies } from "react-cookie"

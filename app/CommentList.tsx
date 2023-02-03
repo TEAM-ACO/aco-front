@@ -22,15 +22,11 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [dayCheck, setDayCheck] = useState<string>();
     const { deleteCommentLoading } = useAppSelector((state) => state.post)
-    const date = dayjs(dayCheck).format("YY-MM-DD");
+    const date = dayjs(comment.date).format("YY-MM-DD");
 
     const [bigComment, setBigComment] = useState<boolean>(false);
     const [commentDelete, setCommentDelete] = useState<boolean>(false);
     const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
-    const [replySortCheck, setReplySortCheck] = useState<number>();
-    const [nicknameCheck, setNicknameCheck] = useState<string>();
-    const [replyContextCheck, setReplyContextCheck] = useState<string[]>();
-    const [memberIdCheck, setMemberIdCheck] = useState<number>();
 
     const userinfo = useCallback(() => {
         dispatch(userRequestPage({ reqPage: 0 }))
@@ -59,50 +55,55 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
         setCommentDelete(false)
         setTimeout(() => {
             commentListUpdate()
-        }, 0)
+        }, 1000)
     }, [onDeleteModal, commentDelete])
 
-    useEffect(() => {
-        setDayCheck(comment.date)
-        setReplySortCheck(comment.replySort)
-        setNicknameCheck(comment.member.nickname)
-        setReplyContextCheck(comment.replyContext)
-        setMemberIdCheck(comment.member.memberId)
-    }, [])
+    // const [replySortCheck, setReplySortCheck] = useState<number>();
+    // const [nicknameCheck, setNicknameCheck] = useState<string>();
+    // const [replyContextCheck, setReplyContextCheck] = useState<string[]>();
+    // const [memberIdCheck, setMemberIdCheck] = useState<number>();
+
+    // useEffect(() => {
+    //     setDayCheck(comment.date)
+    //     setReplySortCheck(comment.replySort)
+    //     setNicknameCheck(comment.member.nickname)
+    //     setReplyContextCheck(comment.replyContext)
+    //     setMemberIdCheck(comment.member.memberId)
+    // }, [])
 
     return (
         <div>
             <li className="ml-6 flex items-center justify-between">
                 <div className='flex items-center'>
                     <div>
-                        {replySortCheck === 1 && <p className='px-3'>ㄴ</p>}
+                        {comment.replySort === 1 && <p className='px-3'>ㄴ</p>}
                     </div>
                     <button className='pr-2' onClick={userinfo}>
                         <div className='w-10'>
                             <Avatar
-                                img={`${imgUrl}/image/user/${memberIdCheck}`}
+                                img={`${imgUrl}/image/user/${comment.member.memberId}`}
                                 rounded={true}
                             />
                         </div>
                     </button>
                     <div className='mr-5 w-10'>
                         <button className="text-sm font-medium text-gray-900 dark:text-white"
-                            onClick={userinfo}>{nicknameCheck}</button>
+                            onClick={userinfo}>{comment.member.nickname}</button>
                     </div>
                     <div className="text-sm break-words font-normal text-gray-500 lex dark:text-gray-300">
-                        {replyContextCheck}
+                        {comment.replyContext}
                     </div>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-white rounded-lg border border-gray-200 sm:flex dark:bg-gray-700 dark:border-gray-600">
                     <time className="mr-3 text-xs font-normal text-gray-400 sm:mb-0">
                         {date}
                     </time>
-                    {replySortCheck === 0 &&
+                    {comment.replySort === 0 &&
                         <button onClick={onRereplyModalOpen} className="sm:order-last mr-3">
                             {bigComment ? '취소' : '답글'}
                         </button>
                     }
-                    {memberIdCheck === cookies.user?.num &&
+                    {comment.member.memberId === cookies.user?.num &&
                         <button onClick={onDeleteOpen} className="sm:order-last mr-3">
                             삭제
                         </button>

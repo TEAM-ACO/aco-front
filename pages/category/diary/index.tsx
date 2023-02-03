@@ -12,18 +12,18 @@ import Head from 'next/head';
 const Diary: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const dispatch = useAppDispatch();
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
-    const [requestPage, setRequestPage] = useState<number>(1);
+    const [requestPage, setRequestPage] = useState<number>(0);
 
     const [ref, inView] = useInView();
 
     const loadMore = useCallback(() => {
         setRequestPage(prev => prev + 1);
-        dispatch(loadMenu({ num: 0, menu: "Diary", requestedPageNumber: requestPage, requestedPageSize: 10 }));
     }, [requestPage])
-
+    
     useEffect(() => {
         if (inView && hasMorePosts && !loadPostsLoading) {
             loadMore()
+            dispatch(loadMenu({ num: 0, menu: "Diary", requestedPageNumber: requestPage, requestedPageSize: 10 }));
         }
     }, [inView, hasMorePosts, loadPostsLoading]);
 

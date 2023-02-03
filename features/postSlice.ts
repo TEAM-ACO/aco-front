@@ -19,7 +19,7 @@ import {
   updateComment,
   uploadImages,
 } from '@actions/post';
-import { ArticleLoadPosts } from '@typings/db';
+import { ArticleLoadPosts, IMainReqPage } from '@typings/db';
 
 export interface IArticle {
   articleId: number;
@@ -60,40 +60,73 @@ export interface IReply {
 export interface IArticleState {
   mainPosts: IArticle[];
   hasMorePosts: boolean;
+  requestedPageNumber: number;
+
   loadUserPostsLoading: boolean;
   loadUserPostsDone: boolean;
+  loadUserPostsError: unknown | null;
+
   loadPostsLoading: boolean;
   loadPostsDone: boolean;
-  requestedPageNumber: number;
+  loadPostsError: unknown | null;
+  
   addPostLoading: boolean;
   addPostDone: boolean;
+  addPostError: unknown | null;
+
   uploadImagesLoading: boolean;
   uploadImagesDone: boolean;
+  uploadImagesError: unknown | null;
   imagePaths: string[] | null;
+
   searchPostsLoading: boolean;
   searchPostsDone: boolean;
+  searchPostsError: unknown | null;
+
   updatePostLoading: boolean;
   updatePostDone: boolean;
+  updatePostError: unknown | null;
+
   reportPostLoading: boolean;
   reportPostDone: boolean;
+  reportPostError: unknown | null;
+
   reportMemberLoading: boolean;
   reportMemberDone: boolean;
+  reportMemberError: unknown | null;
+
   likePostLoading: boolean;
   likePostDone: boolean;
+  likePostError: unknown | null;
+
   addCommentLoading: boolean;
   addCommentDone: boolean;
+  addCommentError: unknown | null;
+
   updateCommentLoading: boolean;
   updateCommentDone: boolean;
+  updateCommentError: unknown | null;
+
   loadMenuLoading: boolean;
   loadMenuDone: boolean;
+  loadMenuError: unknown | null;
+
   editPostLoading: boolean;
   editPostDone: boolean;
+  editPostError: unknown | null;
+
   deletePostLoading: boolean;
   deletePostDone: boolean;
+  deletePostError: unknown | null;
+
   deleteCommentLoading: boolean;
   deleteCommentDone: boolean;
+  deleteCommentError: unknown | null;
+
   randomTipLoading: boolean;
   randomTipDone: boolean;
+  randomTipError: unknown | null;
+
   ranTip: string;
   reqPage: number;
   mainReqPage: number;
@@ -103,40 +136,73 @@ export interface IArticleState {
 export const initialState: IArticleState = {
   mainPosts: [],
   hasMorePosts: true,
+  requestedPageNumber: 0, // 페이지네이션
+
   loadUserPostsLoading: false, // 개인 post 로드
   loadUserPostsDone: false,
+  loadUserPostsError: null,
+
   loadPostsLoading: false, // post 로드
   loadPostsDone: false,
-  requestedPageNumber: 0, // 페이지네이션
+  loadPostsError: null,
+
   addPostLoading: false, // 글쓰기
   addPostDone: false,
+  addPostError: null,
+
   uploadImagesLoading: false, // 이미지첨부
   uploadImagesDone: false,
+  uploadImagesError: null,
   imagePaths: null,
+
   reportMemberLoading: false, // 멤버 신고
   reportMemberDone: false,
+  reportMemberError: null,
+  
   searchPostsLoading: false, // 검색
   searchPostsDone: false,
+  searchPostsError: null,
+
   updatePostLoading: false,
   updatePostDone: false,
+  updatePostError: null,
+
   reportPostLoading: false, // 신고
   reportPostDone: false,
+  reportPostError: null,
+
   likePostLoading: false, // 좋아요
   likePostDone: false,
+  likePostError: null,
+
   addCommentLoading: false, // 댓글 쓰기
   addCommentDone: false,
+  addCommentError: null,
+
   updateCommentLoading: false, // 댓글 변동시 로드
   updateCommentDone: false,
+  updateCommentError: null,
+
   loadMenuLoading: false, // 개인 post 로드
   loadMenuDone: false,
+  loadMenuError: null,
+
   editPostLoading: false, // edit 삭제
   editPostDone: false,
+  editPostError: null,
+
   deletePostLoading: false, // post 삭제
   deletePostDone: false,
+  deletePostError: null,
+
   deleteCommentLoading: false, // comment 삭제
   deleteCommentDone: false,
+  deleteCommentError: null,
+
   randomTipLoading: false, // randomTip
   randomTipDone: false,
+  randomTipError: null,
+
   ranTip: '',
   reqPage: 0,
   mainReqPage: 0,
@@ -154,7 +220,7 @@ const postSlice = createSlice({
     deletePostToMe(state, action) {
       state.mainPosts = state.mainPosts.filter((v) => v.articleId !== action.payload.articleId);
     },
-    mainRequestPage(state, action) {
+    mainRequestPage(state: IMainReqPage, action) {
       state.mainReqPage = action.payload.mainReqPage + 1;
     },
     userRequestPage(state, action) {

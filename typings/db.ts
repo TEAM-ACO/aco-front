@@ -144,3 +144,7 @@ export interface WeekArticles {
   articleId: number;
   articleContext: string;
 }
+
+export interface IMainReqPage {
+  mainReqPage: number | undefined;
+}

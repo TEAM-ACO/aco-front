@@ -30,7 +30,7 @@ function MyApp({ Component, ...rest }: AppProps) {
             <div className="App">
                 <Provider store={store}>
                     <CookiesProvider>
-                        <div className="sticky top-0 z-50">
+                        <div className="sticky w-full top-0 z-50">
                             <Header />
                         </div>
                         <Component {...props.pageProps} />

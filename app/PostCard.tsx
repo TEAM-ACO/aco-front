@@ -21,8 +21,7 @@ type PostProps = {
 }
 
 const PostCard = ({ post }: PostProps) => {
-    const [dateCheck, setDateCheck] = useState<string>();
-    const date = dayjs(dateCheck).format("YY-MM-DD");
+    const date = dayjs(post.date).format("YY-MM-DD");
     const router = useRouter();
     const dispatch = useAppDispatch();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
@@ -31,23 +30,14 @@ const PostCard = ({ post }: PostProps) => {
     const [favoriteError, setFavoriteError] = useState<boolean>(false);
     const [requestPage, setRequestPage] = useState<number>(0);
     const [requestComment, setRequestComment] = useState<number>(5);
-
-    const [articleImageCheck, setArticleImageCheck] = useState<string[]>([]);
-    const [memberIdCheck, setMemberIdCheck] = useState<number>();
-    const [nicknameCheck, setNicknameCheck] = useState<string>();
-    const [articleIdCheck, setArticleIdCheck] = useState<number>();
-    const [menuCheck, setMenuCheck] = useState<string>();
-    const [articleContextCheck, setArticleContextCheck] = useState<string>();
-    const [tagsCheck, setTagsCheck] = useState<string[]>([]);
-    const [replysCheck, setReplysCheck] = useState<IReply[]>([]);
-    const [replyCountCheck, setReplyCountCheck] = useState<number>();
-    const [categoryCheck, setCategoryCheck] = useState<boolean>();
-
+    
+    const [replyCountCheck, setReplyCountCheck] = useState<number>(post.replys[post.replys.length - 1]?.totalCount || 0);
+    
     const userinfo = useCallback(() => {
         dispatch(userRequestPage({ reqPage: 0 }))
         router.push(`/user/${post.member.memberId}`)
     }, [])
-
+    
     const loadMore = useCallback(() => {
         setRequestPage(prev => prev + 1);
     }, [requestPage])
@@ -55,7 +45,7 @@ const PostCard = ({ post }: PostProps) => {
     const loadMoreComment = useCallback(() => {
         setRequestComment(prev => prev + 5);
     }, [requestComment])
-
+    
     // 댓글 업데이트
     const onCommentViewMore = useCallback(() => {
         dispatch(updateComment({
@@ -80,14 +70,14 @@ const PostCard = ({ post }: PostProps) => {
     const onMenu = useCallback(() => {
         router.push(`/category/${post.menu.toLowerCase()}`)
     }, [])
-
+    
     const commentListUpdate = useCallback(() => {
         dispatch(updateComment({
             article: { articleId: post.articleId },
             requestedPageNumber: requestPage, requestedPageSize: post.replys[post.replys.length - 1]?.totalCount
         }))
     }, [requestPage, requestComment])
-
+    
     useEffect(() => {
         if (post.likes === 1) {
             setFavorite(true)
@@ -95,26 +85,36 @@ const PostCard = ({ post }: PostProps) => {
             setFavorite(false)
         }
     }, [])
-
+    
     useEffect(() => {
         if (!cookies.user) {
             router.replace('/')
         }
     })
-
-    useEffect(() => {
-        setDateCheck(post.date)
-        setArticleImageCheck(post.articleImagesNames)
-        setMemberIdCheck(post.member.memberId)
-        setNicknameCheck(post.member.nickname)
-        setArticleIdCheck(post.articleId)
-        setMenuCheck(post.menu)
-        setArticleContextCheck(post.articleContext)
-        setTagsCheck(post.tags)
-        setReplysCheck(post.replys)
-        setReplyCountCheck(post.replys[post.replys.length - 1]?.totalCount || 0)
-        setCategoryCheck(router.asPath.split('/')[2] === post.menu.toLowerCase())
-    })
+    
+    // const [dateCheck, setDateCheck] = useState<string>();
+    // const [articleImageCheck, setArticleImageCheck] = useState<string[]>([]);
+    // const [memberIdCheck, setMemberIdCheck] = useState<number>();
+    // const [nicknameCheck, setNicknameCheck] = useState<string>();
+    // const [articleIdCheck, setArticleIdCheck] = useState<number>();
+    // const [menuCheck, setMenuCheck] = useState<string>();
+    // const [articleContextCheck, setArticleContextCheck] = useState<string>();
+    // const [tagsCheck, setTagsCheck] = useState<string[]>([]);
+    // const [replysCheck, setReplysCheck] = useState<IReply[]>([]);
+    // const [categoryCheck, setCategoryCheck] = useState<boolean>();
+    // useEffect(() => {
+    //     setDateCheck(post.date)
+    //     setArticleImageCheck(post.articleImagesNames)
+    //     setMemberIdCheck(post.member.memberId)
+    //     setNicknameCheck(post.member.nickname)
+    //     setArticleIdCheck(post.articleId)
+    //     setMenuCheck(post.menu)
+    //     setArticleContextCheck(post.articleContext)
+    //     setTagsCheck(post.tags)
+    //     setReplysCheck(post.replys)
+    //     setReplyCountCheck(post.replys[post.replys.length - 1]?.totalCount || 0)
+    //     setCategoryCheck(router.asPath.split('/')[2] === post.menu.toLowerCase())
+    // })
 
     return (
         <>
@@ -123,7 +123,7 @@ const PostCard = ({ post }: PostProps) => {
                     <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
                         <div>
                             <Carousel className='px-6 py-4 xl:h-80  carousel-class' slide={false}>
-                                {articleImageCheck.map((articleImages) => {
+                                {post.articleImagesNames.map((articleImages) => {
                                     return (
                                         <PostImage key={articleImages} articleImages={articleImages} />
                                     )
@@ -140,34 +140,34 @@ const PostCard = ({ post }: PostProps) => {
                                     onClick={userinfo}
                                     className='flex justify-start items-center'>
                                     <Avatar
-                                        img={`${imgUrl}/image/user/${memberIdCheck}`}
+                                        img={`${imgUrl}/image/user/${post.member.memberId}`}
                                         rounded={true}
                                     />
                                     <p className='ml-2'>
-                                        {nicknameCheck}
+                                        {post.member.nickname}
                                     </p>
                                 </button>
                             </div>
-                            <Dropdown key={articleIdCheck} post={post}
+                            <Dropdown key={post.articleId} post={post}
                                 contextModify={contextModify} setContextModify={setContextModify} />
                         </div>
                         {contextModify ?
-                            <PostModifyForm key={articleIdCheck} post={post}
+                            <PostModifyForm key={post.articleId} post={post}
                                 contextModify={contextModify} setContextModify={setContextModify} />
                             :
                             <div>
                                 <div className='text-gray-500 text-xs items-center mb-3 flex justify-between'>
                                     <div className='flex'>
                                         카테고리:&nbsp;
-                                        {categoryCheck ?
+                                        {router.asPath.split('/')[2] === post.menu.toLowerCase() ?
                                             <Tooltip content="현재 카테고리">
                                                 <button>
-                                                    {menuCheck}
+                                                    {post.menu}
                                                 </button>
                                             </Tooltip>
                                             :
                                             <button onClick={onMenu}>
-                                                {menuCheck}
+                                                {post.menu}
                                             </button>
                                         }
                                     </div>
@@ -177,7 +177,7 @@ const PostCard = ({ post }: PostProps) => {
                                 </div>
                                 <div>
                                     <p className="text-gray-700 text-base">
-                                        {articleContextCheck}
+                                        {post.articleContext}
                                     </p>
                                 </div>
                             </div>
@@ -195,7 +195,7 @@ const PostCard = ({ post }: PostProps) => {
                             </div>
                             {/* HASHTAG */}
                             <div className="px-6 pt-4 pb-2">
-                                {tagsCheck.map((tags) => {
+                                {post.tags.map((tags) => {
                                     return (
                                         <PostCardContent key={tags} tags={tags} />
                                     )
@@ -209,11 +209,11 @@ const PostCard = ({ post }: PostProps) => {
                                         {`${replyCountCheck}개의 댓글`}
                                     </div>
                                     <div className='mt-2'>
-                                        {replysCheck.map((cmt: IReply) => (
+                                        {post.replys.map((cmt: IReply) => (
                                             <CommentList key={cmt.replyId} comment={cmt} commentListUpdate={commentListUpdate} />
                                         ))}
                                     </div>
-                                    <CommentMore replys={replysCheck} onCommentViewMore={onCommentViewMore} />
+                                    <CommentMore replys={post.replys} onCommentViewMore={onCommentViewMore} />
                                 </div>
                             </div>
                         </>

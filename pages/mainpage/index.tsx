@@ -13,20 +13,21 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 const mainpage: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    console.log(props)
 
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const { mainPosts, loadPostsLoading, hasMorePosts, mainReqPage } = useAppSelector((state) => state.post);
+    const { mainPosts, loadPostsLoading, loadPostsError, hasMorePosts, mainReqPage } = useAppSelector((state) => state.post);
     const [ref, inView] = useInView();
 
     const loadMore = useCallback(() => {
         dispatch(mainRequestPage({ mainReqPage }))
-        dispatch(loadPosts({ requestedPageNumber: mainReqPage, requestedPageSize: 10 }));
     }, [mainReqPage])
-
+    
     useEffect(() => {
         if (inView && hasMorePosts && !loadPostsLoading) {
+            dispatch(loadPosts({ requestedPageNumber: mainReqPage, requestedPageSize: 10 }));
             loadMore();
         }
     }, [inView, hasMorePosts, loadPostsLoading]);
@@ -73,10 +74,10 @@ const mainpage: NextPage = (props: InferGetServerSidePropsType<typeof getServerS
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async () => {
     const mainReqPage = 0
-    const { payload } = await store.dispatch(loadPosts({ requestedPageNumber: mainReqPage, requestedPageSize: 10 }));
-    await store.dispatch(mainRequestPage({ mainReqPage: 0 }))
+    const payload = await store.dispatch(loadPosts({ requestedPageNumber: mainReqPage, requestedPageSize: 10 }));
+    // await store.dispatch(mainRequestPage({ mainReqPage: 0 }))
 
-    return { props: { message: 'Success SSR', payload } }
+    return { props: { message: 'Success SSR', payload: payload } }
 })
 
 export default mainpage

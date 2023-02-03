@@ -12,7 +12,7 @@ import Head from 'next/head';
 const Tip = () => {
     const dispatch = useAppDispatch();
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
-    const [requestPage, setRequestPage] = useState<number>(1);
+    const [requestPage, setRequestPage] = useState<number>(0);
 
     const [ref, inView] = useInView();
 

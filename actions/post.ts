@@ -20,7 +20,7 @@ import {
 
 axios.defaults.baseURL = backendURL;
 // 프론트 - 백 쿠키공유
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 const AxiosType: TypeAxios = axios;
 // const headers = { 'Content-Type': 'application/json' };
 
@@ -65,7 +65,7 @@ export const loadPosts = createAsyncThunk<ArticleLoadPosts, IPageNumber | undefi
   'article/loadPosts',
   async (data, { rejectWithValue }) => {
     try {
-      const response: AxiosRequestConfig<any> = await AxiosType.post('/api/article/list', data);
+      const response: AxiosRequestConfig<any> = await AxiosType.post(`/api/article/list`, data);
       let tmp = [...response.data];
       let result = Promise.all(
         tmp.map(async (v: IArticle) => {

@@ -9,6 +9,7 @@ interface Configuration extends WebpackConfiguration {
 
 // 배포시 package.json에서 NODE_ENV=production으로 바꿔줄 것.
 const isDevelopment = process.env.NODE_ENV !== 'production';
+const Critters = require('critters-webpack-plugin');
 
 const config: Configuration = {
   name: 'ACO',
@@ -59,6 +60,11 @@ const config: Configuration = {
   plugins: [
     new ForkTsCheckerWebpackPlugin({
       async: false,
+    }),
+    new Critters({
+      preload: 'swap',
+      preloadFonts: true,
+
     }),
     new webpack.EnvironmentPlugin({ NODE_ENV: isDevelopment ? 'development' : 'production' }),
   ],

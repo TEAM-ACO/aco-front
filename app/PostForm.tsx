@@ -66,8 +66,8 @@ function PostForm() {
                 // console.log(imgStorage[i].name);
             }
         }
-        dispatch(mainRequestPage({ mainReqPage: 0 }))
         dispatch(addPost(result))
+        dispatch(mainRequestPage({ mainReqPage: 0 }))
     }, [text, tagList, mainPosts])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {

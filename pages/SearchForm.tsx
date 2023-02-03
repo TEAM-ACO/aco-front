@@ -1,8 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@store/config';
-import { searchPosts } from '@actions/post';
-import { useInView } from 'react-intersection-observer';
 import { searchRequestPage } from '@features/postSlice';
 
 const SearchForm = () => {
@@ -17,13 +15,14 @@ const SearchForm = () => {
     }, [searchInput]);
 
     const onSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+        const refresh: any = router.reload
         e.preventDefault();
         if (searchInput === '') {
             return
         }
         // 검색시 url이동
         dispatch(searchRequestPage({ searchValue: 0 }))
-        router.push(`/search/${searchInput}`);
+        router.push(`/search/${searchInput}`, undefined, { shallow: true });
     }, [searchInput]);
 
     return (

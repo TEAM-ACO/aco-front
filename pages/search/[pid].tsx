@@ -21,15 +21,15 @@ function PostList() {
 
     const loadMore = useCallback(() => {
         dispatch(searchRequestPage({ searchValue }))
-    }, [requestPage])
+    }, [requestPage, searchValue, mainPosts])
 
     useEffect(() => {
         if (pid === undefined) {
             return
         }
         if (inView && hasMorePosts && !loadPostsLoading) {
-            loadMore()
             dispatch(searchPosts({ keywords: pid, requestedPageNumber: searchValue, requestedPageSize: 10 }));
+            loadMore()
         }
     }, [inView, hasMorePosts, loadPostsLoading, pid]);
     return (
@@ -70,10 +70,10 @@ function PostList() {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
 
-    await store.dispatch(searchPosts({ keywords: params?.pid, requestedPageNumber: 0, requestedPageSize: 10 } as any))
-    await store.dispatch(searchRequestPage({ searchValue: 0 }))
+    const payload = await store.dispatch(searchPosts({ keywords: params?.pid, requestedPageNumber: 0, requestedPageSize: 10 } as any))
+    // await store.dispatch(searchRequestPage({ searchValue: 0 }))
     return {
-        props: { message: "Success SSR" },
+        props: { message: "Success SSR", payload:payload },
     }
 })
 

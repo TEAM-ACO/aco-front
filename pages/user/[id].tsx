@@ -163,10 +163,11 @@ const userid = () => {
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }: any) => {
 
-    await store.dispatch(loadUserPosts({ memberId: params.id, requestedPageNumber: 0, requestedPageSize: 10 }))
-    await store.dispatch(userRequestPage({ reqPage: 0 }))
+    const reqPage = 0
+    const payload = await store.dispatch(loadUserPosts({ memberId: params.id, requestedPageNumber: reqPage, requestedPageSize: 10 }))
+    // await store.dispatch(userRequestPage({ reqPage: 0 }))
     return {
-        props: {},
+        props: { message: 'SSR', payload: payload },
     }
 })
 

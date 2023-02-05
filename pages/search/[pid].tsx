@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
-import { loadPosts, searchPosts } from '@actions/post';
+import { loadPosts, searchInitPosts, searchPosts } from '@actions/post';
 import Mainpage from '../../app/mainpage';
 import PostForm from '@app/PostForm';
 import { IArticle, searchRequestPage } from '@features/postSlice';
@@ -61,7 +61,7 @@ function PostList() {
                             )
                         })}
                     </div>
-                    <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 5 }} />
+                    <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 80 }} />
                 </Mainpage>
             </div>
         </>
@@ -70,8 +70,8 @@ function PostList() {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
 
-    const payload = await store.dispatch(searchPosts({ keywords: params?.pid, requestedPageNumber: 0, requestedPageSize: 10 } as any))
-    // await store.dispatch(searchRequestPage({ searchValue: 0 }))
+    const payload = await store.dispatch(searchInitPosts({ keywords: params?.pid, requestedPageNumber: 0, requestedPageSize: 10 } as any))
+    await store.dispatch(searchRequestPage({ searchValue: 0 }))
     return {
         props: { message: "Success SSR", payload:payload },
     }

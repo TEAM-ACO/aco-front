@@ -1,18 +1,19 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
-import { loadMenu } from '@actions/post';
+import { loadInitMenu, loadMenu } from '@actions/post';
 import Mainpage from '@app/mainpage';
 import PostForm from '@app/PostForm';
 import { IArticle } from '@features/postSlice';
 import PostCard from '@app/PostCard';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
 
-const Question = () => {
+const Question: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    console.log(props)
     const dispatch = useAppDispatch();
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
-    const [requestPage, setRequestPage] = useState<number>(0);
+    const [requestPage, setRequestPage] = useState<number>(1);
 
     const [ref, inView] = useInView();
 
@@ -22,8 +23,8 @@ const Question = () => {
 
     useEffect(() => {
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(loadMenu({ num: 2, menu: "Question", requestedPageNumber: requestPage, requestedPageSize: 10 }));
             loadMore()
+            dispatch(loadMenu({ num: 2, menu: "Question", requestedPageNumber: requestPage, requestedPageSize: 10 }));
         }
     }, [inView, hasMorePosts, loadPostsLoading]);
     return (
@@ -54,17 +55,17 @@ const Question = () => {
                         )
                     })}
                 </div>
-                <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 5 }} />
+                <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 80 }} />
             </Mainpage>
         </div>
     )
 }
 
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async () => {
+    const requestPage = 0
+    const payload = await store.dispatch(loadInitMenu({ num: 2, menu: "Question", requestedPageNumber: requestPage, requestedPageSize: 10 }));
 
-    await store.dispatch(loadMenu({ num: 2, menu: "Question", requestedPageNumber: 0, requestedPageSize: 10 }));
-
-    return { props: {} }
+    return { props: { message: 'Success SSR', payload:payload} }
 })
 
 export default Question

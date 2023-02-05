@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
-import { loadMenu } from '@actions/post';
+import { loadInitMenu, loadMenu } from '@actions/post';
 import Mainpage from '../../../app/mainpage';
 import PostForm from '@app/PostForm';
 import { IArticle } from '@features/postSlice';
@@ -10,9 +10,10 @@ import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import Head from 'next/head';
 
 const Diary: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    console.log(props)
     const dispatch = useAppDispatch();
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
-    const [requestPage, setRequestPage] = useState<number>(0);
+    const [requestPage, setRequestPage] = useState<number>(1);
 
     const [ref, inView] = useInView();
 
@@ -55,17 +56,17 @@ const Diary: NextPage = (props: InferGetServerSidePropsType<typeof getServerSide
                         )
                     })}
                 </div>
-                <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 5 }} />
+                <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 80 }} />
             </Mainpage>
         </div>
     )
 }
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async () => {
+    const requestPage = 0
+    const { payload } = await store.dispatch(loadInitMenu({ num: 0, menu: "Diary", requestedPageNumber: requestPage, requestedPageSize: 10 }));
 
-    const { payload } = await store.dispatch(loadMenu({ num: 0, menu: "Diary", requestedPageNumber: 0, requestedPageSize: 10 }));
-
-    return { props: { message: 'Success SSR', payload } }
+    return { props: { message: 'Success SSR', payload: payload } }
 })
 
 export default Diary

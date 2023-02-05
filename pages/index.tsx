@@ -11,7 +11,7 @@ function Home() {
 
     useEffect(() => {
         if (cookies.user) {
-            router.replace('/mainpage', undefined, { shallow: true })
+            router.replace('/mainpage')
         }
     })
     return (

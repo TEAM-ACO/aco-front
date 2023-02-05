@@ -61,6 +61,30 @@ export const uploadImages = createAsyncThunk<FormData, any>(
   },
 );
 
+export const loadInitPosts = createAsyncThunk<ArticleLoadPosts, IPageNumber | undefined>(
+  'article/loadInitPosts',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response: AxiosRequestConfig<any> = await AxiosType.post(`http://acoapi.hyns.co.kr/api/article/list`, data);
+      let tmp = [...response.data];
+      let result = Promise.all(
+        tmp.map(async (v: IArticle) => {
+          await axios
+            .post(`http://acoapi.hyns.co.kr/api/article/reply/${v.articleId}`, { requestedPageNumber: 0, requestedPageSize: 5 })
+            .then((res) => {
+              v.replys = [...res.data];
+            });
+          return v;
+        }),
+      );
+      return result as any;
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
+
 export const loadPosts = createAsyncThunk<ArticleLoadPosts, IPageNumber | undefined>(
   'article/loadPosts',
   async (data, { rejectWithValue }) => {
@@ -109,6 +133,30 @@ export const searchPosts = createAsyncThunk<ArticleSearch, ISearchPosts>(
   },
 );
 
+// 검색 SSR용
+export const searchInitPosts = createAsyncThunk<ArticleSearch, ISearchPosts>(
+  'article/searchInitPosts',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`http://acoapi.hyns.co.kr/api/article/search/${data.keywords}`, data);
+      let tmp = [...response.data];
+      let result = Promise.all(
+        tmp.map(async (v: IArticle) => {
+          await axios
+            .post(`http://acoapi.hyns.co.kr/api/article/reply/${v.articleId}`, { requestedPageNumber: 0, requestedPageSize: 5 })
+            .then((res) => {
+              v.replys = [...res.data];
+            });
+          return v;
+        }),
+      );
+      return result as any;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
+
 // 각 user의 게시글
 export const loadUserPosts = createAsyncThunk<IArticle, IloadUserPosts>(
   'article/loadUserPosts',
@@ -134,7 +182,32 @@ export const loadUserPosts = createAsyncThunk<IArticle, IloadUserPosts>(
   },
 );
 
-// 신고
+// 각 user의 게시글 SSR용
+export const loadUserInitPosts = createAsyncThunk<IArticle, IloadUserPosts>(
+  'article/loadUserInitPosts',
+  async (data, { rejectWithValue }) => {
+    console.log(data);
+    try {
+      const response = await axios.post(`http://acoapi.hyns.co.kr/api/article/list/${data.memberId}`, data);
+      let tmp = [...response.data];
+      let result = Promise.all(
+        tmp.map(async (v: IArticle) => {
+          await axios
+            .post(`http://acoapi.hyns.co.kr/api/article/reply/${v.articleId}`, { requestedPageNumber: 0, requestedPageSize: 5 })
+            .then((res) => {
+              v.replys = [...res.data];
+            });
+          return v;
+        }),
+      );
+      return result as any;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
+
+// 게시글 신고
 export const reportPost = createAsyncThunk<reportArticle, reportArticle>(
   'article/reportPost',
   async (data, { rejectWithValue }) => {
@@ -147,7 +220,7 @@ export const reportPost = createAsyncThunk<reportArticle, reportArticle>(
   },
 );
 
-// 신고
+// 멤버 신고
 export const reportMember = createAsyncThunk<IArticle, IReportMember>(
   'article/reportMember',
   async (data, { rejectWithValue }) => {
@@ -219,6 +292,30 @@ export const loadMenu = createAsyncThunk<IArticle, IMenu | undefined>(
         tmp.map(async (v: IArticle) => {
           await axios
             .post(`/api/article/reply/${v.articleId}`, { requestedPageNumber: 0, requestedPageSize: 5 })
+            .then((res) => {
+              v.replys = [...res.data];
+            });
+          return v;
+        }),
+      );
+      return result as any;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
+
+// 각 메뉴별 게시글 SSR용
+export const loadInitMenu = createAsyncThunk<IArticle, IMenu | undefined>(
+  'article/loadInitMenu',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`http://acoapi.hyns.co.kr/api/article/menu/${data?.num}`, data);
+      let tmp = [...response.data];
+      let result = Promise.all(
+        tmp.map(async (v: IArticle) => {
+          await axios
+            .post(`http://acoapi.hyns.co.kr/api/article/reply/${v.articleId}`, { requestedPageNumber: 0, requestedPageSize: 5 })
             .then((res) => {
               v.replys = [...res.data];
             });

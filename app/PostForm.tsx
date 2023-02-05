@@ -120,11 +120,9 @@ function PostForm() {
 
     useEffect(() => {
         if (addPostDone) {
-            setTimeout(() => {
-                router.push(`${router.asPath}`)
-                setImgList([])
-                setImageStorage([])
-            }, 0)
+            router.push(`${router.asPath}`)
+            setImgList([])
+            setImageStorage([])
             setText('');
             setTagList([]);
             setTagItem('');

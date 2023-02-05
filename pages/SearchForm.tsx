@@ -22,7 +22,7 @@ const SearchForm = () => {
         }
         // 검색시 url이동
         dispatch(searchRequestPage({ searchValue: 0 }))
-        router.push(`/search/${searchInput}`, undefined, { shallow: true });
+        router.push(`/search/${searchInput}`);
     }, [searchInput]);
 
     return (

@@ -2,19 +2,21 @@ import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useAppDispatch, useAppSelector, wrapper } from '@store/config';
 import { useInView } from 'react-intersection-observer';
 import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import { useCookies } from "react-cookie"
 
 import PostCard from '@app/PostCard';
 import { IArticle, userRequestPage } from '@features/postSlice';
 import PostForm from '@app/PostForm';
 import Mainpage from '@app/mainpage';
-import { loadUserPosts, reportMember } from '@actions/post';
+import { loadUserInitPosts, loadUserPosts, reportMember } from '@actions/post';
 import { Avatar, Button, Modal } from 'flowbite-react';
 import Head from 'next/head';
 import { imgUrl } from 'util/imgUrl';
 
-const userid = () => {
+const userid: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    console.log(props)
+
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { id } = router.query;
@@ -57,12 +59,9 @@ const userid = () => {
 
     useEffect(() => {
         if (!router.isReady) return;
-        if (id === undefined) {
-            return
-        }
         if (inView && hasMorePosts && !loadPostsLoading) {
+            dispatch(loadUserPosts({ memberId: (id as string), requestedPageNumber: reqPage, requestedPageSize: 10 }));
             loadMore();
-            dispatch(loadUserPosts({ memberId: id, requestedPageNumber: reqPage, requestedPageSize: 10 }));
         }
     }, [inView, hasMorePosts, loadPostsLoading, id]);
 
@@ -111,61 +110,62 @@ const userid = () => {
                         )
                     })}
                 </div>
-                <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 5 }} />
-            </Mainpage>
-            <div className={userReport ? 'flex' : 'hidden'}>
-                <Modal
-                    show={onReportModal}
-                    size="md"
-                    onClose={onReportModalClose}
-                >
-                    <Modal.Header>
-                        유저 신고하기
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="space-y-6">
-                            <div>
-                                <label
-                                    htmlFor="report"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    신고사유
-                                </label>
-                                <select
-                                    ref={selectBox}
-                                    id="report"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                    <option value={''} disabled>신고사유를 선택해주세요</option>
-                                    {reportTests.map((v, i) => <option key={i} value={i}>{v}</option>)}
-                                </select>
+                <div className={userReport ? 'flex' : 'hidden'}>
+                    <Modal
+                        show={onReportModal}
+                        size="md"
+                        onClose={onReportModalClose}
+                    >
+                        <Modal.Header>
+                            유저 신고하기
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className="space-y-6">
+                                <div>
+                                    <label
+                                        htmlFor="report"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        신고사유
+                                    </label>
+                                    <select
+                                        ref={selectBox}
+                                        id="report"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                        <option value={''} disabled>신고사유를 선택해주세요</option>
+                                        {reportTests.map((v, i) => <option key={i} value={i}>{v}</option>)}
+                                    </select>
+                                </div>
+                                <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                    허위 신고시 불이익을 받을 수 있습니다.
+                                </p>
                             </div>
-                            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                허위 신고시 불이익을 받을 수 있습니다.
-                            </p>
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={onReport} disabled={isReported == true}>
-                            신고하기
-                        </Button>
-                        <Button
-                            color="gray"
-                            onClick={onReportModalClose}
-                        >
-                            아니요
-                        </Button>
-                        {isReported && <span className='text-red-500'>이미 신고한 게시글입니다.<br></br> 잠시후 종료됩니다</span>}
-                    </Modal.Footer>
-                </Modal>
-            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button onClick={onReport} disabled={isReported == true}>
+                                신고하기
+                            </Button>
+                            <Button
+                                color="gray"
+                                onClick={onReportModalClose}
+                            >
+                                아니요
+                            </Button>
+                            {isReported && <span className='text-red-500'>이미 신고한 게시글입니다.<br></br> 잠시후 종료됩니다</span>}
+                        </Modal.Footer>
+                    </Modal>
+                </div>
+                <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 80 }} />
+            </Mainpage>
         </div>
     )
 }
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }: any) => {
 
-    const reqPage = 0
-    const payload = await store.dispatch(loadUserPosts({ memberId: params.id, requestedPageNumber: reqPage, requestedPageSize: 10 }))
-    // await store.dispatch(userRequestPage({ reqPage: 0 }))
+    const reqPage = 0;
+    const payload = await store.dispatch(loadUserInitPosts({ memberId: params.id, requestedPageNumber: (reqPage as any), requestedPageSize: 10 }))
+    await store.dispatch(userRequestPage({ reqPage: 0 }))
+
     return {
         props: { message: 'SSR', payload: payload },
     }

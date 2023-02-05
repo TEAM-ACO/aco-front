@@ -6,7 +6,7 @@ import PostCard from '@app/PostCard';
 import PostForm from '@app/PostForm';
 import Mainpage from '../../app/mainpage';
 import { IArticle, mainRequestPage } from '@features/postSlice';
-import { loadPosts } from '@actions/post';
+import { loadInitPosts, loadPosts } from '@actions/post';
 import { useCookies } from "react-cookie"
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -66,7 +66,7 @@ const mainpage: NextPage = (props: InferGetServerSidePropsType<typeof getServerS
                         )
                     })}
                 </div>
-                <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 5 }} />
+                <div ref={hasMorePosts && !loadPostsLoading ? ref : undefined} style={{ height: 80 }} />
             </Mainpage>
         </div>
     )
@@ -74,8 +74,8 @@ const mainpage: NextPage = (props: InferGetServerSidePropsType<typeof getServerS
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async () => {
     const mainReqPage = 0
-    const payload = await store.dispatch(loadPosts({ requestedPageNumber: mainReqPage, requestedPageSize: 10 }));
-    // await store.dispatch(mainRequestPage({ mainReqPage: 0 }))
+    const payload = await store.dispatch(loadInitPosts({ requestedPageNumber: mainReqPage, requestedPageSize: 10 }));
+    await store.dispatch(mainRequestPage({ mainReqPage: 0 }))
 
     return { props: { message: 'Success SSR', payload: payload } }
 })

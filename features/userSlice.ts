@@ -8,7 +8,6 @@ import {
   googleLogin,
   kakaoLogin,
   login,
-  logout,
   userWithdraw,
 } from '@actions/user';
 import _remove from 'lodash';
@@ -42,9 +41,7 @@ export interface IUserState {
   loginLoading: boolean;
   loginDone: boolean;
   loginError: unknown | null;
-  logoutLoading: boolean;
-  logoutDone: boolean;
-  logoutError: unknown | null;
+
   googleLoginLoading: boolean;
   googleLoginDone: boolean;
   googleLoginError: unknown | null;
@@ -84,10 +81,6 @@ const initialState: IUserState = {
   loginLoading: false, // 로그인
   loginDone: false,
   loginError: null,
-
-  logoutLoading: false, // 로그아웃
-  logoutDone: false,
-  logoutError: null,
 
   googleLoginLoading: false, // 구글 로그인
   googleLoginDone: false,
@@ -143,21 +136,6 @@ const userSlice = createSlice({
       .addCase(login.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.loginLoading = false;
         state.loginError = action.payload;
-      })
-      // logout
-      .addCase(logout.pending, (state: IUserState) => {
-        state.logoutLoading = true;
-        state.logoutDone = false;
-        state.logoutError = null;
-      })
-      .addCase(logout.fulfilled, (state: IUserState) => {
-        state.logoutLoading = false;
-        state.logoutDone = true;
-        state.me = null;
-      })
-      .addCase(logout.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
-        state.logoutLoading = false;
-        state.logoutError = action.payload;
       })
       // Google login
       .addCase(googleLogin.pending, (state: IUserState) => {

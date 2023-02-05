@@ -140,7 +140,7 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
             className="z-10 w-20 absolute right-0 top-2
                         bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
           >
-            {post.member.memberId === cookies.user?.num ? (
+            {post.member.memberId !== cookies.user?.num ? (
               <ul
                 className="py-1 text-sm text-gray-700 dark:text-gray-200"
                 aria-labelledby="dropdownMenuIconHorizontalButton"
@@ -149,8 +149,7 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
                   <button
                     type="button"
                     onClick={onEditPost}
-                    className={`${onUserHTML}
-                                    "flex justify-start py-2 pl-3.5 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"`}
+                    className="flex justify-start py-2 pl-3.5 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >
                     {/* {editContent} */}
                     수정하기
@@ -158,6 +157,7 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
                 </li>
                 <li>
                   <button
+                    type="button"
                     onClick={onDeleteOpen}
                     className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >
@@ -170,6 +170,7 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
               <ul>
                 <li>
                   <button
+                    type="button"
                     onClick={onReportModalOpen}
                     className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                   >

@@ -10,11 +10,15 @@ import {
   deletePost,
   editPost,
   likePost,
+  loadInitMenu,
+  loadInitPosts,
   loadMenu,
   loadPosts,
+  loadUserInitPosts,
   loadUserPosts,
   randomTip,
   reportMember,
+  searchInitPosts,
   searchPosts,
   updateComment,
   uploadImages,
@@ -246,6 +250,20 @@ const postSlice = createSlice({
       .addCase(loadPosts.rejected, (state: IArticleState) => {
         state.loadPostsLoading = false;
       })
+      // loadInitPosts
+      .addCase(loadInitPosts.pending, (state: IArticleState) => {
+        state.loadPostsLoading = true;
+        state.loadPostsDone = false;
+      })
+      .addCase(loadInitPosts.fulfilled, (state: IArticleState, action: PayloadAction<ArticleLoadPosts>) => {
+        state.loadPostsLoading = false;
+        state.loadPostsDone = true;
+        state.mainPosts = _concat(state.mainPosts, action.payload);
+        state.hasMorePosts = action.payload.length === 10;
+      })
+      .addCase(loadInitPosts.rejected, (state: IArticleState) => {
+        state.loadPostsLoading = false;
+      })
       // addPost
       .addCase(addPost.pending, (state: IArticleState) => {
         state.addPostLoading = true;
@@ -282,6 +300,20 @@ const postSlice = createSlice({
       .addCase(reportMember.rejected, (state: IArticleState) => {
         state.reportMemberLoading = false;
       })
+      // SearchInit
+      .addCase(searchInitPosts.pending, (state: IArticleState) => {
+        state.searchPostsLoading = true;
+        state.searchPostsDone = false;
+      })
+      .addCase(searchInitPosts.fulfilled, (state: IArticleState, action) => {
+        state.searchPostsLoading = false;
+        state.searchPostsDone = true;
+        state.mainPosts = _concat(state.mainPosts, action.payload);
+        state.hasMorePosts = action.payload.length === 10;
+      })
+      .addCase(searchInitPosts.rejected, (state: IArticleState) => {
+        state.searchPostsLoading = false;
+      })
       // Search
       .addCase(searchPosts.pending, (state: IArticleState) => {
         state.searchPostsLoading = true;
@@ -295,6 +327,20 @@ const postSlice = createSlice({
       })
       .addCase(searchPosts.rejected, (state: IArticleState) => {
         state.searchPostsLoading = false;
+      })
+      // loadUserInitPosts
+      .addCase(loadUserInitPosts.pending, (state: IArticleState) => {
+        state.loadUserPostsLoading = true;
+        state.loadUserPostsDone = false;
+      })
+      .addCase(loadUserInitPosts.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
+        state.loadUserPostsLoading = false;
+        state.loadUserPostsDone = true;
+        state.mainPosts = _concat(state.mainPosts, action.payload);
+        state.hasMorePosts = action.payload.length === 10;
+      })
+      .addCase(loadUserInitPosts.rejected, (state: IArticleState) => {
+        state.loadUserPostsLoading = false;
       })
       // loadUserPosts
       .addCase(loadUserPosts.pending, (state: IArticleState) => {
@@ -367,6 +413,20 @@ const postSlice = createSlice({
       })
       .addCase(updateComment.rejected, (state: IArticleState) => {
         state.updateCommentLoading = false;
+      })
+      // loadMenu SSR용
+      .addCase(loadInitMenu.pending, (state: IArticleState) => {
+        state.loadMenuLoading = true;
+        state.loadMenuDone = false;
+      })
+      .addCase(loadInitMenu.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
+        state.loadMenuLoading = false;
+        state.loadMenuDone = true;
+        state.mainPosts = _concat(state.mainPosts, action.payload);
+        state.hasMorePosts = action.payload.length === 10;
+      })
+      .addCase(loadInitMenu.rejected, (state: IArticleState) => {
+        state.loadMenuLoading = false;
       })
       // loadMenu
       .addCase(loadMenu.pending, (state: IArticleState) => {

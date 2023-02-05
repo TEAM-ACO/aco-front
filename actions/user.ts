@@ -30,16 +30,6 @@ export const login = createAsyncThunk<LogInRequestData, LogInRequestData>(
   },
 );
 
-// 로그아웃 쿠키만 삭제 이거 필요없음
-export const logout = createAsyncThunk('member/logout', async () => {
-  try {
-    const response = await axios.post('/api/member/logout');
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-});
-
 // 구글 로그인
 export const googleLogin = createAsyncThunk<LogInRequestData, LogInRequestData>(
   'member/googlelogin',

@@ -9,7 +9,7 @@ import PostCard from '@app/PostCard';
 import { IArticle, userRequestPage } from '@features/postSlice';
 import PostForm from '@app/PostForm';
 import Mainpage from '@app/mainpage';
-import { loadUserInitPosts, loadUserPosts, reportMember } from '@actions/post';
+import { loadUserInitPosts, loadUserPosts, randomTip, reportMember } from '@actions/post';
 import { Avatar, Button, Modal } from 'flowbite-react';
 import Head from 'next/head';
 import { imgUrl } from 'util/imgUrl';
@@ -25,7 +25,7 @@ const userid: NextPage = (props: InferGetServerSidePropsType<typeof getServerSid
 
     const [ref, inView] = useInView();
     const selectBox = useRef() as React.MutableRefObject<HTMLSelectElement>
-    const [requestPage, setRequestPage] = useState<number>(0);
+    // const [requestPage, setRequestPage] = useState<number>(0);
     const [isReported, setIsReported] = useState<Boolean>(false)
     const [userReport, setUserReport] = useState<boolean>(false);
     const [onReportModal, setOnReportModal] = useState<boolean>(false);
@@ -164,6 +164,7 @@ export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps
 
     const reqPage = 0;
     const payload = await store.dispatch(loadUserInitPosts({ memberId: params.id, requestedPageNumber: (reqPage as any), requestedPageSize: 10 }))
+    await store.dispatch(randomTip())
     await store.dispatch(userRequestPage({ reqPage: 0 }))
 
     return {

@@ -1,21 +1,20 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@store/config';
 import { searchRequestPage } from '@features/postSlice';
+import { randomTip } from '@actions/post';
 
 const SearchForm = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const { } = useAppSelector((state) => state.post);
     const [searchInput, setSearchInput] = useState('');
-    // const [requestPage, setRequestPage] = useState<number>(0);
+    const { ranTip } = useAppSelector((state) => state.post)
 
     const onChangeSearchInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchInput(e.target.value);
     }, [searchInput]);
 
     const onSearch = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-        const refresh: any = router.reload
         e.preventDefault();
         if (searchInput === '') {
             return
@@ -23,7 +22,11 @@ const SearchForm = () => {
         // 검색시 url이동
         dispatch(searchRequestPage({ searchValue: 0 }))
         router.push(`/search/${searchInput}`);
-    }, [searchInput]);
+        setSearchInput('')
+        setTimeout(() => {
+            dispatch(randomTip())
+        }, 2000)
+    }, [searchInput, ranTip]);
 
     return (
         <div>

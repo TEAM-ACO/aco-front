@@ -1,20 +1,19 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
-import { loadPosts, searchInitPosts, searchPosts } from '@actions/post';
+import { randomTip, searchInitPosts, searchPosts } from '@actions/post';
 import Mainpage from '../../app/mainpage';
 import PostForm from '@app/PostForm';
 import { IArticle, searchRequestPage } from '@features/postSlice';
 import PostCard from '@app/PostCard';
 import { useRouter } from 'next/router';
-import axios from 'axios';
 import Head from 'next/head';
 
 function PostList() {
     const dispatch = useAppDispatch();
     const router = useRouter()
     const { pid } = router.query
-    const { mainPosts, loadPostsLoading, hasMorePosts, searchValue } = useAppSelector((state) => state.post);
+    const { mainPosts, loadPostsLoading, hasMorePosts, searchValue, ranTip } = useAppSelector((state) => state.post);
     const [requestPage, setRequestPage] = useState<number>(0);
 
     const [ref, inView] = useInView();
@@ -28,10 +27,11 @@ function PostList() {
             return
         }
         if (inView && hasMorePosts && !loadPostsLoading) {
-            dispatch(searchPosts({ keywords: pid, requestedPageNumber: searchValue, requestedPageSize: 10 }));
+            dispatch(searchPosts({ keywords: pid, requestedPageNumber: searchValue, requestedPageSize: 10 }))
             loadMore()
         }
     }, [inView, hasMorePosts, loadPostsLoading, pid]);
+
     return (
         <>
             <Head>
@@ -54,7 +54,15 @@ function PostList() {
             <div>
                 <Mainpage>
                     <div className="ml-auto mr-auto">
-                        <PostForm />
+                    <h2 id="accordion-collapse-heading-1" className='px-6'>
+                        <div className="flex items-center justify-between w-full p-5 font-medium text-left bg-gray-50 text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400"
+                            data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
+                            <div className='flex items-center gap-2'>   
+                                <span>태그/검색 키워드 : {pid}</span>
+                            </div>
+                        </div>
+                    </h2>
+                        {/* <PostForm /> */}
                         {mainPosts.map((post: IArticle) => {
                             return (
                                 <PostCard key={post.articleId} post={post} />
@@ -71,6 +79,7 @@ function PostList() {
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
 
     const payload = await store.dispatch(searchInitPosts({ keywords: params?.pid, requestedPageNumber: 0, requestedPageSize: 10 } as any))
+    await store.dispatch(randomTip())
     await store.dispatch(searchRequestPage({ searchValue: 0 }))
     return {
         props: { message: "Success SSR", payload:payload },

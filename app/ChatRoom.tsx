@@ -31,7 +31,7 @@ const ChatRoom = () => {
 
     // 클라생성, 연결
     const connect = useCallback(() => {
-        let Sock = new SockJS('http://127.0.0.1:3075/api/ws');
+        let Sock = new SockJS('http://acoapi.hyns.co.kr/api/ws');
         stompClient = over(Sock);
         stompClient.connect({}, onConnected, onError);
     }, [])

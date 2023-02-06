@@ -34,7 +34,7 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
   const [postCardDropdown, setPostCardDropdown] = useState<boolean>(false);
   const [onReportModal, setOnReportModal] = useState<boolean>(false);
   const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
-  const [isReported, setIsReported] = useState<Boolean>(false);
+  const [isReported, setIsReported] = useState<boolean>(false);
   const selectBox = useRef<DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>>();
   const dispatch = useAppDispatch();
   const reportTests: string[] = [
@@ -49,7 +49,7 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
 
   const onTogglePostCardDropdown = useCallback(() => {
     setPostCardDropdown((prev) => !prev);
-  }, []);
+  }, [postCardDropdown]);
 
   const onReportModalOpen = useCallback(() => {
     setOnReportModal((prev) => !prev);
@@ -58,7 +58,7 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
   const onReportModalClose = useCallback(() => {
     setOnReportModal((prev) => !prev);
     setPostCardDropdown(false);
-  }, []);
+  }, [postCardDropdown]);
 
   const onDeleteOpen = useCallback(() => {
     setOnDeleteModal((prev) => !prev);
@@ -67,15 +67,15 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
   const onDeleteClose = useCallback(() => {
     setOnDeleteModal((prev) => !prev);
     setPostCardDropdown(false);
-  }, []);
+  }, [postCardDropdown]);
 
   const onReportModalSubmit = useCallback(() => {
     const data: reportArticle = {
-      articlereporterId: 1, //쿠키에서 가져오기,
+      articlereporterId: cookies.user.num,
       articleId: post.articleId,
       articleReportContext: reportTests[selectBox.current?.value as unknown as number],
     };
-    console.log(data);
+    // console.log(data);
     dispatch(reportPost({ ...data })).then((res) => {
       switch (res.payload) {
         case 1:
@@ -141,45 +141,44 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
                         bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
           >
             {post.member.memberId !== cookies.user?.num ? (
-              <ul
-                className="py-1 text-sm text-gray-700 dark:text-gray-200"
-                aria-labelledby="dropdownMenuIconHorizontalButton"
-              >
-                <li>
-                  <button
-                    type="button"
-                    onClick={onEditPost}
-                    className="flex justify-start py-2 pl-3.5 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    {/* {editContent} */}
-                    수정하기
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={onDeleteOpen}
-                    className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    {/* {onUserText} */}
-                    신고하기
-                  </button>
-                </li>
-              </ul>
-            ) : (
-              <ul>
-                <li>
-                  <button
-                    type="button"
-                    onClick={onReportModalOpen}
-                    className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    {/* {onUserText} */}
-                    삭제하기
-                  </button>
-                </li>
-              </ul>
-            )}
+                <ul>
+                  <li className="py-1 text-sm text-gray-700 dark:text-gray-200">
+                    <button
+                      type="button"
+                      onClick={onReportModalOpen}
+                      className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                      {/* {onUserText} */}
+                      신고하기
+                    </button>
+                  </li>
+                </ul>
+              ) : (<ul
+               className="py-1 text-sm text-gray-700 dark:text-gray-200"
+               aria-labelledby="dropdownMenuIconHorizontalButton"
+             >
+               <li>
+                 <button
+                   type="button"
+                   onClick={onEditPost}
+                   className="flex justify-start py-2 pl-3.5 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                 >
+                   {/* {editContent} */}
+                   수정하기
+                 </button>
+               </li>
+               <li>
+                 <button
+                   type="button"
+                   onClick={onDeleteOpen}
+                   className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                 >
+                   {/* {onUserText} */}
+                   삭제하기
+                 </button>
+               </li>
+             </ul>
+           )}
             <div className="sm h-full flex justify-center items-center">
               {/* 삭제 Modal */}
               <Modal show={onDeleteModal} size="md" popup={true} onClose={onDeleteClose}>

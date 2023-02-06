@@ -33,7 +33,7 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
     const [imgData, setImgData] = useState<string[]>([]);
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const { editPostLoading } = useAppSelector((state) => state.post);
-    const [selectedOption, setSelectedOption] = useState<any>(options[0]);
+    const [selectedOption, setSelectedOption] = useState<any>(post.menu === 'Diary' ? options[0] : post.menu === 'Tip' ? options[1] : options[2]);
 
     const imageInput = useRef() as React.MutableRefObject<HTMLInputElement>;
     const [text, setText] = useState<string>()
@@ -80,7 +80,7 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
         }
 
         dispatch(editPost(result));
-        // 이미지 안나오는 문제 때문에 새로고침으로 구동
+        // reducer시 이미지 안나오는 문제 때문에 새로고침으로 구동
         /*dispatch(editPostToMe({
             articleContext: text, menu: selectedOption.value,
             tags: tagList, articleImagesNames: [...imgData, imgl], replys: post.replys,
@@ -97,7 +97,7 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
         setImageStorage([])
         setImgData([...post.articleImagesNames])
         setContextModify(false)
-    }, [text, tagList, tagItem, imgData, imgStorage])
+    }, [text, tagList, tagItem, imgData, imgStorage, selectedOption])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);
@@ -149,12 +149,6 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
     }, [imageInput.current, imgData, imgl]);
 
     useEffect(() => {
-        // SSR때 undefined섞이는 현상때문에 배포 후 수정
-        // if (post.menu === undefined) {
-        //     return
-        // } else {
-        //     setMenuCheck(post.menu)
-        // }
         setImgData([...post.articleImagesNames])
         setText(post.articleContext)
         setTagList(post.tags)

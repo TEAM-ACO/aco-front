@@ -281,6 +281,20 @@ export const updateComment = createAsyncThunk<IArticle, IUpdateComment>(
   },
 );
 
+// 댓글 삭제 후 업데이트
+export const UpdateDeleteComment = createAsyncThunk<IArticle, IUpdateComment>(
+  'article/reply/updateDeleteComment',
+  async (data, { rejectWithValue }) => {
+    console.log(data);
+    try {
+      const response = await axios.post(`/api/article/reply/${data.article.articleId}`, data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  },
+);
+
 // 각 메뉴별 게시글
 export const loadMenu = createAsyncThunk<IArticle, IMenu | undefined>(
   'article/postMenu',

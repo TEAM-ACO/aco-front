@@ -64,7 +64,7 @@ const Tip: NextPage = (props: InferGetServerSidePropsType<typeof getServerSidePr
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async () => {
     const requestPage = 0
     const payload = await store.dispatch(loadInitMenu({ num: 1, menu: "Tip", requestedPageNumber: requestPage, requestedPageSize: 10 }));
-
+    
     return { props: { message: 'Success SSR', payload:payload} }
 })
 

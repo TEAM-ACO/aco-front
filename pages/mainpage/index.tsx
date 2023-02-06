@@ -1,16 +1,16 @@
 import React, { useEffect, useCallback } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
-import { useInView } from 'react-intersection-observer';
-
-import PostCard from '@app/PostCard';
-import PostForm from '@app/PostForm';
-import Mainpage from '../../app/mainpage';
-import { IArticle, mainRequestPage } from '@features/postSlice';
-import { loadInitPosts, loadPosts } from '@actions/post';
 import { useCookies } from "react-cookie"
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+
+import PostCard from '@app/PostCard';
+import PostForm from '@app/PostForm';
+import Mainpage from '@app/mainpage';
+import { IArticle, mainRequestPage } from '@features/postSlice';
+import { loadInitPosts, loadPosts, randomTip } from '@actions/post';
+import { useInView } from 'react-intersection-observer';
 
 const mainpage: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     console.log(props)
@@ -75,6 +75,7 @@ const mainpage: NextPage = (props: InferGetServerSidePropsType<typeof getServerS
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async () => {
     const mainReqPage = 0
     const payload = await store.dispatch(loadInitPosts({ requestedPageNumber: mainReqPage, requestedPageSize: 10 }));
+    await store.dispatch(randomTip())
     await store.dispatch(mainRequestPage({ mainReqPage: 0 }))
 
     return { props: { message: 'Success SSR', payload: payload } }

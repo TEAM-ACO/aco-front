@@ -1,26 +1,22 @@
-import React, { useState, useCallback, Dispatch, SetStateAction, useEffect } from 'react'
+import React, { useState, useCallback, Dispatch, SetStateAction } from 'react'
 import { useCookies } from "react-cookie"
 import { Avatar, Modal, Button, Spinner } from 'flowbite-react'
 import dayjs from 'dayjs';
-import { IReply, userRequestPage } from '@features/postSlice';
+import { deleteReplyToMe, IReply, userRequestPage } from '@features/postSlice';
 import { useRouter } from 'next/router';
 import ReComments from './ReCommentForm';
 import { useAppDispatch, useAppSelector } from '@store/config';
 import { deleteComment } from '@actions/post';
-import { IUpdateComment } from '@typings/db';
 import { imgUrl } from 'util/imgUrl';
 
 type CommentProps = {
     comment: IReply
-    commentListUpdate: any
-    // Dispatch<SetStateAction<IUpdateComment>>
 }
 
-function CommentList({ comment, commentListUpdate }: CommentProps) {
+function CommentList({ comment }: CommentProps) {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const [dayCheck, setDayCheck] = useState<string>();
     const { deleteCommentLoading } = useAppSelector((state) => state.post)
     const date = dayjs(comment.date).format("YY-MM-DD");
 
@@ -51,11 +47,9 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
             replyId: comment.replyId,
             member: { memberId: comment.member.memberId }, article: { articleId: comment.article.articleId }
         }))
+        dispatch(deleteReplyToMe({ articleId: comment.article.articleId, replyId: comment.replyId }))
         setOnDeleteModal(false)
         setCommentDelete(false)
-        setTimeout(() => {
-            commentListUpdate()
-        }, 1000)
     }, [onDeleteModal, commentDelete])
 
     // const [replySortCheck, setReplySortCheck] = useState<number>();
@@ -95,16 +89,16 @@ function CommentList({ comment, commentListUpdate }: CommentProps) {
                     </div>
                 </div>
                 <div className="flex justify-between items-center p-4 bg-white rounded-lg border border-gray-200 sm:flex dark:bg-gray-700 dark:border-gray-600">
-                    <time className="mr-3 text-xs font-normal text-gray-400 sm:mb-0">
+                    <time className="w-14 text-xs font-normal text-gray-400 sm:mb-0">
                         {date}
                     </time>
                     {comment.replySort === 0 &&
-                        <button onClick={onRereplyModalOpen} className="sm:order-last mr-3">
+                        <button onClick={onRereplyModalOpen} className="sm:order-last mr-3 w-8">
                             {bigComment ? '취소' : '답글'}
                         </button>
                     }
                     {comment.member.memberId === cookies.user?.num &&
-                        <button onClick={onDeleteOpen} className="sm:order-last mr-3">
+                        <button onClick={onDeleteOpen} className="sm:order-last mr-3 w-8">
                             삭제
                         </button>
                     }

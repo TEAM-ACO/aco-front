@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { useCookies } from "react-cookie"
-import { IArticle, IReply, userRequestPage } from '@features/postSlice';
+import { IArticle, IReply, mainRequestPage, userRequestPage } from '@features/postSlice';
 import { useAppDispatch } from '@store/config';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import dayjs from 'dayjs';
@@ -10,7 +10,7 @@ import CommentList from './CommentList';
 import Dropdown from './Dropdown';
 import PostCardContent from './PostCardContent';
 import PostImage from './PostImage';
-import { likePost, updateComment } from '@actions/post';
+import { likePost, updateComment, UpdateDeleteComment } from '@actions/post';
 import { useRouter } from 'next/router';
 import PostModifyForm from './PostModifyForm';
 import CommentMore from './CommentMore';
@@ -30,12 +30,10 @@ const PostCard = ({ post }: PostProps) => {
     const [favoriteError, setFavoriteError] = useState<boolean>(false);
     const [requestPage, setRequestPage] = useState<number>(0);
     const [requestComment, setRequestComment] = useState<number>(5);
-    
-    const [replyCountCheck, setReplyCountCheck] = useState<number>(post.replys[post.replys.length - 1]?.totalCount || 0);
-    
+        
     const userinfo = useCallback(() => {
-        dispatch(userRequestPage({ reqPage: 0 }))
         router.push(`/user/${post.member.memberId}`)
+        dispatch(userRequestPage({ reqPage: 0 }))
     }, [])
     
     const loadMore = useCallback(() => {
@@ -69,14 +67,8 @@ const PostCard = ({ post }: PostProps) => {
 
     const onMenu = useCallback(() => {
         router.push(`/category/${post.menu.toLowerCase()}`)
+        dispatch(mainRequestPage({ requestPage: 0 }))
     }, [])
-    
-    const commentListUpdate = useCallback(() => {
-        dispatch(updateComment({
-            article: { articleId: post.articleId },
-            requestedPageNumber: requestPage, requestedPageSize: post.replys[post.replys.length - 1]?.totalCount
-        }))
-    }, [requestPage, requestComment])
     
     useEffect(() => {
         if (post.likes === 1) {
@@ -84,7 +76,7 @@ const PostCard = ({ post }: PostProps) => {
         } else if (post.likes === 0) {
             setFavorite(false)
         }
-    }, [])
+    }, [post.menu])
     
     useEffect(() => {
         if (!cookies.user) {
@@ -135,7 +127,6 @@ const PostCard = ({ post }: PostProps) => {
                         {/* 게시글 Dropdown */}
                         <div className='flex justify-between mb-3'>
                             <div className='flex justify-start items-center'>
-                                {/* 누르면 프로필로 가게 할 것 */}
                                 <button
                                     onClick={userinfo}
                                     className='flex justify-start items-center'>
@@ -206,11 +197,11 @@ const PostCard = ({ post }: PostProps) => {
                             <div>
                                 <div className=" border-l border-gray-200 dark:border-gray-700">
                                     <div className='ml-6 py-2 mt-3 text-xs text-cyan-800'>
-                                        {`${replyCountCheck}개의 댓글`}
+                                        {`${post.replys[post.replys.length - 1]?.totalCount || 0}개의 댓글`}
                                     </div>
                                     <div className='mt-2'>
                                         {post.replys.map((cmt: IReply) => (
-                                            <CommentList key={cmt.replyId} comment={cmt} commentListUpdate={commentListUpdate} />
+                                            <CommentList key={cmt.replyId} comment={cmt} />
                                         ))}
                                     </div>
                                     <CommentMore replys={post.replys} onCommentViewMore={onCommentViewMore} />

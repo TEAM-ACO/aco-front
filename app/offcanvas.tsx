@@ -3,15 +3,15 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
 import Link from 'next/link';
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
-import { loadMenu, loadUserPosts } from '@actions/post';
+import { loadMenu } from '@actions/post';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { imgUrl } from 'util/imgUrl';
 
 function OffCanvas() {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    // const [cookies2, setCookie2, removeCookie2] = useCookies(['refresh']);
-    // const [cookies3, setCookie3, removeCookie3] = useCookies(['access']);
+    const [cookies2, setCookie2, removeCookie2] = useCookies(['refresh']);
+    const [cookies3, setCookie3, removeCookie3] = useCookies(['access']);
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { mainPosts } = useAppSelector((state) => state.post);
@@ -21,8 +21,8 @@ function OffCanvas() {
 
     const onLogOut = useCallback(() => {
         removeCookie('user')
-        // removeCookie2('refresh')
-        // removeCookie3('access')
+        removeCookie2('refresh')
+        removeCookie3('access')
         router.replace('/');
     }, [cookies.user])
 
@@ -30,9 +30,7 @@ function OffCanvas() {
         if (!router.isReady) return;
         if (cookies.user) {
             setUserLink(cookies.user.num)
-            setTimeout(() => {
-                setMyNickname(cookies.user.username.toUpperCase())
-            }, 300)
+            setMyNickname(cookies.user.username.toUpperCase())
         }
     }, [mainPosts])
 
@@ -74,15 +72,7 @@ function OffCanvas() {
                                 </span>
                                 <Link href={`/user/${userLink}`}
                                     className={router.route === '/user/[id]' && router.query.id == userLink ?
-                                        "pointer-events-none" :
-                                        ""
-                                    }
-                                    onClick={() => {
-                                        // 여기에도 무한스크롤 가능하게
-                                        dispatch(loadUserPosts(
-                                            { memberId: userLink, requestedPageNumber: 0, requestedPageSize: 10 }
-                                        ))
-                                    }}>
+                                        "pointer-events-none" : ""}>
                                     <span className="ml-2">내가 쓴 게시글</span>
                                 </Link>
                             </li>

@@ -21,6 +21,7 @@ import {
   searchInitPosts,
   searchPosts,
   updateComment,
+  UpdateDeleteComment,
   uploadImages,
 } from '@actions/post';
 import { ArticleLoadPosts, IMainReqPage } from '@typings/db';
@@ -223,6 +224,10 @@ const postSlice = createSlice({
     },
     deletePostToMe(state, action) {
       state.mainPosts = state.mainPosts.filter((v) => v.articleId !== action.payload.articleId);
+    },
+    deleteReplyToMe(state: any, action) {
+      const post = state.mainPosts.findIndex((v: IArticle) => v.articleId == action.payload.articleId);
+      state.mainPosts[post].replys = state.mainPosts[post].replys.filter((v: any) => v.replyId !== action.payload.replyId)
     },
     mainRequestPage(state: IMainReqPage, action) {
       state.mainReqPage = action.payload.mainReqPage + 1;
@@ -495,5 +500,5 @@ const postSlice = createSlice({
       }),
 });
 
-export const { deletePostToMe, editPostToMe, mainRequestPage, userRequestPage, searchRequestPage } = postSlice.actions;
+export const { deletePostToMe, editPostToMe, mainRequestPage, userRequestPage, searchRequestPage, deleteReplyToMe } = postSlice.actions;
 export default postSlice;

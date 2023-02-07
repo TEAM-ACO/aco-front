@@ -15,8 +15,6 @@ import Head from 'next/head';
 import { imgUrl } from 'util/imgUrl';
 
 const userid: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    console.log(props)
-
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { id } = router.query;

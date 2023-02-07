@@ -18,6 +18,8 @@ const options = [
     { value: 12, label: '12주일' },
 ];
 
+// Admin 페이지는 시연용이며 클라이언트 사이드 렌더링입니다.
+
 type IOptions = {
     value: number;
     label: string;

@@ -2,10 +2,9 @@ import React, { useState, useCallback, useEffect } from 'react'
 import AdminMenu from '../../../app/AdminMenu'
 import AdminReportArticleComponent from '../../../app/AdminReportArticle'
 import { Table } from 'flowbite-react'
-import wrapper, { useAppDispatch, useAppSelector } from '@store/config'
+import { useAppDispatch, useAppSelector } from '@store/config'
 import { adminArticleReport } from '@actions/admin'
 import { IAdminArticleReport } from '@features/adminSlice'
-import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
@@ -130,13 +129,5 @@ const AdminReportArticle = () => {
         </>
     )
 }
-
-// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-//     console.log(req.headers);
-
-//     await store.dispatch(adminArticleReport());
-
-//     return { props: {} }
-// })
 
 export default AdminReportArticle

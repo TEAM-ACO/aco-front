@@ -14,7 +14,6 @@ export type emailauthErrorData = any;
 export const signup = createAsyncThunk<signupRequestData, signupRequestData>(
   'member/signup',
   async (data, { rejectWithValue }) => {
-    console.log('=============>', data);
     try {
       const response = await axios.post('/api/member/signup', data);
       return response.data;
@@ -28,8 +27,6 @@ export const signup = createAsyncThunk<signupRequestData, signupRequestData>(
 export const emailAuthRequest = createAsyncThunk<emailauthRequestData, emailauthRequestData>(
   'member/emailauth',
   async (data, { rejectWithValue }) => {
-    console.log('=============>', data);
-
     if (await (await axios.post('/api/member/signup/emailcheck', data)).data) {
       return;
     } else {
@@ -47,7 +44,6 @@ export const emailAuthRequest = createAsyncThunk<emailauthRequestData, emailauth
 export const authnumVerifyRequest = createAsyncThunk<emailauthRequestData, emailauthRequestData>(
   'member/emailauth',
   async (data, { rejectWithValue }) => {
-    console.log('=============>', data);
     try {
       const response = await axios.post('/api/member/emailverify', data);
       return response.data;

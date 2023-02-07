@@ -2,10 +2,9 @@ import React, { useEffect, useCallback, useState } from 'react'
 import AdminMenu from '../../../app/AdminMenu'
 import AdminMemberComponent from '../../../app/AdminMember'
 import { Table } from 'flowbite-react'
-import wrapper, { useAppDispatch, useAppSelector } from '@store/config'
+import { useAppDispatch, useAppSelector } from '@store/config'
 import { adminMember } from '@actions/admin'
 import { IAdmin } from '@features/adminSlice'
-import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
@@ -135,11 +134,5 @@ const AdminMember = () => {
         </>
     )
 }
-
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-    await store.dispatch(adminMember());
-
-    return { props: {} }
-})
 
 export default AdminMember

@@ -49,7 +49,7 @@ const makeStore = () => {
   // store는 state와 reducer를 포함한다고 볼 것.
   const store = configureStore({
     reducer: rootReducer as Reducer<IState, AnyAction>,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+    // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
     devTools: isDev,
   });
   return store;

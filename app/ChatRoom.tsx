@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react'
-import { Client, over } from 'stompjs';
+import React, { useCallback, useState, useRef, useEffect } from 'react'
+import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import { useCookies } from "react-cookie"
 
@@ -24,16 +24,21 @@ const ChatRoom = () => {
         connected: false,
         message: ''
     });
+    const [onMessageScroll, setOnMessageScroll] = useState<boolean>(false);
 
     const inputFocus = React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const chatFocus = React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const prChatFocus = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+
+    const scrollRef = useRef() as React.MutableRefObject<HTMLUListElement>;
+    const scrollRefPr = useRef() as React.MutableRefObject<HTMLUListElement>;
 
     // 클라생성, 연결
     const connect = useCallback(() => {
         let Sock = new SockJS('http://acoapi.hyns.co.kr/api/ws');
         stompClient = over(Sock);
         stompClient.connect({}, onConnected, onError);
+        stompClient.debug = null
     }, [])
 
     // 구독
@@ -85,7 +90,7 @@ const ChatRoom = () => {
     }
 
     // 에러발생시
-    const onError = useCallback((err: any) => {
+    const onError = useCallback((err: unknown) => {
         console.log(err);
     }, [])
 
@@ -93,6 +98,7 @@ const ChatRoom = () => {
     const handleMessage = useCallback((event: any) => {
         const { value } = event.target;
         setUserData({ ...userData, "message": value });
+        setOnMessageScroll(true)
     }, [userData])
 
     // 메세지 전송
@@ -108,7 +114,6 @@ const ChatRoom = () => {
                 message: userData.message,
                 status: "MESSAGE"
             };
-            // console.log(chatMessage);
             stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
             setUserData({ ...userData, "message": "" });
             chatFocus.current.focus()
@@ -181,10 +186,22 @@ const ChatRoom = () => {
         }
     }, [userData.username])
 
+    useEffect(() => {
+        if(tab === 'CHATROOM' && scrollRef.current !== undefined && scrollRef) {
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+    }, [scrollRef, publicChats])
+
+    useEffect(() => {
+        if(tab !== 'CHATROOM' && scrollRefPr.current !== undefined && scrollRefPr) {
+            scrollRefPr.current.scrollTop = scrollRefPr.current.scrollHeight;
+        }
+    }, [scrollRefPr, privateChats])
+
     return (
         <div className="relative">
             {userData.connected ?
-                <div className="chat-box">
+                <div className="chat-box" >
                     <div className="w-1/5">
                         <ul>
                             <li onClick={() => { setTab("CHATROOM") }}
@@ -196,17 +213,17 @@ const ChatRoom = () => {
                         </ul>
                     </div>
                     {tab === "CHATROOM" && <div className="w-4/5 ml-3 rounded-lg">
-                        <ul className="h-4/5 p-6 mb-5 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                            {publicChats.map((chat: any, index: number) => (
-                                <li className={`message border border-gray-200 rounded-lg
-                                 ${chat.senderName === userData.username && "justify-end"}`} key={index}>
-                                    {chat.senderName !== userData.username && <div className="avatar">{chat.senderName}</div>}
-                                    <div className="message-data flex items-center">{chat.message}</div>
-                                    {chat.senderName === userData.username &&
-                                        <div className="flex items-center px-3 py-2 rounded-lg bg-green-100">{chat.senderName}</div>}
-                                </li>
-                            ))}
-                        </ul>
+                            <ul ref={scrollRef} className="h-4/5 p-6 mb-5 overflow-y-scroll bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                                {publicChats.map((chat: any, index: number) => (
+                                    <li className={`message border border-gray-200 rounded-lg
+                                    ${chat.senderName === userData.username && "justify-end"}`} key={index}>
+                                        {chat.senderName !== userData.username && <div className="avatar">{chat.senderName}</div>}
+                                        <div className="message-data flex items-center">{chat.message}</div>
+                                        {chat.senderName === userData.username &&
+                                            <div className="flex items-center px-3 py-2 rounded-lg bg-green-100">{chat.senderName}</div>}
+                                    </li>
+                                ))}
+                            </ul>
                         <div className="send-message">
                             <input type="text"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -234,7 +251,7 @@ const ChatRoom = () => {
                             공백은 입력할 수 없습니다.</p> : <></>}
                     </div>}
                     {tab !== "CHATROOM" && <div className="w-4/5 ml-3 rounded-lg">
-                        <ul className="h-4/5 p-6 mb-5 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                        <ul ref={scrollRefPr} className="h-4/5 p-6 overflow-y-scroll mb-5 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                             {[...privateChats.get(tab)].map((chat, index) => (
                                 <li className={`message border border-gray-200 rounded-lg
                                  ${chat.senderName === userData.username && "justify-end"}`} key={index}>

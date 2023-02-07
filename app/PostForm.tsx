@@ -14,8 +14,7 @@ const options = [
     { value: 'Question', label: 'Question' },
 ];
 
-// 기본 이미지 넣기
-function PostForm() {
+const PostForm = () => {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const [selectedOption, setSelectedOption] = useState<any>(options[0]);
@@ -36,7 +35,6 @@ function PostForm() {
             for (let i = 0; i < e.target.files.length; i++) {
                 const element = e.target.files[i];
                 setImageStorage(file => [...file, element])
-                // console.log(element.name);
                 let reader = new FileReader();
                 reader.readAsDataURL(element)
                 reader.onload = (f) => {
@@ -63,7 +61,6 @@ function PostForm() {
         if (imgStorage) {
             for (let i = 0; i < imgStorage.length; i++) {
                 result.append("articleImages", imgStorage[i])
-                // console.log(imgStorage[i].name);
             }
         }
         dispatch(addPost(result))

@@ -25,7 +25,7 @@ const SearchForm = () => {
         setSearchInput('')
         setTimeout(() => {
             dispatch(randomTip())
-        }, 2000)
+        }, 1500)
     }, [searchInput, ranTip]);
 
     return (

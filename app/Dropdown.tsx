@@ -6,14 +6,12 @@ import React, {
   SelectHTMLAttributes,
   Dispatch,
   SetStateAction,
-  useEffect,
 } from 'react';
 import { useCookies } from 'react-cookie';
 import { Modal, Button, Spinner } from 'flowbite-react';
-import { deletePost, editPost, reportArticle, reportPost } from '../actions/post';
+import { deletePost, reportArticle, reportPost } from '../actions/post';
 import { useAppDispatch, useAppSelector } from '@store/config';
 import { IArticle, deletePostToMe } from '@features/postSlice';
-import { useRouter } from 'next/router';
 
 type PostProps = {
   post: IArticle;
@@ -22,15 +20,9 @@ type PostProps = {
 };
 
 const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
-  const router = useRouter();
   const [cookies, setCookie, removeCookie] = useCookies(['user']);
   const { deletePostDone, deletePostLoading, editPostDone } = useAppSelector((state) => state.post);
 
-  const [editContent, setEditContent] = useState<string>();
-  const [onUserText, setOnUserText] = useState<string>();
-  const [onUserHTML, setOnUserHTML] = useState<string>();
-
-  const [memberIdCheck, setMemberIdCheck] = useState<number>();
   const [postCardDropdown, setPostCardDropdown] = useState<boolean>(false);
   const [onReportModal, setOnReportModal] = useState<boolean>(false);
   const [onDeleteModal, setOnDeleteModal] = useState<boolean>(false);
@@ -75,7 +67,6 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
       articleId: post.articleId,
       articleReportContext: reportTests[selectBox.current?.value as unknown as number],
     };
-    // console.log(data);
     dispatch(reportPost({ ...data })).then((res) => {
       switch (res.payload) {
         case 1:
@@ -101,18 +92,6 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
     dispatch(deletePostToMe({ articleId: post.articleId }));
     setOnDeleteModal(false);
   }, [deletePostDone]);
-
-  // useEffect(() => {
-  //     setMemberIdCheck(post.member.memberId)
-  //     if (post.member.memberId === cookies.user?.num) {
-  //         contextModify ? setEditContent('수정취소') : setEditContent('수정하기')
-  //         setOnUserText('삭제하기')
-  //         setOnUserHTML('flex')
-  //     } else if (post.member.memberId !== cookies.user?.num) {
-  //         setOnUserText('신고하기')
-  //         setOnUserHTML('hidden')
-  //     }
-  // }, [contextModify, onUserText, editContent])
 
   return (
     <div>
@@ -148,7 +127,6 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
                       onClick={onReportModalOpen}
                       className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     >
-                      {/* {onUserText} */}
                       신고하기
                     </button>
                   </li>
@@ -163,7 +141,6 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
                    onClick={onEditPost}
                    className="flex justify-start py-2 pl-3.5 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                  >
-                   {/* {editContent} */}
                    수정하기
                  </button>
                </li>
@@ -173,7 +150,6 @@ const Dropdown = ({ post, contextModify, setContextModify }: PostProps) => {
                    onClick={onDeleteOpen}
                    className="flex justify-start w-full py-2 pl-3.5 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                  >
-                   {/* {onUserText} */}
                    삭제하기
                  </button>
                </li>

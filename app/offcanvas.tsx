@@ -37,7 +37,10 @@ function OffCanvas() {
     return (
         <div className='relative z-10'>
             <div>
-                <nav className="flex flex-col h-screen94 md:w-64 w-0 z-40 px-4 overflow-y-auto bg-purple-900 tex-gray-900 border border-purple-900">
+                <nav className={`${router.route === '/mainpage/dm' ? 
+                "h-screen90 flex flex-col md:w-64 w-0 z-40 px-4 overflow-y-auto bg-purple-900 tex-gray-900 border border-purple-900" 
+                : 
+                "h-screen94 flex flex-col md:w-64 w-0 z-40 px-4 overflow-y-auto bg-purple-900 tex-gray-900 border border-purple-900"}`}>
                     <div className="flex flex-wrap mt-8">
                         <div className="ml-4 w-1/4">
                             <div className="inline-flex overflow-hidden relative justify-center items-center mx-auto w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600">

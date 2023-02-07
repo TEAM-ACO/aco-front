@@ -10,7 +10,7 @@ import CommentList from './CommentList';
 import Dropdown from './Dropdown';
 import PostCardContent from './PostCardContent';
 import PostImage from './PostImage';
-import { likePost, updateComment, UpdateDeleteComment } from '@actions/post';
+import { likePost, updateComment } from '@actions/post';
 import { useRouter } from 'next/router';
 import PostModifyForm from './PostModifyForm';
 import CommentMore from './CommentMore';
@@ -83,30 +83,6 @@ const PostCard = ({ post }: PostProps) => {
             router.replace('/')
         }
     })
-    
-    // const [dateCheck, setDateCheck] = useState<string>();
-    // const [articleImageCheck, setArticleImageCheck] = useState<string[]>([]);
-    // const [memberIdCheck, setMemberIdCheck] = useState<number>();
-    // const [nicknameCheck, setNicknameCheck] = useState<string>();
-    // const [articleIdCheck, setArticleIdCheck] = useState<number>();
-    // const [menuCheck, setMenuCheck] = useState<string>();
-    // const [articleContextCheck, setArticleContextCheck] = useState<string>();
-    // const [tagsCheck, setTagsCheck] = useState<string[]>([]);
-    // const [replysCheck, setReplysCheck] = useState<IReply[]>([]);
-    // const [categoryCheck, setCategoryCheck] = useState<boolean>();
-    // useEffect(() => {
-    //     setDateCheck(post.date)
-    //     setArticleImageCheck(post.articleImagesNames)
-    //     setMemberIdCheck(post.member.memberId)
-    //     setNicknameCheck(post.member.nickname)
-    //     setArticleIdCheck(post.articleId)
-    //     setMenuCheck(post.menu)
-    //     setArticleContextCheck(post.articleContext)
-    //     setTagsCheck(post.tags)
-    //     setReplysCheck(post.replys)
-    //     setReplyCountCheck(post.replys[post.replys.length - 1]?.totalCount || 0)
-    //     setCategoryCheck(router.asPath.split('/')[2] === post.menu.toLowerCase())
-    // })
 
     return (
         <>

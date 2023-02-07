@@ -7,10 +7,11 @@ import { IAdminDelete, IPageNumber } from '@typings/db';
 axios.defaults.baseURL = backendURL;
 axios.defaults.withCredentials = true;
 
+// Admin 페이지는 시연용입니다.
+
 export const adminVisitant = createAsyncThunk<IAdminState, IAdminVisitant>(
   'admin/visitant',
   async (data, { rejectWithValue }) => {
-    console.log(data);
     try {
       const response = await axios.get(`/api/admin/main/${data.week}`);
       return response.data;
@@ -24,7 +25,6 @@ export const adminVisitant = createAsyncThunk<IAdminState, IAdminVisitant>(
 export const visitor = createAsyncThunk<IAdminState, IAdminVisitant>(
   'admin/visitor',
   async (data, { rejectWithValue }) => {
-    console.log(data);
     try {
       const response = await axios.get(`/api/admin/main/${data.week}`);
       return response.data;

@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { searchRequestPage } from '@features/postSlice'
-import { useAppDispatch, useAppSelector } from '@store/config'
+import { useAppDispatch } from '@store/config'
+import { randomTip } from '@actions/post'
 
 type Tags = {
     tags: string
@@ -11,6 +12,9 @@ const PostCardContent = ({ tags }: Tags) => {
     const dispatch = useAppDispatch();
     const onTagSearch = useCallback(() => {
         dispatch(searchRequestPage({ searchValue: 0 }))
+        setTimeout(() => {
+            dispatch(randomTip())
+        }, 1000)
     }, [])
     
     return (

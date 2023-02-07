@@ -1,11 +1,11 @@
 
 # aco-front
 
-ACO 홈페이지 바로가기 (링크)
+[ACO 홈페이지 바로가기](http://43.200.152.148:3075/)
 
 # Project Aco
 
-이미지 넣기
+![eco](https://user-images.githubusercontent.com/102219209/217315957-94799ba2-3d4a-4c99-be23-84e32813c97d.PNG)
 
 ### 기획의도
 

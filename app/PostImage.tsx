@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { imgUrl } from 'util/imgUrl'
 
 type Images = {

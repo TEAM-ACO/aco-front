@@ -73,7 +73,6 @@ export const changeNickname = createAsyncThunk<ChangeNicknameRequest, ChangeNick
 export const changePassword = createAsyncThunk<ChangePassRequest, ChangePassRequest>(
   'user/changePassword',
   async (data, { rejectWithValue }) => {
-    console.log(data);
     try {
       const response = await axios.post('/api/setting/changepassword', data);
       return response.data;

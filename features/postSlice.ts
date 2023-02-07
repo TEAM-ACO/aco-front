@@ -21,7 +21,6 @@ import {
   searchInitPosts,
   searchPosts,
   updateComment,
-  UpdateDeleteComment,
   uploadImages,
 } from '@actions/post';
 import { ArticleLoadPosts, IMainReqPage } from '@typings/db';

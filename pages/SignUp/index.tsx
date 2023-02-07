@@ -41,8 +41,6 @@ const SignUp = () => {
 
     const emailAuthSend = useCallback(() => {
         dispatch(emailAuthRequest({ email })).then(res => {
-            console.log(res.payload);
-
             res.payload == undefined ? setEmailError(true) : setEmailError(false)
             res.payload ? setEmailSwitcher(true) : setEmailSwitcher(false)
         })
@@ -74,7 +72,6 @@ const SignUp = () => {
             return setMismatchError(true);
         }
         if (!mismatchError && nickname) {
-            console.log('=====회원가입 되는지 체크====');
             setMismatchError(false);
             setNicknameError(false);
             setSignUpError('');

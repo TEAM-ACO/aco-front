@@ -5,7 +5,7 @@ import { IWeek } from '@typings/db'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import { visitor } from '@actions/admin'
 
-// 백엔드와 차트 구현법 협의중 보류
+// 백엔드와 차트 구현법 협의중  (구현중입니다.)
 
 type contentProps = {
     select: any
@@ -17,8 +17,6 @@ const VisitorInfo = ({ select }: contentProps) => {
     // const visitor = dayOfVisitor
     // const prevLink = prevLinkWithSum
     // const visited = visitedArticle
-
-    // console.log(adminVisitor[0])
 
     useEffect(() => {
         dispatch(visitor({ week: select }))

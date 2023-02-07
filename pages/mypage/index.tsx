@@ -59,7 +59,6 @@ const MyPage = () => {
             setImageError(true)
             return
         }
-        console.log(imageInput.current.files[0])
         const result = new FormData;
         result.set("memberId", cookies.user.num)
         result.set("userimg", imageInput.current.files[0].name)
@@ -82,7 +81,6 @@ const MyPage = () => {
 
     const onWithdraw = useCallback(() => {
         dispatch(userWithdraw({ memberId: userLink, password: withdrawPassword }))
-        console.log(userLink, withdrawPassword)
         setIsWithdraw(true)
         setTimeout(() => {
             removeCookie('user')

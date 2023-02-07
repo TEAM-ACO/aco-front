@@ -13,8 +13,6 @@ import { loadInitPosts, loadPosts, randomTip } from '@actions/post';
 import { useInView } from 'react-intersection-observer';
 
 const mainpage: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    console.log(props)
-
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const dispatch = useAppDispatch();
     const router = useRouter();

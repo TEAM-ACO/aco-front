@@ -2,15 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react'
 import AdminMenu from '../../../app/AdminMenu'
 import AdminArticleComponent from '../../../app/AdminArticle'
 import { Table } from 'flowbite-react'
-import wrapper, { useAppDispatch, useAppSelector } from '@store/config'
+import { useAppDispatch, useAppSelector } from '@store/config'
 import { adminArticle } from '@actions/admin'
 import { IAdminArticle } from '@features/adminSlice'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { GetServerSideProps } from 'next'
 
 const AdminArticle = () => {
-    // total 받으면 마지막 화살표 없애는 식 만들 것
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { pid } = router.query;
@@ -135,11 +133,5 @@ const AdminArticle = () => {
         </>
     )
 }
-
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
-    await store.dispatch(adminArticle());
-
-    return { props: { message: 'Success SSR' } }
-})
 
 export default AdminArticle

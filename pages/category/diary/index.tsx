@@ -10,7 +10,6 @@ import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import Head from 'next/head';
 
 const Diary: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    console.log(props)
     const dispatch = useAppDispatch();
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
     const [requestPage, setRequestPage] = useState<number>(1);

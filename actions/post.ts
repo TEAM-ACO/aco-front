@@ -161,7 +161,6 @@ export const searchInitPosts = createAsyncThunk<ArticleSearch, ISearchPosts>(
 export const loadUserPosts = createAsyncThunk<IArticle, IloadUserPosts>(
   'article/loadUserPosts',
   async (data, { rejectWithValue }) => {
-    console.log(data);
     try {
       const response = await axios.post(`/api/article/list/${data.memberId}`, data);
       let tmp = [...response.data];
@@ -186,7 +185,7 @@ export const loadUserPosts = createAsyncThunk<IArticle, IloadUserPosts>(
 export const loadUserInitPosts = createAsyncThunk<IArticle, IloadUserPosts>(
   'article/loadUserInitPosts',
   async (data, { rejectWithValue }) => {
-    console.log(data);
+    
     try {
       const response = await axios.post(`http://acoapi.hyns.co.kr/api/article/list/${data.memberId}`, data);
       let tmp = [...response.data];
@@ -224,7 +223,6 @@ export const reportPost = createAsyncThunk<reportArticle, reportArticle>(
 export const reportMember = createAsyncThunk<IArticle, IReportMember>(
   'article/reportMember',
   async (data, { rejectWithValue }) => {
-    console.log(data);
     try {
       const response = await axios.post(`/api/report/member`, data);
       return response.data;
@@ -236,7 +234,6 @@ export const reportMember = createAsyncThunk<IArticle, IReportMember>(
 
 // 좋아요
 export const likePost = createAsyncThunk<IArticle, ILikePost>('article/likePost', async (data, { rejectWithValue }) => {
-  console.log(data);
   try {
     const response = await axios.post(`/api/like`, data);
     return response.data;
@@ -271,21 +268,6 @@ export const addComment = createAsyncThunk<IArticle, IAddComment>(
 export const updateComment = createAsyncThunk<IArticle, IUpdateComment>(
   'article/reply/updateComment',
   async (data, { rejectWithValue }) => {
-    console.log(data);
-    try {
-      const response = await axios.post(`/api/article/reply/${data.article.articleId}`, data);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue((error as AxiosError).response?.data);
-    }
-  },
-);
-
-// 댓글 삭제 후 업데이트
-export const UpdateDeleteComment = createAsyncThunk<IArticle, IUpdateComment>(
-  'article/reply/updateDeleteComment',
-  async (data, { rejectWithValue }) => {
-    console.log(data);
     try {
       const response = await axios.post(`/api/article/reply/${data.article.articleId}`, data);
       return response.data;
@@ -347,7 +329,6 @@ export const loadInitMenu = createAsyncThunk<IArticle, IMenu | undefined>(
 export const editPost = createAsyncThunk<IArticle, FormData>(
   'article/editPost',
   async (data: FormData, { rejectWithValue }) => {
-    console.log(data);
     try {
       const response = await axios.post(`/api/article/modify`, data, {
         headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
@@ -363,7 +344,6 @@ export const editPost = createAsyncThunk<IArticle, FormData>(
 export const deletePost = createAsyncThunk<IArticle, articleId>(
   'article/deletePost',
   async (data, { rejectWithValue }) => {
-    // console.log(data);
     try {
       const response = await axios.post(`/api/article/delete`, data);
       return response.data;
@@ -377,7 +357,6 @@ export const deletePost = createAsyncThunk<IArticle, articleId>(
 export const deleteComment = createAsyncThunk<IArticle, IDeleteComment>(
   'article/deleteComment',
   async (data, { rejectWithValue }) => {
-    console.log(data);
     try {
       const response = await axios.post(`/api/article/reply/delete`, data);
       return response.data;

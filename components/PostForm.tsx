@@ -65,7 +65,7 @@ const PostForm = () => {
         }
         dispatch(addPost(result))
         dispatch(mainRequestPage({ mainReqPage: 0 }))
-    }, [text, tagList, mainPosts])
+    }, [text, tagList, mainPosts, selectedOption])
 
     const onChangeText = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setText(e.target.value);

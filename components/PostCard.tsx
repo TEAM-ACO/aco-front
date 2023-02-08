@@ -24,7 +24,7 @@ const PostCard = ({ post }: PostProps) => {
     const date = dayjs(post.date).format("YY-MM-DD");
     const router = useRouter();
     const dispatch = useAppDispatch();
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+    const [cookies] = useCookies(['user']);
     const [contextModify, setContextModify] = useState<boolean>(false);
     const [favorite, setFavorite] = useState<boolean>(false);
     const [favoriteError, setFavoriteError] = useState<boolean>(false);
@@ -90,7 +90,7 @@ const PostCard = ({ post }: PostProps) => {
                 <div className="rounded overflow-hidden shadow-lg pb-7">
                     <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
                         <div>
-                            <Carousel className='px-6 py-4 xl:h-80  carousel-class' slide={false}>
+                            <Carousel className='px-6 py-4 xl:h-80 carousel-class' slide={false}>
                                 {post.articleImagesNames.map((articleImages) => {
                                     return (
                                         <PostImage key={articleImages} articleImages={articleImages} />

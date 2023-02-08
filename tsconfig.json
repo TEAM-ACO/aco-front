@@ -16,7 +16,7 @@
       "@features/*": ["features/*"],
       "@store/*": ["store/*"],
       "@actions/*": ["actions/*"],
-      "@app/*": ["app/*"],
+      "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
       "@utils/*": ["utils/*"],
       "@typings/*": ["typings/*"]

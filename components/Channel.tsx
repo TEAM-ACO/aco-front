@@ -2,7 +2,6 @@ import { randomTip } from '@actions/post';
 import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import Link from 'next/link'
-import { useRouter } from 'next/router';
 
 function Channel() {
     const dispatch = useAppDispatch();

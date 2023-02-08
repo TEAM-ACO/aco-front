@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Table } from 'flowbite-react'
-import AdminMenu from '../../app/AdminMenu'
+import AdminMenu from '../../components/AdminMenu'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import { adminVisitant } from '@actions/admin'
 import Select, { ActionMeta, SingleValue } from 'react-select';
 // import VisitorInfo from './VisitorInfo';
 // import RecentMember from './RecentMember'
-import RecentArticle from '../../app/RecentArticle'
+import RecentArticle from '../../components/RecentArticle'
 import Head from 'next/head'
-import { IRecentArticleContent, IRecentMemberContent } from '@typings/db'
 import { useRouter } from 'next/router'
 
 const options = [
@@ -18,7 +17,7 @@ const options = [
     { value: 12, label: '12주일' },
 ];
 
-// Admin 페이지는 시연용이며 클라이언트 사이드 렌더링입니다.
+// Admin 페이지는 시연용이며 SEO가 없어야 하는 페이지이기에 클라이언트 사이드 렌더링으로 할 것.
 
 type IOptions = {
     value: number;
@@ -28,8 +27,6 @@ type IOptions = {
 
 const Visitant = () => {
     const router = useRouter();
-    const dispatch = useAppDispatch();
-    const { adminContent } = useAppSelector((state) => state.admin)
     const [selectedOption, setSelectedOption] = useState<IOptions | any>(options[0]);
 
     useEffect(() => {

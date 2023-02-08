@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import AdminMenu from '../../../app/AdminMenu'
-import AdminMemberComponent from '../../../app/AdminMember'
+import AdminMenu from '../../../components/AdminMenu'
+import AdminMemberComponent from '../../../components/AdminMember'
 import { Table } from 'flowbite-react'
-import { useAppDispatch, useAppSelector } from '@store/config'
+import wrapper, { useAppDispatch, useAppSelector } from '@store/config'
 import { adminMember } from '@actions/admin'
 import { IAdmin } from '@features/adminSlice'
 import { useRouter } from 'next/router'
@@ -54,14 +54,6 @@ const AdminMember = () => {
                     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
                 />
                 <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-                <meta name="description" content="Admin Member page" />
-                <meta name="keywords" content="MemberAdmin" />
-                <link rel="icon" sizes="100x100" href="/favicon.png" />
-                <meta property="og:image" content="/favicon.png" />
-                <meta property="og:title" content="멤버관리 페이지 | Project ACO" />
-                <meta property="og:description" content="Admin Member page" />
-                <meta property="og:site_name" content="ACO" />
-                <meta property="og:locale" content="ko_KR" />
             </Head>
             <AdminMenu>
                 <Table hoverable={true}>

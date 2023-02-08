@@ -5,10 +5,10 @@ import { useRouter } from 'next/router';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import { useCookies } from "react-cookie"
 
-import PostCard from '@app/PostCard';
+import PostCard from '@components/PostCard';
 import { IArticle, userRequestPage } from '@features/postSlice';
-import PostForm from '@app/PostForm';
-import Mainpage from '@app/mainpage';
+import PostForm from '@components/PostForm';
+import Mainpage from '@components/mainpage';
 import { loadUserInitPosts, loadUserPosts, randomTip, reportMember } from '@actions/post';
 import { Avatar, Button, Modal } from 'flowbite-react';
 import Head from 'next/head';
@@ -93,6 +93,7 @@ const userid: NextPage = (props: InferGetServerSidePropsType<typeof getServerSid
                                     <Avatar
                                         img={`${imgUrl}/image/user/${mainPosts[0]?.member.memberId}`}
                                         rounded={true}
+                                        className="w-10 h-10"
                                     />
                                 </div>
                                 <span>{mainPosts[0]?.member.nickname}님의 게시글입니다.</span>

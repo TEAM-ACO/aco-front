@@ -2,14 +2,13 @@ import React, { useCallback, useState, useEffect } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
 import { loadInitMenu, loadMenu } from '@actions/post';
-import Mainpage from '../../../app/mainpage';
-import PostForm from '@app/PostForm';
+import Mainpage from '../../../components/mainpage';
+import PostForm from '@components/PostForm';
 import { IArticle } from '@features/postSlice';
-import PostCard from '@app/PostCard';
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
+import PostCard from '@components/PostCard';
 import Head from 'next/head';
 
-const Diary: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Diary = () => {
     const dispatch = useAppDispatch();
     const { mainPosts, loadPostsLoading, hasMorePosts } = useAppSelector((state) => state.post);
     const [requestPage, setRequestPage] = useState<number>(1);
@@ -61,7 +60,7 @@ const Diary: NextPage = (props: InferGetServerSidePropsType<typeof getServerSide
     )
 }
 
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async () => {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async () => {
     const requestPage = 0
     const { payload } = await store.dispatch(loadInitMenu({ num: 0, menu: "Diary", requestedPageNumber: requestPage, requestedPageSize: 10 }));
 

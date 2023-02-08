@@ -12,6 +12,7 @@ const PostImage = ({ articleImages }: Images) => {
                 className='object-contain h-56 sm:h-64 xl:h-72'
                 src={`${imgUrl}/image/images/${articleImages}`}
                 alt={articleImages}
+                loading="lazy"
             />
         </div>
     )

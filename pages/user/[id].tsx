@@ -7,7 +7,6 @@ import { useCookies } from "react-cookie"
 
 import PostCard from '@components/PostCard';
 import { IArticle, userRequestPage } from '@features/postSlice';
-import PostForm from '@components/PostForm';
 import Mainpage from '@components/mainpage';
 import { loadUserInitPosts, loadUserPosts, randomTip, reportMember } from '@actions/post';
 import { Avatar, Button, Modal } from 'flowbite-react';
@@ -87,7 +86,7 @@ const userid: NextPage = (props: InferGetServerSidePropsType<typeof getServerSid
                     <h2 id="accordion-collapse-heading-1" className='px-6'>
                         <div
                             className="flex items-center justify-between w-full p-5 font-medium text-left bg-gray-50 text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400"
-                            data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
+                            >
                             <div className='flex items-center gap-2'>
                                 <div className='w-10'>
                                     <Avatar

@@ -3,7 +3,6 @@ import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
 import { randomTip, searchInitPosts, searchPosts } from '@actions/post';
 import Mainpage from '../../components/mainpage';
-import PostForm from '@components/PostForm';
 import { IArticle, searchRequestPage } from '@features/postSlice';
 import PostCard from '@components/PostCard';
 import { useRouter } from 'next/router';
@@ -56,13 +55,12 @@ function PostList() {
                     <div className="ml-auto mr-auto">
                     <h2 id="accordion-collapse-heading-1" className='px-6'>
                         <div className="flex items-center justify-between w-full p-5 font-medium text-left bg-gray-50 text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400"
-                            data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
+                            >
                             <div className='flex items-center gap-2'>   
                                 <span>태그/검색 키워드 : {pid}</span>
                             </div>
                         </div>
                     </h2>
-                        {/* <PostForm /> */}
                         {mainPosts.map((post: IArticle) => {
                             return (
                                 <PostCard key={post.articleId} post={post} />

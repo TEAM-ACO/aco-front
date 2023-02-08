@@ -109,6 +109,7 @@ const PostCard = ({ post }: PostProps) => {
                                     <Avatar
                                         img={`${imgUrl}/image/user/${post.member.memberId}`}
                                         rounded={true}
+                                        className="w-10 h-10"
                                     />
                                     <p className='ml-2'>
                                         {post.member.nickname}

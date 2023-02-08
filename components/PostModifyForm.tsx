@@ -214,7 +214,7 @@ function PostModifyForm({ post, contextModify, setContextModify }: PostProps) {
                             onClick={onSubmit}
                         >
                             {editPostLoading ?
-                                <Spinner aria-label="Default status example" /> :
+                                <Spinner /> :
                                 '수정하기'
                             }
                         </button>

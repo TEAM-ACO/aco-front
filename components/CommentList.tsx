@@ -77,6 +77,7 @@ function CommentList({ comment }: CommentProps) {
                             <Avatar
                                 img={`${imgUrl}/image/user/${comment.member.memberId}`}
                                 rounded={true}
+                                className="w-10 h-10"
                             />
                         </div>
                     </button>

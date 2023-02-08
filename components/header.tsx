@@ -31,7 +31,7 @@ const header = () => {
             setUserLink(cookies.user.num)
             setTimeout(() => {
                 setMyNickname(cookies.user.username.toUpperCase())
-            }, 100)
+            }, 0)
         }
     }, [cookies.user])
 
@@ -43,11 +43,11 @@ const header = () => {
                     fluid={true}
                     rounded={false}
                 >
-                    <Navbar.Brand href="/">
+                    <Link className='font-extrabold' href="/">
                         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
                             Project ACO
                         </span>
-                    </Navbar.Brand>
+                    </Link>
                     <div className="flex">
                         <button
                             type="button"
@@ -88,11 +88,11 @@ const header = () => {
                     fluid={true}
                     rounded={false}
                 >
-                    <Navbar.Brand href="/mainpage">
+                    <Link className='font-extrabold' href="/mainpage">
                         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
                             Project ACO
                         </span>
-                    </Navbar.Brand>
+                    </Link>
                     <div className="flex">
                         <SearchForm />
                         <button

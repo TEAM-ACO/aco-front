@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const CompressionPlugin = require('compression-webpack-plugin');
+
 const nextConfig = {
   swcMinify: true,
   async rewrites() {
@@ -12,18 +14,10 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
   },
-  // webpack(config, {webpack}){
-  //   const prod = process.env.NODE_ENV === 'production';
-  //   const plugins = [
-  //       ...config.plugins,
-  //       // new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /^\.\/ko$/),
-  //   ];
-  //   return{
-  //       ...config,
-  //       mode: prod ? 'production' : 'development',
-  //       plugins,
-  //   };
-  // },
+  webpack: config => {
+    config.plugins.push(new CompressionPlugin());
+    return config;
+  },
 };
 
 module.exports = nextConfig;

@@ -186,7 +186,7 @@ const PostForm = () => {
                             onClick={onSubmit}
                         >
                             {addPostLoading ?
-                                <Spinner aria-label="Default status example" /> :
+                                <Spinner /> :
                                 '글쓰기'
                             }
                         </button>

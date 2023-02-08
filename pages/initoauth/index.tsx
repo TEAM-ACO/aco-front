@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { useAppDispatch, useAppSelector } from '@store/config';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useCookies } from "react-cookie"
 import { Spinner } from 'flowbite-react';
 import useInput from '@hooks/useInput';
@@ -12,7 +12,7 @@ const InitOauth = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
-    const { changeForgotPasswordDone, changeForgotPasswordLoading } = useAppSelector((state) => state.user);
+    const { changeForgotPasswordLoading } = useAppSelector((state) => state.user);
     const [action, setAction] = useState<boolean>(false)
 
     const [nickname, onChangeNickname] = useInput('');

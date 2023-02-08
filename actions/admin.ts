@@ -7,8 +7,6 @@ import { IAdminDelete, IPageNumber } from '@typings/db';
 axios.defaults.baseURL = backendURL;
 axios.defaults.withCredentials = true;
 
-// Admin 페이지는 시연용입니다.
-
 export const adminVisitant = createAsyncThunk<IAdminState, IAdminVisitant>(
   'admin/visitant',
   async (data, { rejectWithValue }) => {

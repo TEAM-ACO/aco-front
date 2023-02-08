@@ -2,10 +2,10 @@ import React, { useCallback, useState, useEffect } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useInView } from 'react-intersection-observer';
 import { loadInitMenu, loadMenu } from '@actions/post';
-import Mainpage from '@app/mainpage';
-import PostForm from '@app/PostForm';
+import Mainpage from '@components/mainpage';
+import PostForm from '@components/PostForm';
 import { IArticle } from '@features/postSlice';
-import PostCard from '@app/PostCard';
+import PostCard from '@components/PostCard';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Head from 'next/head';
 

@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // reactStrictMode: true,
-  // poweredByHeader: process.env.NODE_ENV === 'development',
   swcMinify: true,
   async rewrites() {
     return [
@@ -14,6 +12,18 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
   },
+  // webpack(config, {webpack}){
+  //   const prod = process.env.NODE_ENV === 'production';
+  //   const plugins = [
+  //       ...config.plugins,
+  //       // new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /^\.\/ko$/),
+  //   ];
+  //   return{
+  //       ...config,
+  //       mode: prod ? 'production' : 'development',
+  //       plugins,
+  //   };
+  // },
 };
 
 module.exports = nextConfig;

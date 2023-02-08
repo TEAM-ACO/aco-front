@@ -1,6 +1,6 @@
 import React from 'react'
-import Mainpage from '../../../app/mainpage';
-import ChatRoom from '../../../app/ChatRoom';
+import Mainpage from '../../../components/mainpage';
+import ChatRoom from '../../../components/ChatRoom';
 
 function dm() {
     return (

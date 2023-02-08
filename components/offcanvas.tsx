@@ -2,17 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import { useCookies } from 'react-cookie';
 import Link from 'next/link';
-import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
-import { loadMenu } from '@actions/post';
+import { useAppSelector } from '@store/config';
 import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
 import { imgUrl } from 'util/imgUrl';
 
 function OffCanvas() {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [cookies2, setCookie2, removeCookie2] = useCookies(['refresh']);
     const [cookies3, setCookie3, removeCookie3] = useCookies(['access']);
-    const dispatch = useAppDispatch();
     const router = useRouter();
     const { mainPosts } = useAppSelector((state) => state.post);
 
@@ -152,9 +149,9 @@ function OffCanvas() {
                                         ></path>
                                     </svg>
                                 </span>
-                                <a href="/admin/member/1">
+                                <Link href="/admin/member/1">
                                     <span className="ml-2">관리자페이지</span>
-                                </a>
+                                </Link>
                             </li>
                             <li className="mb-2 px-4 py-3 text-gray-100 flex flex-row  border-gray-300 hover:text-black   hover:bg-gray-300  hover:font-bold rounded-lg">
                                 <span>
@@ -187,12 +184,5 @@ function OffCanvas() {
         </div>
     )
 }
-
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
-
-    await store.dispatch(loadMenu());
-
-    return { props: {} }
-})
 
 export default OffCanvas;

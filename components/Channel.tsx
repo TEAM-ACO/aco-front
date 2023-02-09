@@ -2,7 +2,6 @@ import { randomTip } from '@actions/post';
 import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import Link from 'next/link'
-import { useRouter } from 'next/router';
 
 function Channel() {
     const dispatch = useAppDispatch();
@@ -15,9 +14,9 @@ function Channel() {
     return (
         <div className="z-50 relative">
             <div className='slg:pr-4 bg-white'>
-                <aside className="w-64" aria-label="Sidebar">
+                <aside className="w-64">
                     <div className="overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800">
-                        <div id="dropdown-cta" className="p-4 mt-6 bg-blue-50 rounded-lg dark:bg-blue-900" role="alert">
+                        <div className="p-4 mt-6 bg-blue-50 rounded-lg dark:bg-blue-900" role="alert">
                             <div className="flex items-center mb-3">
                                 <span className="bg-orange-100 text-orange-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-orange-200 dark:text-orange-900">Today's Tip</span>
                             </div>

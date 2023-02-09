@@ -1,22 +1,21 @@
 import React, { useEffect, useCallback } from 'react'
 import wrapper, { useAppDispatch, useAppSelector } from '@store/config';
 import { useCookies } from "react-cookie"
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import PostCard from '@app/PostCard';
-import PostForm from '@app/PostForm';
-import Mainpage from '@app/mainpage';
+import PostCard from '@components/PostCard';
+import PostForm from '@components/PostForm';
+import Mainpage from '@components/mainpage';
 import { IArticle, mainRequestPage } from '@features/postSlice';
 import { loadInitPosts, loadPosts, randomTip } from '@actions/post';
 import { useInView } from 'react-intersection-observer';
 
-const mainpage: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-    const [cookies, setCookie, removeCookie] = useCookies(['user']);
+const mainpage = () => {
+    const [cookies] = useCookies(['user']);
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const { mainPosts, loadPostsLoading, loadPostsError, hasMorePosts, mainReqPage } = useAppSelector((state) => state.post);
+    const { mainPosts, loadPostsLoading, hasMorePosts, mainReqPage } = useAppSelector((state) => state.post);
     const [ref, inView] = useInView();
 
     const loadMore = useCallback(() => {
@@ -70,7 +69,7 @@ const mainpage: NextPage = (props: InferGetServerSidePropsType<typeof getServerS
     )
 }
 
-export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps((store) => async () => {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async () => {
     const mainReqPage = 0
     const payload = await store.dispatch(loadInitPosts({ requestedPageNumber: mainReqPage, requestedPageSize: 10 }));
     await store.dispatch(randomTip())

@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
+const CompressionPlugin = require('compression-webpack-plugin');
+
 const nextConfig = {
-  // reactStrictMode: true,
-  // poweredByHeader: process.env.NODE_ENV === 'development',
   swcMinify: true,
   async rewrites() {
     return [
@@ -13,6 +13,10 @@ const nextConfig = {
   },
   experimental: {
     optimizeCss: true,
+  },
+  webpack: config => {
+    config.plugins.push(new CompressionPlugin());
+    return config;
   },
 };
 

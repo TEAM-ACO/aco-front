@@ -7,7 +7,6 @@ interface Configuration extends WebpackConfiguration {
   devServer?: WebpackDevServerConfiguration;
 }
 
-// 배포시 package.json에서 NODE_ENV=production으로 바꿔줄 것.
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const Critters = require('critters-webpack-plugin');
 
@@ -22,14 +21,14 @@ const config: Configuration = {
       '@store': path.resolve(__dirname, 'store'),
       '@features': path.resolve(__dirname, 'features'),
       '@actions': path.resolve(__dirname, 'actions'),
-      '@app': path.resolve(__dirname, 'app'),
+      '@components': path.resolve(__dirname, 'components'),
       '@pages': path.resolve(__dirname, 'pages'),
       '@utils': path.resolve(__dirname, 'utils'),
       '@typings': path.resolve(__dirname, 'typings'),
     },
   },
   entry: {
-    app: './client',
+    app: './index.html',
   },
   module: {
     rules: [
@@ -64,7 +63,6 @@ const config: Configuration = {
     new Critters({
       preload: 'swap',
       preloadFonts: true,
-
     }),
     new webpack.EnvironmentPlugin({ NODE_ENV: isDevelopment ? 'development' : 'production' }),
   ],
@@ -80,5 +78,13 @@ const config: Configuration = {
     static: { directory: path.resolve(__dirname) },
   },
 };
+
+if (isDevelopment && config.plugins) {
+  config.plugins.push(new webpack.HotModuleReplacementPlugin());
+}
+
+if (!isDevelopment && config.plugins) {
+  config.plugins.push(new webpack.LoaderOptionsPlugin({ minimize: true }));
+}
 
 export default config;

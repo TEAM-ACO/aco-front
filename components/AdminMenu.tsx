@@ -21,11 +21,11 @@ const AdminMenu = ({ children }: {
                             방문자 분석</Link>
                     </li> */}
                     <li className="mr-2">
-                        <a href="/admin/member/1"
+                        <Link href="/admin/member/1"
                             className={`inline-block p-4 rounded-t-lg 
                             ${router.route === "/admin/member/[pid]" ? "pointer-events-none text-blue-600 bg-gray-100 active dark:bg-gray-800 dark:text-blue-500"
                                     : "hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300"}`}>
-                            멤버 관리</a>
+                            멤버 관리</Link>
                     </li>
                     {/* 조회, 삭제만 */}
                     <li className="mr-2">

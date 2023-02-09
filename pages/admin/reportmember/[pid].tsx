@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import AdminMenu from '../../../app/AdminMenu'
-import AdminReportMemberComponent from '../../../app/AdminReportMember'
+import AdminMenu from '../../../components/AdminMenu'
+import AdminReportMemberComponent from '../../../components/AdminReportMember'
 import { Table } from 'flowbite-react'
 import { useAppDispatch, useAppSelector } from '@store/config'
 import { adminMemberReport } from '@actions/admin'
@@ -50,14 +50,6 @@ const AdminReportMember = () => {
                     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
                 />
                 <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-                <meta name="description" content="Admin Member Report page" />
-                <meta name="keywords" content="MemberReportAdmin" />
-                <link rel="icon" sizes="100x100" href="/favicon.png" />
-                <meta property="og:image" content="/favicon.png" />
-                <meta property="og:title" content="멤버 신고관리 페이지 | Project ACO" />
-                <meta property="og:description" content="Admin Member Report page" />
-                <meta property="og:site_name" content="ACO" />
-                <meta property="og:locale" content="ko_KR" />
             </Head>
             <AdminMenu>
                 <Table hoverable={true}>

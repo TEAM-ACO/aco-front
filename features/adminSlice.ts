@@ -4,8 +4,6 @@ import {
   adminDelete,
   adminMember,
   adminMemberReport,
-  adminVisitant,
-  visitor,
 } from '@actions/admin';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IWeek, Members } from '@typings/db';
@@ -37,10 +35,6 @@ export interface IAdminMemberReport {
   reporterUserId: number;
   totalCount: number;
 }
-
-type IArticleId = {
-  articleId: number;
-};
 
 export interface IAdminArticle {
   articleId: number;
@@ -111,30 +105,30 @@ const adminSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(adminVisitant.pending, (state: IAdminState) => {
-        state.adminVisitantLoading = true;
-        state.adminVisitantDone = false;
-      })
-      .addCase(adminVisitant.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
-        state.adminVisitantLoading = false;
-        state.adminVisitantDone = true;
-        state.adminContent = [action.payload['recentMember'], action.payload['recentArticle']];
-      })
-      .addCase(adminVisitant.rejected, (state: IAdminState) => {
-        state.adminVisitantLoading = false;
-      })
-      .addCase(visitor.pending, (state: IAdminState) => {
-        state.visitorLoading = true;
-        state.visitorDone = false;
-      })
-      .addCase(visitor.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
-        state.visitorLoading = false;
-        state.visitorDone = true;
-        state.adminVisitor = [action.payload['visitorInfo']];
-      })
-      .addCase(visitor.rejected, (state: IAdminState) => {
-        state.visitorLoading = false;
-      })
+      // .addCase(adminVisitant.pending, (state: IAdminState) => {
+      //   state.adminVisitantLoading = true;
+      //   state.adminVisitantDone = false;
+      // })
+      // .addCase(adminVisitant.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
+      //   state.adminVisitantLoading = false;
+      //   state.adminVisitantDone = true;
+      //   state.adminContent = [action.payload['recentMember'], action.payload['recentArticle']];
+      // })
+      // .addCase(adminVisitant.rejected, (state: IAdminState) => {
+      //   state.adminVisitantLoading = false;
+      // })
+      // .addCase(visitor.pending, (state: IAdminState) => {
+      //   state.visitorLoading = true;
+      //   state.visitorDone = false;
+      // })
+      // .addCase(visitor.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
+      //   state.visitorLoading = false;
+      //   state.visitorDone = true;
+      //   state.adminVisitor = [action.payload['visitorInfo']];
+      // })
+      // .addCase(visitor.rejected, (state: IAdminState) => {
+      //   state.visitorLoading = false;
+      // })
       .addCase(adminMember.pending, (state: IAdminState) => {
         state.adminMemberLoading = true;
         state.adminMemberDone = false;

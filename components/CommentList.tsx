@@ -1,4 +1,4 @@
-import React, { useState, useCallback, Dispatch, SetStateAction } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useCookies } from "react-cookie"
 import { Avatar, Modal, Button, Spinner } from 'flowbite-react'
 import dayjs from 'dayjs';
@@ -77,6 +77,7 @@ function CommentList({ comment }: CommentProps) {
                             <Avatar
                                 img={`${imgUrl}/image/user/${comment.member.memberId}`}
                                 rounded={true}
+                                className="w-10 h-10"
                             />
                         </div>
                     </button>

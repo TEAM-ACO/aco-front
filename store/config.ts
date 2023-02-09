@@ -9,7 +9,7 @@ import {
   configureStore,
 } from '@reduxjs/toolkit';
 import { HYDRATE, createWrapper } from 'next-redux-wrapper';
-import { createLogger } from 'redux-logger';
+// import { createLogger } from 'redux-logger';
 
 import userReducer, { IUserState } from '../features/userSlice';
 import postReducer, { IArticleState } from '../features/postSlice';
@@ -17,7 +17,7 @@ import signupReducer, { ISignupState } from '../features/signupSlice';
 import adminReducer, { IAdminState } from '../features/adminSlice';
 
 const isDev = process.env.NODE_ENV === 'development';
-const logger = createLogger();
+// const logger = createLogger();
 
 export interface IState {
   user: IUserState;

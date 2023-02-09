@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux';
 import store, { wrapper } from '@store/config';
-import Header from '@app/header'
+import Header from '@components/header'
 import { CookiesProvider } from 'react-cookie';
 import Head from 'next/head';
 

@@ -452,7 +452,6 @@ const postSlice = createSlice({
         state.editPostDone = false;
       })
       .addCase(editPost.fulfilled, (state: IArticleState, action: PayloadAction<IArticle>) => {
-        const post = _find(state.mainPosts, { articleId: action.payload });
         state.editPostLoading = false;
         state.editPostDone = true;
       })
@@ -477,9 +476,11 @@ const postSlice = createSlice({
         state.deleteCommentLoading = true;
         state.deleteCommentDone = false;
       })
-      .addCase(deleteComment.fulfilled, (state: IArticleState) => {
+      .addCase(deleteComment.fulfilled, (state: IArticleState, action: any) => {
         state.deleteCommentLoading = false;
         state.deleteCommentDone = true;
+        const post = state.mainPosts.findIndex((v: IArticle) => v.articleId == action.payload.article.articleId);
+        state.mainPosts[post].replys = state.mainPosts[post].replys.filter((v: any) => v.replyId !== action.payload.replyId)
       })
       .addCase(deleteComment.rejected, (state: IArticleState) => {
         state.deleteCommentLoading = false;

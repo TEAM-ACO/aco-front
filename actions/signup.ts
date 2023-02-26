@@ -1,15 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import backendURL from '../config/url';
 
 axios.defaults.baseURL = backendURL;
 axios.defaults.withCredentials = true;
 
 export type signupRequestData = { email: string; name: string; nickname: string; password: string };
-export type signupErrorData = any;
+export type signupErrorData = unknown | null;
 
 export type emailauthRequestData = { email: string; authNum?: number };
-export type emailauthErrorData = any;
+export type emailauthErrorData = unknown | null;
 
 export const signup = createAsyncThunk<signupRequestData, signupRequestData>(
   'member/signup',
@@ -19,7 +19,7 @@ export const signup = createAsyncThunk<signupRequestData, signupRequestData>(
       return response.data;
     } catch (error: signupErrorData) {
       console.error(error);
-      return rejectWithValue(error.response.data);
+      return rejectWithValue((error as AxiosError).response?.data);
     }
   },
 );
@@ -35,7 +35,7 @@ export const emailAuthRequest = createAsyncThunk<emailauthRequestData, emailauth
         return response.data;
       } catch (error: emailauthErrorData) {
         console.error(error);
-        return rejectWithValue(error.response.data);
+        return rejectWithValue((error as AxiosError).response?.data);
       }
     }
   },
@@ -49,7 +49,7 @@ export const authnumVerifyRequest = createAsyncThunk<emailauthRequestData, email
       return response.data;
     } catch (error: emailauthErrorData) {
       console.error(error);
-      return rejectWithValue(error.response.data);
+      return rejectWithValue((error as AxiosError).response?.data);
     }
   },
 );

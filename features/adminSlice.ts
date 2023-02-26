@@ -9,6 +9,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IWeek, Members } from '@typings/db';
 import _concat from 'lodash/concat';
 import _remove from 'lodash/concat';
+import { IArticle } from './postSlice';
 
 export interface IAdmin {
   email: string;
@@ -54,7 +55,7 @@ export interface IAdminArticleReport {
 }
 
 export interface IAdminState {
-  adminContent: any;
+  adminContent: IArticle[];
   adminVisitor: IWeek[];
   adminMemberContent: IAdmin[];
   adminMemberReportContent: IAdminMemberReport[];

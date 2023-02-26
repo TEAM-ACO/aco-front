@@ -1,8 +1,9 @@
 import React, { useState, Dispatch, SetStateAction, useEffect } from 'react'
 import { Button } from 'flowbite-react'
+import { IReply } from '@features/postSlice'
 
 type replyProps = {
-    replys: any
+    replys: IReply[]
     onCommentViewMore: Dispatch<SetStateAction<any>>
 }
 

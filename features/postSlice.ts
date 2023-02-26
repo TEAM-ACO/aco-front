@@ -23,7 +23,7 @@ import {
   updateComment,
   uploadImages,
 } from '@actions/post';
-import { ArticleLoadPosts, IMainReqPage } from '@typings/db';
+import { ArticleLoadPosts, IDeleteComment, IloadUserPosts, IMainReqPage } from '@typings/db';
 
 export interface IArticle {
   articleId: number;
@@ -37,6 +37,7 @@ export interface IArticle {
   date: string;
   replys: IReply[];
   articleImagesNames: string[];
+  length?: number
 }
 
 export interface IArticleReply {
@@ -59,6 +60,7 @@ export interface IReply {
   date: string;
   totalCount: number;
   replySort: number;
+  length?: number;
 }
 
 export interface IArticleState {
@@ -224,9 +226,9 @@ const postSlice = createSlice({
     deletePostToMe(state, action) {
       state.mainPosts = state.mainPosts.filter((v) => v.articleId !== action.payload.articleId);
     },
-    deleteReplyToMe(state: any, action) {
+    deleteReplyToMe(state, action) {
       const post = state.mainPosts.findIndex((v: IArticle) => v.articleId == action.payload.articleId);
-      state.mainPosts[post].replys = state.mainPosts[post].replys.filter((v: any) => v.replyId !== action.payload.replyId)
+      state.mainPosts[post].replys = state.mainPosts[post].replys.filter((v) => v.replyId !== action.payload.replyId)
     },
     mainRequestPage(state: IMainReqPage, action) {
       state.mainReqPage = action.payload.mainReqPage + 1;
@@ -337,7 +339,7 @@ const postSlice = createSlice({
         state.loadUserPostsLoading = true;
         state.loadUserPostsDone = false;
       })
-      .addCase(loadUserInitPosts.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
+      .addCase(loadUserInitPosts.fulfilled, (state: IArticleState, action: PayloadAction<IArticle>) => {
         state.loadUserPostsLoading = false;
         state.loadUserPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
@@ -351,7 +353,7 @@ const postSlice = createSlice({
         state.loadUserPostsLoading = true;
         state.loadUserPostsDone = false;
       })
-      .addCase(loadUserPosts.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
+      .addCase(loadUserPosts.fulfilled, (state: IArticleState, action: PayloadAction<IArticle>) => {
         state.loadUserPostsLoading = false;
         state.loadUserPostsDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
@@ -377,7 +379,7 @@ const postSlice = createSlice({
         state.addCommentLoading = true;
         state.addCommentDone = false;
       })
-      .addCase(addComment.fulfilled, (state: any, action: PayloadAction<IArticleReply>) => {
+      .addCase(addComment.fulfilled, (state, action: PayloadAction<IArticleReply>) => {
         state.addCommentLoading = false;
         state.addCommentDone = true;
         state.mainPosts = _concat(
@@ -400,7 +402,7 @@ const postSlice = createSlice({
         state.updateCommentLoading = true;
         state.updateCommentDone = false;
       })
-      .addCase(updateComment.fulfilled, (state: any, action: PayloadAction<any>) => {
+      .addCase(updateComment.fulfilled, (state, action: PayloadAction<any>) => {
         state.updateCommentLoading = false;
         state.updateCommentDone = true;
         state.mainPosts = _concat(
@@ -423,7 +425,7 @@ const postSlice = createSlice({
         state.loadMenuLoading = true;
         state.loadMenuDone = false;
       })
-      .addCase(loadInitMenu.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
+      .addCase(loadInitMenu.fulfilled, (state: IArticleState, action: PayloadAction<IArticle>) => {
         state.loadMenuLoading = false;
         state.loadMenuDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
@@ -437,7 +439,7 @@ const postSlice = createSlice({
         state.loadMenuLoading = true;
         state.loadMenuDone = false;
       })
-      .addCase(loadMenu.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
+      .addCase(loadMenu.fulfilled, (state: IArticleState, action: PayloadAction<IArticle>) => {
         state.loadMenuLoading = false;
         state.loadMenuDone = true;
         state.mainPosts = _concat(state.mainPosts, action.payload);
@@ -451,7 +453,7 @@ const postSlice = createSlice({
         state.editPostLoading = true;
         state.editPostDone = false;
       })
-      .addCase(editPost.fulfilled, (state: IArticleState, action: PayloadAction<IArticle>) => {
+      .addCase(editPost.fulfilled, (state: IArticleState) => {
         state.editPostLoading = false;
         state.editPostDone = true;
       })
@@ -476,11 +478,11 @@ const postSlice = createSlice({
         state.deleteCommentLoading = true;
         state.deleteCommentDone = false;
       })
-      .addCase(deleteComment.fulfilled, (state: IArticleState, action: any) => {
+      .addCase(deleteComment.fulfilled, (state: IArticleState, action: PayloadAction<IArticle | any>) => {
         state.deleteCommentLoading = false;
         state.deleteCommentDone = true;
         const post = state.mainPosts.findIndex((v: IArticle) => v.articleId == action.payload.article.articleId);
-        state.mainPosts[post].replys = state.mainPosts[post].replys.filter((v: any) => v.replyId !== action.payload.replyId)
+        state.mainPosts[post].replys = state.mainPosts[post].replys.filter((v: IReply) => v.replyId !== action.payload.replyId)
       })
       .addCase(deleteComment.rejected, (state: IArticleState) => {
         state.deleteCommentLoading = false;
@@ -490,7 +492,7 @@ const postSlice = createSlice({
         state.randomTipLoading = true;
         state.randomTipDone = false;
       })
-      .addCase(randomTip.fulfilled, (state: IArticleState, action: any) => {
+      .addCase(randomTip.fulfilled, (state: IArticleState, action: PayloadAction<any>) => {
         state.randomTipLoading = false;
         state.randomTipDone = true;
         state.ranTip = action.payload;

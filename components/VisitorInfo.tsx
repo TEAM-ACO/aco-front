@@ -7,11 +7,7 @@ import { visitor } from '@actions/admin'
 
 // 백엔드와 차트 구현법 협의중  (구현중입니다.)
 
-type contentProps = {
-    select: any
-}
-
-const VisitorInfo = ({ select }: contentProps) => {
+const VisitorInfo = () => {
     const dispatch = useAppDispatch();
     const { adminVisitor } = useAppSelector((state) => state.admin)
     // const visitor = dayOfVisitor
@@ -19,7 +15,7 @@ const VisitorInfo = ({ select }: contentProps) => {
     // const visited = visitedArticle
 
     useEffect(() => {
-        dispatch(visitor({ week: select }))
+
     }, [])
 
     return (

@@ -9,6 +9,7 @@ import {
   kakaoLogin,
   login,
   userWithdraw,
+  findpassAuthRequestData,
 } from '@actions/user';
 import _remove from 'lodash';
 import { ChangeNicknameRequest, ChangePassRequest } from '@typings/db';
@@ -32,8 +33,8 @@ export interface IForgotPass {
 }
 
 export interface IUserState {
-  me: any; // reponse받으면 me 입력
-  auth: number | null;
+  me: IUser | null; // reponse받으면 me 입력
+  auth: findpassAuthRequestData | null;
   userInfo: IMe | null; // 유저 정보
   loadUserLoading: boolean; // 유저 정보 조회
   loadUserDone: boolean;
@@ -176,7 +177,7 @@ const userSlice = createSlice({
       .addCase(changeNickname.fulfilled, (state: IUserState, action: PayloadAction<ChangeNicknameRequest>) => {
         state.changeNicknameLoading = false;
         state.changeNicknameDone = true;
-        state.me = action.payload.nickname;
+        // state.me = action.payload.nickname;
       })
       .addCase(changeNickname.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.changeNicknameLoading = false;
@@ -191,7 +192,7 @@ const userSlice = createSlice({
       .addCase(changePassword.fulfilled, (state: IUserState, action: PayloadAction<ChangePassRequest>) => {
         state.changePasswordLoading = false;
         state.changePasswordDone = true;
-        state.me = action.payload.upassword;
+        // state.me = action.payload.upassword;
       })
       .addCase(changePassword.rejected, (state: IUserState, action: PayloadAction<unknown | null>) => {
         state.changePasswordLoading = false;
@@ -218,7 +219,7 @@ const userSlice = createSlice({
         state.findpassAuthDone = false;
         state.findpassAuthError = null;
       })
-      .addCase(findpassAuthRequest.fulfilled, (state: IUserState, action: PayloadAction<any>) => {
+      .addCase(findpassAuthRequest.fulfilled, (state: IUserState, action: PayloadAction<findpassAuthRequestData>) => {
         state.findpassAuthLoading = false;
         state.auth = action.payload;
         state.findpassAuthDone = true;

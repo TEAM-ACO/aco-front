@@ -5,7 +5,7 @@ import { signup } from '@actions/signup';
 export interface ISignupState {
   signupLoading: boolean;
   signupDone: boolean;
-  signupError: any | null;
+  signupError: unknown | null;
 }
 
 const initialState = {

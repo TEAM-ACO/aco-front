@@ -14,7 +14,7 @@ export type LogInRequestData = { email: string; password: string };
 
 export type findPasswordEmailRequestData = { email: string };
 
-export type findpassAuthRequestData = { email: string; authNum?: number };
+export type findpassAuthRequestData = { email: string; authNum?: number; };
 
 // 로그인
 export const login = createAsyncThunk<LogInRequestData, LogInRequestData>(

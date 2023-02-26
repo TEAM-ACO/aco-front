@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 type visitorInfoProps = {
-    visitorInfo: any;
+    
 }
 // 차트 의논중
-const Info = ({ visitorInfo }: visitorInfoProps) => {
+const Info = () => {
 
     return (
         <>

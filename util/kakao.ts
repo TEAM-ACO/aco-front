@@ -1,11 +1,3 @@
-// export const kakaoInit = () => {
-//   const kakao = (window as any).Kakao;
-//   kakao.init(process.env.KAKAO_CLIENT_JAVASCRIPTKEY);
-//   kakao.isInitialized();
-
-//   return kakao;
-// };
-
 export const REST_API_KEY = process.env.KAKAO_CLIENT_ID!;
 
 export const redirect_url = 'http://localhost:3075/api/oauth/kakao';

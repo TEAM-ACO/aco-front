@@ -13,7 +13,7 @@
 나의 발자취를 기록하고 공유하는 공간입니다. 환경문제에 관심을 가지는 사람이 많아지고 있는 요즘, 정보를 공유할 공간이 없는
 사람들에게 도움이 되었으면 좋겠다는 생각으로 개발했습니다.
 <br/><br/>
-[자세히 보기](https://my-portfolio-k1k2brz.vercel.app/portfolio/projectaco)
+[자세히 보기](https://my-portfolio-lkp8.vercel.app/portfolio/projectaco)
 
 ### 기능 요약
 

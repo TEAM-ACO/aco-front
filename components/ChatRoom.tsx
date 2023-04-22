@@ -10,7 +10,7 @@ type IUserData = {
     message: string;
 }
 
-var stompClient: any = null;
+let stompClient: any = null;
 const ChatRoom = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['user']);
     const [privateChats, setPrivateChats] = useState<any>(new Map());

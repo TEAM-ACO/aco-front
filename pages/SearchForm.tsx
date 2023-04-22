@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useRouter } from 'next/router';
 import { useAppDispatch, useAppSelector } from '@store/config';
 import { searchRequestPage } from '@features/postSlice';

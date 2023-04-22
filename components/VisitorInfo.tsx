@@ -10,9 +10,6 @@ import { visitor } from '@actions/admin'
 const VisitorInfo = () => {
     const dispatch = useAppDispatch();
     const { adminVisitor } = useAppSelector((state) => state.admin)
-    // const visitor = dayOfVisitor
-    // const prevLink = prevLinkWithSum
-    // const visited = visitedArticle
 
     useEffect(() => {
 
@@ -20,17 +17,7 @@ const VisitorInfo = () => {
 
     return (
         <>
-            {/* {adminVisitor[0].thisWeekVisitor}
-            {Object.keys(adminVisitor[0].dayOfVisitor)}:
-            {Object.values(adminVisitor[0].dayOfVisitor)}
-            {Object.keys(adminVisitor[0].prevLinkWithSum)}:
-            {Object.values(adminVisitor[0].prevLinkWithSum)} */}
-            {/* {adminVisitor[0].visitedArticle} */}
-            {/* {adminVisitor.map((visitorInfo, i) => {
-                return (
-                    <Info key={i} visitorInfo={visitorInfo} />
-                )
-            })} */}
+            
         </>
         // <Table.Body className="divide-y">
         //     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">

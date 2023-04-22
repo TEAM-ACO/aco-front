@@ -479,9 +479,9 @@ const postSlice = createSlice({
         state.deleteCommentDone = false;
       })
       .addCase(deleteComment.fulfilled, (state: IArticleState, action: PayloadAction<IArticle | any>) => {
+        const post = state.mainPosts.findIndex((v: IArticle) => v.articleId == action.payload.article.articleId);
         state.deleteCommentLoading = false;
         state.deleteCommentDone = true;
-        const post = state.mainPosts.findIndex((v: IArticle) => v.articleId == action.payload.article.articleId);
         state.mainPosts[post].replys = state.mainPosts[post].replys.filter((v: IReply) => v.replyId !== action.payload.replyId)
       })
       .addCase(deleteComment.rejected, (state: IArticleState) => {

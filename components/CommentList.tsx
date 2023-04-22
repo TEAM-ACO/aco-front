@@ -52,19 +52,6 @@ function CommentList({ comment }: CommentProps) {
         setCommentDelete(false)
     }, [onDeleteModal, commentDelete])
 
-    // const [replySortCheck, setReplySortCheck] = useState<number>();
-    // const [nicknameCheck, setNicknameCheck] = useState<string>();
-    // const [replyContextCheck, setReplyContextCheck] = useState<string[]>();
-    // const [memberIdCheck, setMemberIdCheck] = useState<number>();
-
-    // useEffect(() => {
-    //     setDayCheck(comment.date)
-    //     setReplySortCheck(comment.replySort)
-    //     setNicknameCheck(comment.member.nickname)
-    //     setReplyContextCheck(comment.replyContext)
-    //     setMemberIdCheck(comment.member.memberId)
-    // }, [])
-
     return (
         <div>
             <li className="ml-6 flex items-center justify-between">

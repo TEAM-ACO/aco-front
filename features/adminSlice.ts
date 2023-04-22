@@ -6,16 +6,17 @@ import {
   adminMemberReport,
 } from '@actions/admin';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IWeek, Members } from '@typings/db';
+import { IAdminDelete, IWeek, Members } from '@typings/db';
 import _concat from 'lodash/concat';
 import _remove from 'lodash/concat';
 import { IArticle } from './postSlice';
 
 export interface IAdmin {
-  email: string;
-  nickname: string;
-  memberId: number;
-  totalCount: number;
+  email?: string;
+  nickname?: string;
+  memberId?: number;
+  totalCount?: number;
+  articleId?: number;
 }
 
 export interface IAdminAction {
@@ -30,28 +31,29 @@ export interface IAdminVisitant {
 }
 
 export interface IAdminMemberReport {
-  userReportId: number;
-  userReportContext: string;
-  targetUserId: number;
-  reporterUserId: number;
-  totalCount: number;
+  userReportId?: number;
+  userReportContext?: string;
+  targetUserId?: number;
+  reporterUserId?: number;
+  totalCount?: number;
+  articleId?: number;
 }
 
 export interface IAdminArticle {
-  articleId: number;
-  articleContext: string;
-  menu: string;
-  reported: number;
-  member: Members;
-  totalCount: number;
+  articleId?: number;
+  articleContext?: string;
+  menu?: string;
+  reported?: number;
+  member?: Members;
+  totalCount?: number;
 }
 
 export interface IAdminArticleReport {
-  articleReportId: number;
-  articleReportContext: string;
-  articleId: number;
-  articlereporterId: number;
-  totalCount: number;
+  articleReportId?: number;
+  articleReportContext?: string;
+  articleId?: number;
+  articlereporterId?: number;
+  totalCount?: number;
 }
 
 export interface IAdminState {
@@ -75,6 +77,7 @@ export interface IAdminState {
   adminArticleReportDone: boolean;
   adminDeleteLoading: boolean;
   adminDeleteDone: boolean;
+  articleId?: number;
 }
 
 const initialState: IAdminState = {
@@ -106,6 +109,8 @@ const adminSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
+      // 수정중
+      
       // .addCase(adminVisitant.pending, (state: IAdminState) => {
       //   state.adminVisitantLoading = true;
       //   state.adminVisitantDone = false;
@@ -134,7 +139,7 @@ const adminSlice = createSlice({
         state.adminMemberLoading = true;
         state.adminMemberDone = false;
       })
-      .addCase(adminMember.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
+      .addCase(adminMember.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
         state.adminMemberLoading = false;
         state.adminMemberDone = true;
         state.adminMemberContent = _concat(state.adminMemberContent, action.payload);
@@ -146,7 +151,7 @@ const adminSlice = createSlice({
         state.adminMemberReportLoading = true;
         state.adminMemberReportDone = false;
       })
-      .addCase(adminMemberReport.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
+      .addCase(adminMemberReport.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
         state.adminMemberReportLoading = false;
         state.adminMemberReportDone = true;
         state.adminMemberReportContent = _concat(state.adminMemberReportContent, action.payload);
@@ -158,7 +163,7 @@ const adminSlice = createSlice({
         state.adminArticleLoading = true;
         state.adminArticleDone = false;
       })
-      .addCase(adminArticle.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
+      .addCase(adminArticle.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
         state.adminArticleLoading = false;
         state.adminArticleDone = true;
         state.adminArticleContent = _concat(state.adminArticleContent, action.payload);
@@ -170,7 +175,7 @@ const adminSlice = createSlice({
         state.adminArticleReportLoading = true;
         state.adminArticleReportDone = false;
       })
-      .addCase(adminArticleReport.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
+      .addCase(adminArticleReport.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
         state.adminArticleReportLoading = false;
         state.adminArticleReportDone = true;
         state.adminArticleReportContent = _concat(state.adminArticleReportContent, action.payload);
@@ -182,11 +187,11 @@ const adminSlice = createSlice({
         state.adminDeleteLoading = true;
         state.adminDeleteDone = false;
       })
-      .addCase(adminDelete.fulfilled, (state: IAdminState, action: PayloadAction<any>) => {
+      .addCase(adminDelete.fulfilled, (state: IAdminState, action: PayloadAction<IAdminState>) => {
         state.adminDeleteLoading = false;
         state.adminDeleteDone = true;
         state.adminArticleContent = state.adminArticleContent.filter(
-          (v: any) => v.articleId !== action.payload.articleId,
+          (v) => v.articleId !== action.payload.articleId,
         );
       })
       .addCase(adminDelete.rejected, (state: IAdminState) => {

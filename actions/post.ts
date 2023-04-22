@@ -36,7 +36,7 @@ export type reportArticle = {
   articleReportContext: string | unknown;
 };
 
-export const addPost = createAsyncThunk<FormData, any>('article/addPost', async (data, { rejectWithValue }) => {
+export const addPost = createAsyncThunk<FormData, FormData>('article/addPost', async (data, { rejectWithValue }) => {
   try {
     const response = await axios.post('/api/article/write', data, {
       headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' },
@@ -47,7 +47,7 @@ export const addPost = createAsyncThunk<FormData, any>('article/addPost', async 
   }
 });
 
-export const uploadImages = createAsyncThunk<FormData, any>(
+export const uploadImages = createAsyncThunk<FormData, FormData>(
   'article/uploadImages',
   async (data, { rejectWithValue }) => {
     try {
@@ -60,6 +60,8 @@ export const uploadImages = createAsyncThunk<FormData, any>(
     }
   },
 );
+
+// 첫 게시글을 무조건 댓글과 함께 받아줘야 하기 때문에 axios두 번 보내야 한다.
 
 export const loadInitPosts = createAsyncThunk<ArticleLoadPosts, IPageNumber | undefined>(
   'article/loadInitPosts',

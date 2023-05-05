@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useCookies } from "react-cookie"
 import RootLayout from '@components/RootLayout'
 import Head from 'next/head'
-import Main from '../components/checked'
+import Main from '../components/main'
 import { useRouter } from 'next/router';
 
 function Home() {

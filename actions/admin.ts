@@ -1,37 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 import backendURL from '../config/url';
-import { IAdminState, IAdminVisitant } from '@features/adminSlice';
+import { IAdminState } from '@features/adminSlice';
 import { IAdminDelete, IPageNumber } from '@typings/db';
 
 axios.defaults.baseURL = backendURL;
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
-export const adminVisitant = createAsyncThunk<IAdminState, IAdminVisitant>(
-  'admin/visitant',
-  async (data, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`/api/admin/main/${data.week}`);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      return rejectWithValue((error as AxiosError).response?.data);
-    }
-  },
-);
-
-export const visitor = createAsyncThunk<IAdminState, IAdminVisitant>(
-  'admin/visitor',
-  async (data, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`/api/admin/main/${data.week}`);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      return rejectWithValue((error as AxiosError).response?.data);
-    }
-  },
-);
 
 export const adminMember = createAsyncThunk<IAdminState, IPageNumber | undefined>(
   'admin/member',

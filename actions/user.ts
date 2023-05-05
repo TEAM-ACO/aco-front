@@ -8,7 +8,7 @@ import { signupRequestData } from './signup';
 const AxiosType: TypeAxios = axios;
 axios.defaults.baseURL = backendURL;
 // 프론트 - 백 쿠키공유
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 export type LogInRequestData = { email: string; password: string };
 

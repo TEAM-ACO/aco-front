@@ -51,7 +51,7 @@ const ChatRoom = () => {
 
     // Join 전송
     const userJoin = useCallback(() => {
-        var chatMessage = {
+        let chatMessage = {
             senderName: userData.username,
             status: "JOIN"
         };
@@ -60,7 +60,7 @@ const ChatRoom = () => {
 
     // 수신
     const onMessageReceived = (payload: any) => {
-        var payloadData = JSON.parse(payload.body);
+        let payloadData = JSON.parse(payload.body);
         switch (payloadData.status) {
             case "JOIN":
                 if (!privateChats.get(payloadData.senderName)) {
@@ -77,7 +77,7 @@ const ChatRoom = () => {
 
     // 프라이빗 수신
     const onPrivateMessage = (payload: any) => {
-        var payloadData = JSON.parse(payload.body);
+        let payloadData = JSON.parse(payload.body);
         if (privateChats.get(payloadData.senderName)) {
             privateChats.get(payloadData.senderName).push(payloadData);
             setPrivateChats(new Map(privateChats));
@@ -109,7 +109,7 @@ const ChatRoom = () => {
             return
         }
         if (stompClient) {
-            var chatMessage = {
+            let chatMessage = {
                 senderName: userData.username,
                 message: userData.message,
                 status: "MESSAGE"
@@ -144,7 +144,7 @@ const ChatRoom = () => {
             return
         }
         if (stompClient) {
-            var chatMessage = {
+            let chatMessage = {
                 senderName: userData.username,
                 receiverName: tab,
                 message: userData.message,

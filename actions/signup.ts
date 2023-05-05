@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import backendURL from '../config/url';
 
 axios.defaults.baseURL = backendURL;
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 export type signupRequestData = { email: string; name: string; nickname: string; password: string };
 export type signupErrorData = unknown | null;

@@ -3,16 +3,17 @@
 
 [ACO 홈페이지 바로가기](http://43.200.152.148:3075/)
 
-# Project Aco
+# Aco 이미지
 
-![aco](https://user-images.githubusercontent.com/102219209/233780939-5594e3d6-b3ad-4876-89e1-3df8165be9ed.PNG)
+<img src="https://user-images.githubusercontent.com/102219209/236690778-ac930fb5-fa4c-49a0-bb22-35ce48d16eb6.PNG" width="25%" height="25%"><img src="https://user-images.githubusercontent.com/102219209/236690782-2372583d-31e8-47f6-8143-ba4742c92ba7.PNG" width="25%" height="25%"><img src="https://user-images.githubusercontent.com/102219209/236690789-19908cad-59ec-406c-9583-4cded28843ba.PNG" width="25%" height="25%"><img src="https://user-images.githubusercontent.com/102219209/236690792-8accf624-9aa5-434e-9ca6-d5467d1757fc.PNG" width="25%" height="25%">
+<img src="https://user-images.githubusercontent.com/102219209/233780939-5594e3d6-b3ad-4876-89e1-3df8165be9ed.PNG" width="25%" height="25%"><img src="https://user-images.githubusercontent.com/102219209/236690798-6de80009-04d8-43f7-819d-02fc050d79fc.PNG" width="25%" height="25%"><img src="https://user-images.githubusercontent.com/102219209/236690801-8b63d56c-f48a-4de5-b65a-8c012d3087f0.PNG" width="25%" height="25%"><img src="https://user-images.githubusercontent.com/102219209/236690804-419ffe46-8107-4696-85b9-eb6a7e1e58c5.PNG" width="25%" height="25%">
 
 ## Technology Stacks
 <br />
 
 |파트|개발 기술|
 |---|-------|
-|Frontend|<div><img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white" /> <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white" /> <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat&logo=Javascript&logoColor=white" /> <img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white" /> <img src="https://img.shields.io/badge/Redux-764abc?style=flat&logo=Redux&logoColor=white" /> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=TypeScript&logoColor=white" /> <img src="https://img.shields.io/badge/Next.JS-000000?style=flat&logo=Next.js&logoColor=white" /> <img src="https://img.shields.io/badge/Tailwindcss-a5f3fc?style=flat&logo=Tailwindcss&logoColor=white" /></div>|
+|Frontend|<div><img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white" /> <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white" /> <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat&logo=Javascript&logoColor=white" /> <img src="https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white" /> <img src="https://img.shields.io/badge/Redux Toolkit-764abc?style=flat&logo=Redux&logoColor=white" /> <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=TypeScript&logoColor=white" /> <img src="https://img.shields.io/badge/Next.JS-000000?style=flat&logo=Next.js&logoColor=white" /> <img src="https://img.shields.io/badge/Tailwindcss-a5f3fc?style=flat&logo=Tailwindcss&logoColor=white" /></div>|
 |Backend|<div><img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Java&logoColor=white" /> <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat&logo=Springboot&logoColor=white" /> <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white" /> <img src="https://img.shields.io/badge/Docker-2496ED?style=flat&logo=Docker&logoColor=white" /> <img src="https://img.shields.io/badge/Redis-E34F26?style=flat&logo=Redis&logoColor=white" /></div>|
 |Deployment|<img src="https://img.shields.io/badge/AWS Lightsail-232F3E?style=flat&logo=AmazonAWS&logoColor=white" />|
 |Management|<img src="https://img.shields.io/badge/Git-F05032?style=flat&logo=Git&logoColor=white" />|
@@ -138,11 +139,11 @@ SEO의 과정중 도메인 최적화 작업을 경험하지 못해 검색엔진�
 ## Backend 개발 환경
 [백엔드 상세페이지](https://github.com/TEAM-ACO/aco-back/wiki)
 
-# Install JavaScript Packages
+## Install JavaScript Packages
 ```
 npm install
 ```
-# Run Frontend Server
+## Run Frontend Server
 ```
 npm run dev
 ```
